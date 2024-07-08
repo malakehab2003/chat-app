@@ -1,35 +1,15 @@
 import axios from 'axios';
 import { expect } from 'chai';
-import { config } from 'dotenv';
 import { beforeEach } from 'mocha';
-import { createConnection } from 'mysql2';
-import { promisify } from 'util';
 
-config();
-
-let connection;
-let asyncQuery;
-
-before(async function () {
-	connection = createConnection(
-		{
-			host: process.env.DB_HOST,
-			user: process.env.DB_USER,
-			password: process.env.DB_PASSWORD,
-			database: process.env.DB_NAME,
-		}
-	);
-	asyncQuery = promisify(connection.query).bind(connection);
-});
+import { clearTable, closeConnection } from "./utils.js";
 
 beforeEach(async function () {
-	await asyncQuery('DELETE FROM chatrooms;');
+	await clearTable('chatrooms').catch((err) => log(err));
 });
 
-after(async function () {
-	connection.end((err) => {
-		if (err) throw err;
-	});
+after(function () {
+	closeConnection();
 })
 
 axios.defaults.baseURL = 'http://localhost:3000/api/chatroom';
