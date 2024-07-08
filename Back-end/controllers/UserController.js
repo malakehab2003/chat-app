@@ -1,4 +1,7 @@
+import Debug from 'debug';
 import User from "../models/user.js"
+
+const debug = Debug('controllers:user');
 
 export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -12,7 +15,7 @@ export const createUser = async (req, res) => {
 
     return res.status(201).send({ id: user.id });
   } catch (err) {
-    console.log(`can't create user err: ${err}`);
+    debug(`can't create user err: ${err}`);
     return res.status(401).send(`can't create user err: ${err}`);
   }
 }
@@ -29,7 +32,7 @@ export const getUser = async (req, res) => {
 
     return res.status(200).json(user);
   } catch (err) {
-    console.log(`can't find user err: ${err}`);
+    debug(`can't find user err: ${err}`);
     return res.status(401).send(`can't find user err: ${err}`);
   }
 }
@@ -40,7 +43,7 @@ export const getAllUser = async (req, res) => {
 
     return res.status(200).json(users);
   } catch (err) {
-    console.log(`can't get users err: ${err}`);
+    debug(`can't get users err: ${err}`);
     return res.status(401).send(`can't get users err: ${err}`);
   }
 }
@@ -56,7 +59,7 @@ export const getUserByEmail = async (req, res) => {
 
     return res.status(200).json(user);
   } catch (err) {
-    console.log(`can't find user err: ${err}`);
+    debug(`can't find user err: ${err}`);
     return res.status(401).send(`can't find user err: ${err}`);
   }
 }
@@ -75,7 +78,7 @@ export const updateUser = async (req, res) => {
 
     return res.status(200).json(user);
   } catch (err) {
-    console.log(`can't update user err: ${err}`);
+    debug(`can't update user err: ${err}`);
     return res.status(304).send(`can't update user err: ${err}`);
   }
 }
@@ -98,7 +101,7 @@ export const deleteUser = async (req, res) => {
 
     return res.status(200).send(`user with id: ${id} deleted`);
   } catch (err) {
-    console.log(`can't delete user err: ${err}`);
+    debug(`can't delete user err: ${err}`);
     return res.status(401).send(`can't delete user err: ${err}`);
   }
 }
@@ -121,7 +124,7 @@ export const deleteUserByEmail = async (req, res) => {
 
     return res.status(200).send(`user with email: ${email} deleted`);
   } catch (err) {
-    console.log(`can't delete user err: ${err}`);
+    debug(`can't delete user err: ${err}`);
     return res.status(401).send(`can't delete user err: ${err}`);
   }
 }

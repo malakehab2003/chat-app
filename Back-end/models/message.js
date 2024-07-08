@@ -18,21 +18,4 @@ Message.init({
   },
 }, { sequelize });
 
-
-// export default function messageFunc(sequelize, DataTypes) {
-//   message.associate = function associateMessage(models) {
-//     message.belongsTo(models.user, {
-//       onDelete: 'cascade',
-//       foreignKey: {
-//         allowNull: false,
-//       },
-//     });
-// message.belongsTo(models.classroom, {
-//   onDelete: 'cascade',
-// });
-//   };
-
-//   return message;
-// };
-
 export default Message;

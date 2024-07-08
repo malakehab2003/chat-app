@@ -1,4 +1,7 @@
+import Debug from 'debug';
 import Message from "../models/message.js";
+
+const debug = Debug('controllers:message');
 
 export const createMessage = async (req, res) => {
   const { content, userId } = req.body;
@@ -11,18 +14,17 @@ export const createMessage = async (req, res) => {
 
     return res.status(201).send({ id: message.id });
   } catch (err) {
-    console.log(`can't create message err: ${err}`);
+    debug(`can't create message err: ${err}`);
     return res.status(401).send(`can't create message err: ${err}`);
   }
 }
 
 export const getAllMessages = async (req, res) => {
-  const messages = await Message.findAll();
-
   try {
+    const messages = await Message.findAll();
     return res.status(200).json(messages);
   } catch (err) {
-    console.log(`can't get messages err: ${err}`);
+    debug(`can't get messages err: ${err}`);
     return res.status(401).send(`can't get messages err: ${err}`);
   }
 }
@@ -39,7 +41,7 @@ export const getMessage = async (req, res) => {
 
     return res.status(200).json(message);
   } catch (err) {
-    console.log(`can't get message err: ${err}`);
+    debug(`can't get message err: ${err}`);
     return res.status(401).send(`can't get message err: ${err}`);
   }
 }
@@ -56,7 +58,7 @@ export const getMessageByUserId = async (req, res) => {
 
     return res.status(200).json(messages);
   } catch (err) {
-    console.log(`can't get messages err: ${err}`);
+    debug(`can't get messages err: ${err}`);
     return res.status(401).send(`can't get messages err: ${err}`);
   }
 }
@@ -75,7 +77,7 @@ export const updateMessage = async (req, res) => {
 
     return res.status(200).json(message);
   } catch (err) {
-    console.log(`can't update message err: ${err}`);
+    debug(`can't update message err: ${err}`);
     return res.status(304).send(`can't update message err: ${err}`);
   }
 }
@@ -98,7 +100,7 @@ export const deleteMessage = async (req, res) => {
 
     return res.status(200).send(`message with id: ${id} deleted`);
   } catch (err) {
-    console.log(`can't delete message err: ${err}`);
+    debug(`can't delete message err: ${err}`);
     return res.status(401).send(`can't delete message err: ${err}`);
   }
 
@@ -114,10 +116,11 @@ export const deleteMessageByUserId = async (req, res) => {
       },
     });
 
-    await messages.forEach((message) => { message.destroy() });
+    const promises = messages.map((message) => message.destroy());
+    await Promise.all(promises);
     return res.status(200).send(`messages with user id: ${userId} deleted`);
   } catch (err) {
-    console.log(`can't delete messages err: ${err}`);
+    debug(`can't delete messages err: ${err}`);
     return res.status(401).send(`can't delete messages err: ${err}`);
   }
 }
