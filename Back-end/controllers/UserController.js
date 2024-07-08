@@ -24,7 +24,7 @@ export const createUser = async (req, res) => {
       password: hash_password,
     });
 
-    const token = createToken(user.id);
+    const token = await createToken(user.id);
 
     return res.status(201).send({ token });
   } catch (err) {
@@ -146,7 +146,7 @@ export const validateEmail = (email) => {
   return regex.test(email);
 }
 
-const validatePassword = (password, res) => {  
+const validatePassword = (password, res) => {
   if (password.length < 8) {
     debug('Password must be at least 8 characters long');
     res.status(401).send('Password must be at least 8 characters long');
