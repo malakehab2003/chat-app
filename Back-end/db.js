@@ -3,11 +3,13 @@ import { promisify } from 'util';
 import { config } from 'dotenv';
 import { createConnection } from 'mysql2';
 import Debug from "debug";
+
 var debug = Debug('db:util');
 
-
 // Load environment variables from .env file
-config();
+const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
+debug(`.env.${process.env.NODE_ENV}` === '.env.test');
+config({ path: envFile });
 
 const sequelize = new Sequelize(
 	process.env.DB_NAME,
@@ -31,7 +33,7 @@ const ensureDBSetup = async () => {
 		await sequelize.authenticate();
 		debug("DB and USER Exists");
 	} catch (error) {
-		if (error.original && ['ER_BAD_DB_ERROR', 'ER_ACCESS_DENIED_ERROR'].includes(error.original.code)) {
+		if (error.original && ['ER_BAD_DB_ERROR', 'ER_ACCESS_DENIED_ERROR', 'ER_DBACCESS_DENIED_ERROR'].includes(error.original.code)) {
 			debug("Creating DB and USER");
 			const connection = createConnection(
 				{
