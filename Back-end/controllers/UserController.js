@@ -204,9 +204,7 @@ export const signUp = (req, res) => {
   return createUser(req, res);
 }
 
-export const signIn = async (req, res) => {
-  let Authorization = req.header('Authorization');
-
+export const getUserFromToken = async (Authorization, res) => {
   // check that Authorization is not empty
   if (!Authorization) {
     debug('Header should contain Authorization');
@@ -254,6 +252,15 @@ export const signIn = async (req, res) => {
     debug('Wrong password!');
     return res.status(401).send('Wrong password!');
   }
+
+  return user;
+}
+
+export const signIn = async (req, res) => {
+  let Authorization = req.header('Authorization');
+
+  // get user from token
+  const user = await  getUserFromToken(Authorization, res);
 
   // create token to the session and save it in cache
   const token = await createToken(user.id.toString());
