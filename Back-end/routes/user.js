@@ -16,4 +16,9 @@ router.put('/:id', UserController.updateUser);
 router.delete('/:id', UserController.deleteUser);
 router.delete('/', UserController.deleteUserByEmail);
 
+// create sign up
+router.post('/signUp', UserController.signUp);
+router.post('/signIn', UserController.signIn);
+router.get('/signOut', UserController.signOut);
+
 export default router;
