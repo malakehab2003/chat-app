@@ -24,7 +24,7 @@ export const createUser = async (req, res) => {
       password: hash_password,
     });
 
-    const token = createToken(user.id);
+    const token = await createToken(user.id);
 
     return res.status(201).send({ token });
   } catch (err) {
@@ -69,7 +69,7 @@ export const getUserByEmail = async (email, res) => {
       },
     });
 
-    return res.status(200).json(user);
+    return user;
   } catch (err) {
     debug(`can't find user err: ${err}`);
     return res.status(401).send(`can't find user err: ${err}`);
@@ -204,8 +204,8 @@ export const signUp = (req, res) => {
   return createUser(req, res);
 }
 
-export const signIn = (req, res) => {
-  let { Authorization } = req.header;
+export const signIn = async (req, res) => {
+  let Authorization = req.header('Authorization');
 
   // check that Authorization is not empty
   if (!Authorization) {
@@ -227,7 +227,7 @@ export const signIn = (req, res) => {
   decodedAuth = decodedAuth.toString('utf-8');
 
   // split email and password
-  const arr = decodedHeader.split(':');
+  const arr = decodedAuth.split(':');
   const email = arr[0];
   const password = arr[1];
 
@@ -241,7 +241,7 @@ export const signIn = (req, res) => {
   const hash_password = sha1(password);
 
   // get user by email if found
-  const user = getUserByEmail(email, res);
+  const user = await getUserByEmail(email, res);
 
   // check user is not null
   if (!user) {
@@ -256,13 +256,18 @@ export const signIn = (req, res) => {
   }
 
   // create token to the session and save it in cache
-  const token = createToken(user.id);
+  const token = await createToken(user.id.toString());
 
   return res.status(200).json({ token });
 }
 
 export const signOut = async (req, res) => {
-  const { token } = req.header;
+  const token = req.header('token');
+
+  if (!token) {
+    debug('No token found!');
+    return res.status(401).send('No token found!');
+  }
 
   try {
     const id = await redisClient.get(token);
@@ -271,7 +276,7 @@ export const signOut = async (req, res) => {
       return res.status(401).send('Incorrect token!');
     }
 
-    redisClient.del(token);
+    await redisClient.del(token);
     return res.status(200).send('Signed out successfully');
   } catch (err) {
     debug(`Cannot sign out err: ${err}`);

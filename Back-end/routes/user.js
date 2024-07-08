@@ -19,6 +19,6 @@ router.delete('/', UserController.deleteUserByEmail);
 // create sign up
 router.post('/signUp', UserController.signUp);
 router.post('/signIn', UserController.signIn);
-router.get('/signOut', UserController.signOut);
+router.post('/signOut', UserController.signOut);
 
 export default router;
