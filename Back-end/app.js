@@ -22,9 +22,12 @@ User.hasMany(Message, {
 });
 
 // TODO: Associate Many Users to Many ChatRooms
-// User.hasMany(ChatRoom, {
-// 	onDelete: 'cascade',
-// });
+User.belongsToMany(ChatRoom, {
+	through: "ChatRoomParticipants"
+});
+ChatRoom.belongsToMany(User, {
+	through: "ChatRoomParticipants"
+});
 
 Message.belongsTo(User, {
 	onDelete: 'cascade',
