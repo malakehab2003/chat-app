@@ -6,6 +6,11 @@ const debug = Debug('controllers:message');
 export const createMessage = async (req, res) => {
   const { content, userId } = req.body;
 
+  if (!content || content === '') {
+    debug('Cannot make empty message');
+    return res.status(401).send('Cannot make empty message');
+  }
+
   try {
     const message = await Message.create({
       content,
