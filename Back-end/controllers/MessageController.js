@@ -1,10 +1,10 @@
-import db from '../models/index';
+import Message from "../models/message.js";
 
-export async function createMessage(req, res) {
+export const createMessage = async (req, res) => {
   const { content, userId } = req.body;
 
   try {
-    const message = await db.message.create({
+    const message = await Message.create({
       content,
       userId,
     });
@@ -16,8 +16,8 @@ export async function createMessage(req, res) {
   }
 }
 
-export async function getAllMessages(req, res) {
-  const messages = await db.message.findAll();
+export const getAllMessages = async (req, res) => {
+  const messages = await Message.findAll();
 
   try {
     return res.status(200).json(messages);
@@ -27,11 +27,11 @@ export async function getAllMessages(req, res) {
   }
 }
 
-export async function getMessage(req, res) {
+export const getMessage = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const message = await db.message.findOne({
+    const message = await Message.findOne({
       where: {
         id,
       },
@@ -44,11 +44,11 @@ export async function getMessage(req, res) {
   }
 }
 
-export async function getMessageByUserId(req, res) {
+export const getMessageByUserId = async (req, res) => {
   const { userId } = req.query;
 
   try {
-    const messages = await db.message.findAll({
+    const messages = await Message.findAll({
       where: {
         userId,
       },
@@ -61,11 +61,11 @@ export async function getMessageByUserId(req, res) {
   }
 }
 
-export async function updateMessage (req, res) {
+export const updateMessage = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const message = await db.message.update({
+    const message = await Message.update({
       content: req.body.content,
     }, {
       where: {
@@ -80,11 +80,11 @@ export async function updateMessage (req, res) {
   }
 }
 
-export async function deleteMessage(req, res) {
+export const deleteMessage = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const message = await db.message.findOne({
+    const message = await Message.findOne({
       where: {
         id,
       },
@@ -104,17 +104,17 @@ export async function deleteMessage(req, res) {
 
 }
 
-export async function deleteMessageByUserId (req, res) {
+export const deleteMessageByUserId = async (req, res) => {
   const { userId } = req.query;
 
   try {
-    const messages = await db.message.findAll({
+    const messages = await Message.findAll({
       where: {
         userId,
       },
     });
 
-    await messages.forEach((message) => {message.destroy()});
+    await messages.forEach((message) => { message.destroy() });
     return res.status(200).send(`messages with user id: ${userId} deleted`);
   } catch (err) {
     console.log(`can't delete messages err: ${err}`);

@@ -1,42 +1,38 @@
-export default function messageFunc (sequelize, DataTypes) {
-  const message = sequelize.define('message', {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
-    },
+import { DataTypes, Model } from 'sequelize';
+import { db as sequelize } from '../db.js';
 
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
+class Message extends Model { }
 
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
+Message.init({
+  id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    unique: true,
+  },
 
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-  });
+  content: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+}, { sequelize });
 
-  message.associate = function associateMessage(models) {
-    message.belongsTo(models.user, {
-      onDelete: 'cascade',
-      foreignKey: {
-        allowNull: false,
-      },
-    });
-    // message.belongsTo(models.classroom, {
-    //   onDelete: 'cascade',
-    // });
-  };
 
-  return message;
-};
+// export default function messageFunc(sequelize, DataTypes) {
+//   message.associate = function associateMessage(models) {
+//     message.belongsTo(models.user, {
+//       onDelete: 'cascade',
+//       foreignKey: {
+//         allowNull: false,
+//       },
+//     });
+// message.belongsTo(models.classroom, {
+//   onDelete: 'cascade',
+// });
+//   };
+
+//   return message;
+// };
+
+export default Message;

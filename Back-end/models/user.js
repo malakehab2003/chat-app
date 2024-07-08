@@ -1,50 +1,32 @@
-export default function userFunc (sequelize, Datatype) {
-  const user = sequelize.define('user', {
-    id: {
-      type: Datatype.INTEGER,
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
-    },
+import { DataTypes, Model } from 'sequelize';
+import { db as sequelize } from '../db.js';
 
-    name: {
-      type: Datatype.STRING,
-      allowNull: false,
-    },
+class User extends Model { }
 
-    email: {
-      type: Datatype.STRING,
-      allowNull: false,
-      unique: true,
-    },
+User.init({
+  id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+    unique: true,
+  },
 
-    password: {
-      type: Datatype.STRING,
-      allowNull: false,
-    },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 
-    createdAt: {
-      type: Datatype.DATE,
-      allowNull: false,
-      defaultValue: Datatype.NOW,
-    },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
 
-    updatedAt: {
-      type: Datatype.DATE,
-      allowNull: false,
-      defaultValue: Datatype.NOW,
-    },
-  });
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+}, { sequelize });
 
-  user.associate = function associateUser(models) {
-    user.hasMany(models.message, {
-      onDelete: 'cascade',
-    });
-    // user.hasMany(models.classroom, {
-    //   onDelete: 'cascade',
-    // });
-  };
-
-  return user;
-};
+export default User;

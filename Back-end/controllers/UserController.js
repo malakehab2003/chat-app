@@ -1,10 +1,10 @@
-import db from '../models/index';
+import User from "../models/user.js"
 
-export async function createUser(req, res) {
+export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    const user = await db.user.create({
+    const user = await User.create({
       name,
       email,
       password,
@@ -17,11 +17,11 @@ export async function createUser(req, res) {
   }
 }
 
-export async function getUser(req, res) {
+export const getUser = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await db.user.findOne({
+    const user = await User.findOne({
       where: {
         id,
       },
@@ -34,9 +34,9 @@ export async function getUser(req, res) {
   }
 }
 
-export async function getAllUser(req, res) {
+export const getAllUser = async (req, res) => {
   try {
-    const users = await db.user.findAll();
+    const users = await User.findAll();
 
     return res.status(200).json(users);
   } catch (err) {
@@ -45,10 +45,10 @@ export async function getAllUser(req, res) {
   }
 }
 
-export async function getUserByEmail(req, res) {
+export const getUserByEmail = async (req, res) => {
   const { email } = req.query;
   try {
-    const user = await db.user.findOne({
+    const user = await User.findOne({
       where: {
         email,
       },
@@ -61,9 +61,9 @@ export async function getUserByEmail(req, res) {
   }
 }
 
-export async function updateUser(req, res) {
+export const updateUser = async (req, res) => {
   try {
-    const user = await db.user.update({
+    const user = await User.update({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
@@ -80,11 +80,11 @@ export async function updateUser(req, res) {
   }
 }
 
-export async function deleteUser(req, res) {
+export const deleteUser = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const user = await db.user.findOne({
+    const user = await User.findOne({
       where: {
         id
       }
@@ -103,11 +103,11 @@ export async function deleteUser(req, res) {
   }
 }
 
-export async function deleteUserByEmail(req, res) {
+export const deleteUserByEmail = async (req, res) => {
   const { email } = req.query;
 
   try {
-    const user = await db.user.findOne({
+    const user = await User.findOne({
       where: {
         email,
       },
