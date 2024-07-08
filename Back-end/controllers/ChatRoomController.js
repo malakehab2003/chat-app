@@ -9,8 +9,8 @@ export const createChatRoom = async (req, res) => {
 		const room = await ChatRoom.create();
 		return res.status(201).send({ id: room.id });
 	} catch (error) {
-		debug(`can't create message err: ${err}`);
-		return res.status(401).send(`can't create message err: ${err}`);
+		debug(error);
+		return res.status(401).send(`can't create chat room`);
 	}
 };
 
@@ -62,7 +62,7 @@ export const deleteRoom = async (req, res) => {
 			return res.status(404).send('can\'t get chat room');
 		}
 		await room.destroy();
-		return res.status(200).send('room deleted');
+		return res.status(201).send('room deleted');
 	} catch (error) {
 		debug(err);
 		return res.status(401).send('can\'t delete chat room');
