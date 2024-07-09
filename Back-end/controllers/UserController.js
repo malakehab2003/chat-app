@@ -4,11 +4,25 @@ import { v4 as uuidv4 } from 'uuid';
 import redisClient from '../utils/redisClient.js';
 import sha1 from 'sha1';
 import { HeaderNotFoundError, IncorrectPasswordError, InvalidTokenError, UserNotFoundError } from '../utils/errors.js';
+import dotenv from 'dotenv';
+import jsonwebtoken from 'jsonwebtoken';
 
 const debug = Debug('controllers:user');
 
-export const createToken = async (id) => {
-  const token = uuidv4();
+export const createToken = async (email, id) => {
+  // configure env variables
+  dotenv.config();
+
+  // get the secret key from the env
+  const jwtSecretKey = process.env.JWT_SECRET_KEY;
+
+  // define data
+  const data = {
+    email
+  }
+
+  // create token
+  const token = jsonwebtoken.sign(data, jwtSecretKey);
   await redisClient.set(token, id, 86400);
   return token;
 }
@@ -25,7 +39,7 @@ export const createUser = async (req, res) => {
       password: hash_password,
     });
 
-    const token = await createToken(user.id);
+    const token = await createToken(user.email, user.id);
 
     return res.status(201).send({ token });
   } catch (err) {
@@ -221,25 +235,28 @@ export const getUserFromToken = async (Authorization) => {
   }
 
   // remove Bearer
-  Authorization = Authorization.replace('Bearer ', '');
+  const token = Authorization.replace('Bearer ', '');
 
-  // decode the Authorization
-  let decodedAuth = Buffer.from(Authorization, 'base64');
-  decodedAuth = decodedAuth.toString('utf-8');
+  // check valid token
+  const tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+  const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
-  // split email and password
-  const arr = decodedAuth.split(':');
-  const email = arr[0];
-  const password = arr[1];
+  let email;
 
-  // check if empty
-  if (!email || !password) {
-    debug('Not correct Auth');
+  try {
+    const verified = jwt.verify(token, jwtSecretKey);
+    if (verified) {
+      email = verified.email;
+    }
+  } catch (err) {
     throw new InvalidTokenError();
   }
 
-  // hash password
-  const hash_password = sha1(password);
+  // check if empty
+  if (!email) {
+    debug('Not correct Auth');
+    throw new InvalidTokenError();
+  }
 
   // get user by email if found
   let user;
@@ -256,12 +273,6 @@ export const getUserFromToken = async (Authorization) => {
     throw new UserNotFoundError();
   }
 
-  // check password
-  if (user.password === hash_password) {
-    debug('Wrong password!');
-    throw new IncorrectPasswordError();
-  }
-
   return user;
 }
 
@@ -274,7 +285,7 @@ export const signIn = async (req, res) => {
   if (!pass) {
     return res.status(401).send('pass not found');
   }
-  // // get user from token
+  // get user from token
   // const user = await getUserFromToken(Authorization, res);
   let user;
   try {
@@ -292,7 +303,7 @@ export const signIn = async (req, res) => {
     return res.status(401).send('Invalid Password');
   }
   // create token to the session and save it in cache
-  const token = await createToken(user.id.toString());
+  const token = await createToken(user.email, user.id.toString());
 
   return res.status(200).json({ token });
 }
