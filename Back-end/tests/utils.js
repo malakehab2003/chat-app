@@ -16,7 +16,7 @@ const connection = createConnection(
 	}
 );
 
-const asyncQuery = promisify(connection.query).bind(connection);
+export const asyncQuery = promisify(connection.query).bind(connection);
 
 export const closeConnection = () => connection.end((err) => {
 	if (err) throw err;
