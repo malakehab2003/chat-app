@@ -5,8 +5,6 @@ import ChatRoom from "../models/chatRoom.js"
 
 const debug = Debug('controllers:chatroomParticipants');
 
-//TODO: Check if ids are numbers
-
 export const createChatRoomForTwo = async (req, res) => {
 	const { user: sender } = req;
 	const { receiverId } = req.body;
@@ -21,20 +19,20 @@ export const createChatRoomForTwo = async (req, res) => {
 		if (!receiver) {
 			return res.status(StatusCodes.NOT_FOUND).send('Receiver Not Found');
 		}
-		let chatRoom = await sender.getChatRooms({
+		let chatRooms = await sender.getChatRooms({
+			where: { roomType: 'direct' },
 			include: [{
 				model: User,
 				where: { id: receiverId }
-			}]
+			}],
+			joinTableAttributes: []
 		});
-		//TODO: Simplify Search
-		for (const room of chatRoom) {
-			const count = await room.countUsers();
-			if (count === 2) {
-				return res.status(StatusCodes.OK).json({ message: 'Chat Room already Exists', id: room.id });
-			}
+		if (chatRooms.length > 0) {
+			return res.status(StatusCodes.OK).json({ message: 'Chat Room already Exists', id: chatRooms[0].id });
 		}
-		chatRoom = await ChatRoom.create();
+		const chatRoom = await ChatRoom.create({
+			roomType: 'direct'
+		});
 
 		await sender.addChatRoom(chatRoom);
 		await receiver.addChatRoom(chatRoom);
@@ -42,7 +40,6 @@ export const createChatRoomForTwo = async (req, res) => {
 		return res.status(StatusCodes.CREATED).json({ message: 'Chat Room Created and Linked', id: chatRoom.id })
 	} catch (err) {
 		debug(err);
-		debug(err.original);
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t create chat room');
 	}
 }
@@ -51,16 +48,27 @@ export const createChatRoom = async (req, res) => {
 	const { user: sender } = req;
 	const { receiverIds } = req.body;
 
-	if (!receiverIds) {
-		return res.status(StatusCodes.BAD_REQUEST).send('ReceiverIds Not Found');
+	if (!receiverIds || !Array.isArray(receiverIds) || receiverIds.some((id) => isNaN(id))) {
+		return res.status(StatusCodes.BAD_REQUEST).send('Invalid receiverIds');
 	}
-	const allUsers = [Number.parseInt(sender.id), ...(receiverIds.map((id) => Number.parseInt(id)))];
+	const allUsers = [sender.id, ...(receiverIds.map((id) => Number.parseInt(id)))];
 	const allCount = allUsers.length;
 
+	if (allCount === 2) {
+		req.body.receiverId = receiverIds[0];
+		return createChatRoomForTwo(req, res);
+	}
+
 	try {
-		let chatRoom = await sender.getChatRooms();
-		for (const room of chatRoom) {
-			const participants = (await room.getUsers()).map((user) => user.id);
+		let chatRooms = await sender.getChatRooms({
+			include: [{
+				model: User,
+				attributes: ['id'],
+				through: { attributes: [] }, // Exclude join table attributes
+			}],
+		});
+		for (const room of chatRooms) {
+			const participants = room.Users.map((user) => user.id);
 			if (participants.length === allCount &&
 				allUsers.every((id) => participants.includes(id))) {
 				return res.status(StatusCodes.OK).json({
@@ -70,7 +78,7 @@ export const createChatRoom = async (req, res) => {
 			}
 		}
 
-		chatRoom = await ChatRoom.create();
+		const chatRoom = await ChatRoom.create();
 
 		await sender.addChatRoom(chatRoom);
 		const promises = receiverIds.map(async (receiverId) => {
@@ -92,7 +100,6 @@ export const createChatRoom = async (req, res) => {
 		return res.status(StatusCodes.CREATED).json({ message: 'Chat Room Created and Linked', id: chatRoom.id })
 	} catch (err) {
 		debug(err);
-		debug(err.original);
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t create chat room');
 	}
 }
