@@ -62,7 +62,7 @@ export const getAllUser = async (req, res) => {
   }
 }
 
-export const getUserByEmail = async (email, res) => {
+export const getUserByEmail = async (email) => {
   try {
     const user = await User.findOne({
       where: {
@@ -72,8 +72,7 @@ export const getUserByEmail = async (email, res) => {
 
     return user;
   } catch (err) {
-    debug(`can't find user err: ${err}`);
-    return res.status(401).send(`can't find user err: ${err}`);
+    throw new Error (err);
   }
 }
 
@@ -147,23 +146,20 @@ export const validateEmail = (email) => {
   return regex.test(email);
 }
 
-const validatePassword = (password, res) => {
+const validatePassword = (password) => {
   if (password.length < 8) {
     debug('Password must be at least 8 characters long');
-    res.status(401).send('Password must be at least 8 characters long');
-    return false;
+    throw new Error ('Password must be at least 8 characters long');
   }
 
   if (!/[0-9]/.test(password)) {
     debug('Password must contain at least one digit');
-    res.status(401).send('Password must contain at least one digit');
-    return false;
+    throw new Error('Password must contain at least one digit');
   }
 
   if (!/[@_#$]/.test(password)) {
     debug('Password must contain at least one special character (@, _, #, $)');
-    res.status(401).send('Password must contain at least one special character (@, _, #, $)');
-    return false;
+    throw new Error('Password must contain at least one special character (@, _, #, $)');
   }
 
   return true;
@@ -191,10 +187,16 @@ export const signUp = (req, res) => {
   // check valid password
   if (
     !password ||
-    password === '' ||
-    !validatePassword(password, res)
+    password === ''
   ) {
     return res.status(401).send('Invalid Password!');
+  }
+
+  try {
+    validatePassword(password);
+  } catch (err) {
+    debug(err);
+    res.status(401).send(err);
   }
 
   if (!redisClient.isAlive()) {
@@ -205,7 +207,7 @@ export const signUp = (req, res) => {
   return createUser(req, res);
 }
 
-export const getUserFromToken = async (Authorization, res) => {
+export const getUserFromToken = async (Authorization) => {
   // check that Authorization is not empty
   if (!Authorization) {
     debug('Header should contain Authorization');
@@ -240,7 +242,13 @@ export const getUserFromToken = async (Authorization, res) => {
   const hash_password = sha1(password);
 
   // get user by email if found
-  const user = await getUserByEmail(email, res);
+  let user;
+  try {
+    user = await getUserByEmail(email);
+  } catch(err) {
+    debug(err)
+    return res.status(401).send(err);
+  }
 
   // check user is not null
   if (!user) {
@@ -268,7 +276,14 @@ export const signIn = async (req, res) => {
   }
   // // get user from token
   // const user = await getUserFromToken(Authorization, res);
-  const user = await getUserByEmail(email, res);
+  let user;
+  try {
+    user = await getUserByEmail(email);
+  } catch (err) {
+    debug(err);
+    return res.status(401).send(err);
+  }
+
   if (!user) {
     return res.status(404).send("User not found");
   }

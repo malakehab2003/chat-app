@@ -10,7 +10,7 @@ export const AuthRequest = async (req, res, next) => {
 	const authHeader = req.get('authorization');
 
 	try {
-		const user = await UserController.getUserFromToken(authHeader, res);
+		const user = await UserController.getUserFromToken(authHeader);
 
 		if (user) {
 			req.user = user;
