@@ -77,6 +77,7 @@ export const getAllUser = async (req, res) => {
 
 export const getUserByToken = async (req, res) => {
   const { user } = req;
+  delete user.dataValues.password;
   return res.json(user);
 }
 

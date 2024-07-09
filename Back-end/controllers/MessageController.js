@@ -1,5 +1,6 @@
 import Debug from 'debug';
 import Message from "../models/message.js";
+import { StatusCodes } from 'http-status-codes';
 
 const debug = Debug('controllers:message');
 
@@ -21,6 +22,34 @@ export const createMessage = async (req, res) => {
   } catch (err) {
     debug(`can't create message err: ${err}`);
     return res.status(401).send(`can't create message err: ${err}`);
+  }
+}
+
+export const sendToRoom = async (req, res) => {
+  const { user } = req;
+  const { content } = req.body;
+  const { id: ChatRoomId } = req.params;
+  debug(req.params);
+
+  if (!ChatRoomId) {
+    return res.status(StatusCodes.BAD_REQUEST).send("ChatRoomId can't be null");
+  }
+
+  if (!content || content === '') {
+    debug('Cannot make empty message');
+    return res.status(StatusCodes.UNPROCESSABLE_ENTITY).send('Cannot make empty message');
+  }
+
+  try {
+    const message = await user.createMessage({
+      content,
+      ChatRoomId
+    });
+
+    return res.status(StatusCodes.CREATED).send({ id: message.id });
+  } catch (err) {
+    debug(`can't create message err: ${err}`);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`can't create message err: ${err}`);
   }
 }
 
@@ -51,14 +80,31 @@ export const getMessage = async (req, res) => {
   }
 }
 
-export const getMessageByUserId = async (req, res) => {
-  const { userId } = req.query;
+export const getMessagesByUserId = async (req, res) => {
+  const { user } = req;
 
   try {
-    const messages = await Message.findAll({
+    const messages = await user.getMessages();
+
+    return res.status(200).json(messages);
+  } catch (err) {
+    debug(`can't get messages err: ${err}`);
+    return res.status(401).send(`can't get messages err: ${err}`);
+  }
+}
+export const getRoomMessages = async (req, res) => {
+  const { user } = req;
+  const { id: ChatRoomId } = req.params;
+
+  if (!ChatRoomId) {
+    return res.status(StatusCodes.BAD_REQUEST).send("id not found");
+  }
+
+  try {
+    const messages = await user.getMessages({
       where: {
-        userId,
-      },
+        ChatRoomId
+      }
     });
 
     return res.status(200).json(messages);
@@ -115,11 +161,7 @@ export const deleteMessageByUserId = async (req, res) => {
   const { userId } = req.query;
 
   try {
-    const messages = await Message.findAll({
-      where: {
-        userId,
-      },
-    });
+    const messages = await user.getMessages();
 
     const promises = messages.map((message) => message.destroy());
     await Promise.all(promises);

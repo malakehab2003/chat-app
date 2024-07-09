@@ -9,7 +9,7 @@ router.post('/', MessageController.createMessage);
 
 router.get('/all', MessageController.getAllMessages);
 router.get('/:id', MessageController.getMessage);
-router.get('/', MessageController.getMessageByUserId);
+router.get('/', MessageController.getMessagesByUserId);
 
 router.put('/:id', MessageController.updateMessage);
 
