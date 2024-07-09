@@ -1,9 +1,8 @@
 import Debug from 'debug';
 import User from "../models/user.js"
-import { v4 as uuidv4 } from 'uuid';
 import redisClient from '../utils/redisClient.js';
 import sha1 from 'sha1';
-import { HeaderNotFoundError, IncorrectPasswordError, InvalidTokenError, UserNotFoundError } from '../utils/errors.js';
+import { HeaderNotFoundError, InvalidTokenError, UserNotFoundError } from '../utils/errors.js';
 import dotenv from 'dotenv';
 import jsonwebtoken from 'jsonwebtoken';
 
@@ -86,7 +85,7 @@ export const getUserByEmail = async (email) => {
 
     return user;
   } catch (err) {
-    throw new Error (err);
+    throw new Error(err);
   }
 }
 
@@ -163,7 +162,7 @@ export const validateEmail = (email) => {
 const validatePassword = (password) => {
   if (password.length < 8) {
     debug('Password must be at least 8 characters long');
-    throw new Error ('Password must be at least 8 characters long');
+    throw new Error('Password must be at least 8 characters long');
   }
 
   if (!/[0-9]/.test(password)) {
@@ -244,11 +243,12 @@ export const getUserFromToken = async (Authorization) => {
   let email;
 
   try {
-    const verified = jwt.verify(token, jwtSecretKey);
+    const verified = jsonwebtoken.verify(token, jwtSecretKey);
     if (verified) {
       email = verified.email;
     }
   } catch (err) {
+    debug(err);
     throw new InvalidTokenError();
   }
 
@@ -262,7 +262,7 @@ export const getUserFromToken = async (Authorization) => {
   let user;
   try {
     user = await getUserByEmail(email);
-  } catch(err) {
+  } catch (err) {
     debug(err)
     return res.status(401).send(err);
   }

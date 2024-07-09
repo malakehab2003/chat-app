@@ -7,7 +7,8 @@ import { StatusCodes } from 'http-status-codes';
 const debug = Debug("utils:auth");
 
 export const AuthRequest = async (req, res, next) => {
-	const authHeader = req.get('authorization');
+	const authHeader = req.get('Authorization');
+	debug(authHeader);
 
 	try {
 		const user = await UserController.getUserFromToken(authHeader);
@@ -30,10 +31,6 @@ export const AuthRequest = async (req, res, next) => {
 			case err instanceof UserNotFoundError:
 				// Handle UserNotFoundError
 				res.status(StatusCodes.NOT_FOUND).send({ error: 'User not found' });
-				break;
-			case err instanceof IncorrectPasswordError:
-				// Handle IncorrectPasswordError
-				res.status(StatusCodes.UNAUTHORIZED).send({ error: 'Incorrect password' });
 				break;
 			default:
 				debug(err)

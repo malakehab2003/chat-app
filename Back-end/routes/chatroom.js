@@ -6,13 +6,13 @@ import { AuthRequest } from "../utils/auth.js";
 var router = Router();
 
 // crud operations for table message
-router.post('/', AuthRequest, ChatRoom.createChatRoom);
+// router.post('/', ChatRoom.createChatRoom);
 
-router.get('/all', ChatRoom.getAllChatRooms);
-router.get('/:id', ChatRoom.getChatRoomById);
-router.get('/', ChatRoom.getRoomsByUserId);
+// router.get('/all', ChatRoom.getAllChatRooms);
+// router.get('/:id', ChatRoom.getChatRoomById);
+router.get('/', AuthRequest, ChatRoom.getRoomsByUserId);
 
-router.delete('/:id', ChatRoom.deleteRoom);
-router.delete('/', ChatRoom.deleteRoomByUserId);
+// router.delete('/:id', ChatRoom.deleteRoom);
+router.delete('/', AuthRequest, ChatRoom.deleteRoomsByUserId);
 
 export default router;
