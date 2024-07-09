@@ -1,6 +1,8 @@
 import Debug from 'debug';
 import { StatusCodes } from 'http-status-codes';
 import ChatRoom from '../models/chatRoom.js';
+import User from '../models/user.js';
+import { Op } from 'sequelize';
 
 const debug = Debug('controllers:chatroom');
 
@@ -47,10 +49,20 @@ export const getRoomsByUserId = async (req, res) => {
 	const { user } = req;
 
 	try {
-		const rooms = await user.getChatRooms();
+		const rooms = await user.getChatRooms({
+			include: [{
+				model: User,
+				attributes: ['id', 'name'], // Include only necessary attributes
+				through: { attributes: [] }, // Exclude join table attributes
+				where: {
+					id: { [Op.ne]: user.id } // Exclude the current user
+				}
+			}],
+			joinTableAttributes: []
+		});
 		return res.json(rooms);
 	} catch (error) {
-		debug(err);
+		debug(error);
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t get chat rooms');
 	}
 }
