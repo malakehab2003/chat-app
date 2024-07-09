@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "cross-env DEBUG=* nodemon ./bin/www",
-    "start:test": "cross-env DEBUG=* NODE_ENV=test nodemon ./bin/www",
-    "test": "cross-env NODE_ENV=test mocha ./tests"
+    "start": "cross-env DEBUG=* nodemon --ignore 'tests/*' ./bin/www",
+    "start:test": "cross-env DEBUG=* NODE_ENV=test nodemon --ignore 'tests/*' ./bin/www",
+    "test": "cross-env NODE_ENV=test mocha ./tests/globalhooks.js ./tests"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
