@@ -3,6 +3,7 @@ import User from "../models/user.js"
 import { v4 as uuidv4 } from 'uuid';
 import redisClient from '../utils/redisClient.js';
 import sha1 from 'sha1';
+import { HeaderNotFoundError, IncorrectPasswordError, InvalidTokenError, UserNotFoundError } from '../utils/errors.js';
 
 const debug = Debug('controllers:user');
 
@@ -208,13 +209,13 @@ export const getUserFromToken = async (Authorization, res) => {
   // check that Authorization is not empty
   if (!Authorization) {
     debug('Header should contain Authorization');
-    return res.status(401).send('Header should contain Authorization');
+    throw new HeaderNotFoundError();
   }
 
   // check Authorization contain Bearer
   if (Authorization.slice(0, 7) !== 'Bearer ') {
     debug('Header should contain Bearer');
-    return res.status(401).send('Header should contain Bearer');
+    throw new InvalidTokenError();
   }
 
   // remove Bearer
@@ -232,7 +233,7 @@ export const getUserFromToken = async (Authorization, res) => {
   // check if empty
   if (!email || !password) {
     debug('Not correct Auth');
-    return res.status(401).send('Not correct Auth');
+    throw new InvalidTokenError();
   }
 
   // hash password
@@ -244,24 +245,37 @@ export const getUserFromToken = async (Authorization, res) => {
   // check user is not null
   if (!user) {
     debug('No user found');
-    return res.status(401).send('No user found');
+    throw new UserNotFoundError();
   }
 
   // check password
   if (user.password === hash_password) {
     debug('Wrong password!');
-    return res.status(401).send('Wrong password!');
+    throw new IncorrectPasswordError();
   }
 
   return user;
 }
 
 export const signIn = async (req, res) => {
-  let Authorization = req.header('Authorization');
-
-  // get user from token
-  const user = await  getUserFromToken(Authorization, res);
-
+  // let Authorization = req.header('Authorization');
+  const { email, pass } = req.body;
+  if (!email) {
+    return res.status(401).send('email not found');
+  }
+  if (!pass) {
+    return res.status(401).send('pass not found');
+  }
+  // // get user from token
+  // const user = await getUserFromToken(Authorization, res);
+  const user = await getUserByEmail(email, res);
+  if (!user) {
+    return res.status(404).send("User not found");
+  }
+  const hashed_pass = sha1(pass);
+  if (user.password !== hashed_pass) {
+    return res.status(401).send('Invalid Password');
+  }
   // create token to the session and save it in cache
   const token = await createToken(user.id.toString());
 

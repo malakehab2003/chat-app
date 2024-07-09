@@ -6,6 +6,7 @@ import User from '../models/user.js';
 const debug = Debug('controllers:chatroom');
 
 export const createChatRoom = async (req, res) => {
+	debug(req.user);
 	try {
 		const room = await ChatRoom.create();
 		return res.status(StatusCodes.CREATED).send({ id: room.id });
