@@ -75,7 +75,12 @@ export const getAllUser = async (req, res) => {
   }
 }
 
-export const getUserByEmail = async (email) => {
+export const getUserByToken = async (req, res) => {
+  const { user } = req;
+  return res.json(user);
+}
+
+const getUserByEmail = async (email) => {
   try {
     const user = await User.findOne({
       where: {
@@ -131,23 +136,14 @@ export const deleteUser = async (req, res) => {
   }
 }
 
-export const deleteUserByEmail = async (req, res) => {
-  const { email } = req.query;
+export const deleteUserByToken = async (req, res) => {
+  const { user } = req;
 
   try {
-    const user = await User.findOne({
-      where: {
-        email,
-      },
-    });
-
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
 
     await user.destroy();
 
-    return res.status(200).send(`user with email: ${email} deleted`);
+    return res.status(200).send(`current user deleted`);
   } catch (err) {
     debug(`can't delete user err: ${err}`);
     return res.status(401).send(`can't delete user err: ${err}`);

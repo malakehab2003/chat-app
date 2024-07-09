@@ -1,6 +1,7 @@
 
 import { Router } from 'express';
 import * as UserController from '../controllers/UserController.js';
+import { AuthRequest } from '../utils/auth.js';
 
 var router = Router();
 
@@ -9,12 +10,12 @@ router.post('/', UserController.createUser);
 
 router.get('/all', UserController.getAllUser);
 router.get('/:id', UserController.getUser);
-router.get('/', UserController.getUserByEmail);
+router.get('/', AuthRequest, UserController.getUserByToken);
 
 router.put('/:id', UserController.updateUser);
 
 router.delete('/:id', UserController.deleteUser);
-router.delete('/', UserController.deleteUserByEmail);
+router.delete('/', AuthRequest, UserController.deleteUserByToken);
 
 // create sign up
 router.post('/signUp', UserController.signUp);

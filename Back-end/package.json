@@ -6,7 +6,8 @@
   "scripts": {
     "start": "cross-env DEBUG=* nodemon --ignore 'tests/*' ./bin/www",
     "start:test": "cross-env DEBUG=* NODE_ENV=test nodemon --ignore 'tests/*' ./bin/www",
-    "test": "cross-env NODE_ENV=test mocha ./tests/globalhooks.js ./tests"
+    "test": "cross-env NODE_ENV=test mocha ./tests/globalhooks.js",
+    "AllTests": "cross-env NODE_ENV=test mocha ./tests/globalhooks.js ./tests"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",

@@ -1,4 +1,7 @@
 
-import { closeConnection } from './utils.js';
+import { closeConnection, clearTable } from './utils.js';
 
-after(closeConnection);
+after(async function () {
+	await clearTable('users');
+	closeConnection();
+});

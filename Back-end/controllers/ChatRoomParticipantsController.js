@@ -8,22 +8,16 @@ const debug = Debug('controllers:chatroomParticipants');
 //TODO: Check if ids are numbers
 
 export const createChatRoomForTwo = async (req, res) => {
-	const { senderId } = req.query;
+	const { user: sender } = req;
 	const { receiverId } = req.body;
-	if (!senderId) {
-		return res.status(StatusCodes.BAD_REQUEST).send('SenderId Not Found');
-	}
+
 	if (!receiverId) {
 		return res.status(StatusCodes.BAD_REQUEST).send('ReceiverId Not Found');
 	}
 
 	try {
-		const sender = await User.findByPk(senderId);
 		const receiver = await User.findByPk(receiverId);
 
-		if (!sender) {
-			return res.status(StatusCodes.NOT_FOUND).send('Sender Not Found');
-		}
 		if (!receiver) {
 			return res.status(StatusCodes.NOT_FOUND).send('Receiver Not Found');
 		}
@@ -54,31 +48,25 @@ export const createChatRoomForTwo = async (req, res) => {
 }
 
 export const createChatRoom = async (req, res) => {
-	const { senderId } = req.query;
+	const { user: sender } = req;
 	const { receiverIds } = req.body;
-	if (!senderId) {
-		return res.status(StatusCodes.BAD_REQUEST).send('SenderId Not Found');
-	}
+
 	if (!receiverIds) {
 		return res.status(StatusCodes.BAD_REQUEST).send('ReceiverIds Not Found');
 	}
-	const allUsers = [Number.parseInt(senderId), ...(receiverIds.map((id) => Number.parseInt(id)))];
+	const allUsers = [Number.parseInt(sender.id), ...(receiverIds.map((id) => Number.parseInt(id)))];
 	const allCount = allUsers.length;
 
 	try {
-		const sender = await User.findByPk(senderId);
-
-		if (!sender) {
-			return res.status(StatusCodes.NOT_FOUND).send('Sender Not Found');
-		}
 		let chatRoom = await sender.getChatRooms();
 		for (const room of chatRoom) {
 			const participants = (await room.getUsers()).map((user) => user.id);
-			debug(allUsers.every((id) => participants.includes(id)));
 			if (participants.length === allCount &&
 				allUsers.every((id) => participants.includes(id))) {
-
-				return res.status(StatusCodes.OK).json({ message: 'Chat Room already Exists', id: room.id });
+				return res.status(StatusCodes.OK).json({
+					message: 'Chat Room already Exists',
+					id: room.id
+				});
 			}
 		}
 
