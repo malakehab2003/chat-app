@@ -8,6 +8,12 @@ ChatRoom.init({
 		type: DataTypes.BIGINT,
 		primaryKey: true,
 		autoIncrement: true,
+	},
+	roomType: {
+		type: DataTypes.ENUM,
+		values: ['direct', 'group'],
+		allowNull: false,
+		defaultValue: 'group'
 	}
 }, { sequelize });
 

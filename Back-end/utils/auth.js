@@ -1,10 +1,41 @@
 import Debug from "debug";
 
-import * as UserController from "../controllers/UserController.js";
-import { HeaderNotFoundError, IncorrectPasswordError, InvalidTokenError, UserNotFoundError } from '../utils/errors.js';
 import { StatusCodes } from 'http-status-codes';
+import { config } from 'dotenv';
+import jsonwebtoken from 'jsonwebtoken';
+import * as UserController from "../controllers/UserController.js";
+import redisClient from '../utils/redisClient.js';
+import { HeaderNotFoundError, IncorrectPasswordError, InvalidTokenError, UserNotFoundError } from '../utils/errors.js';
+
+
+// configure env variables
+const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
+config({ path: envFile });
 
 const debug = Debug("utils:auth");
+
+const SECONDS = 1;
+const MINUTES = 60 * SECONDS;
+const HOURS = 60 * MINUTES;
+const DAYS = 24 * HOURS;
+
+export const createToken = async (email, id) => {
+
+	// get the secret key from the env
+	const jwtSecretKey = process.env.JWT_SECRET_KEY;
+
+	// define data
+	const data = {
+		email
+	}
+	const duration = 10 * SECONDS;
+	// create token
+	const token = jsonwebtoken.sign(data, jwtSecretKey, {
+		expiresIn: duration
+	});
+	await redisClient.set(token, id, duration);
+	return token;
+}
 
 export const AuthRequest = async (req, res, next) => {
 	const authHeader = req.get('Authorization');

@@ -1,6 +1,7 @@
 
 import { Router } from 'express';
 import * as MessageController from '../controllers/MessageController.js';
+import { AuthRequest } from '../utils/auth.js';
 
 var router = Router();
 
@@ -9,11 +10,11 @@ router.post('/', MessageController.createMessage);
 
 router.get('/all', MessageController.getAllMessages);
 router.get('/:id', MessageController.getMessage);
-router.get('/', MessageController.getMessagesByUserId);
+router.get('/', AuthRequest, MessageController.getMessagesByUserId);
 
-router.put('/:id', MessageController.updateMessage);
+router.put('/:id', AuthRequest, MessageController.updateMessage);
 
-router.delete('/:id', MessageController.deleteMessage);
-router.delete('/', MessageController.deleteMessageByUserId);
+router.delete('/:id', AuthRequest, MessageController.deleteMessage);
+router.delete('/', AuthRequest, MessageController.deleteMessageByUserId);
 
 export default router;

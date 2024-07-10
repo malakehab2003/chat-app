@@ -12,9 +12,9 @@ router.get('/all', UserController.getAllUser);
 router.get('/:id', UserController.getUser);
 router.get('/', AuthRequest, UserController.getUserByToken);
 
-router.put('/:id', UserController.updateUser);
+router.put('/:id', AuthRequest, UserController.updateUser);
 
-router.delete('/:id', UserController.deleteUser);
+router.delete('/:id', AuthRequest, UserController.deleteUser);
 router.delete('/', AuthRequest, UserController.deleteUserByToken);
 
 // create sign up

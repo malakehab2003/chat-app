@@ -8,7 +8,6 @@ var debug = Debug('db:util');
 
 // Load environment variables from .env file
 const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env';
-debug(`.env.${process.env.NODE_ENV}` === '.env.test');
 config({ path: envFile });
 
 const sequelize = new Sequelize(

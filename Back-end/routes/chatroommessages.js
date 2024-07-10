@@ -5,7 +5,7 @@ import { AuthRequest } from '../utils/auth.js';
 
 var router = Router({ mergeParams: true });
 
-router.post('/', AuthRequest, MessageController.sendToRoom);
-router.get('/', AuthRequest, MessageController.getRoomMessages);
+router.post('/', MessageController.sendToRoom);
+router.get('/', MessageController.getRoomMessages);
 
 export default router;
