@@ -287,8 +287,7 @@ export const signIn = async (req, res) => {
   if (!pass) {
     return res.status(StatusCodes.BAD_REQUEST).send('pass not found');
   }
-  // get user from token
-  // const user = await getUserFromToken(Authorization, res);
+
   let user;
   try {
     user = await getUserByEmail(email);
