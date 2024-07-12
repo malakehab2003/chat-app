@@ -24,19 +24,50 @@
     <div class="peopleContainer">
       <h1>People</h1>
 
-      <div class="Person">
-        
-        <div class="personImage"></div>
-        <div class="personData">
-          <p class="personName">Person name</p>
-          <p class="lastMessage">Last message in the room</p>
-        </div>
-        
+      <div class="newChat">
+        <input class="newChatInput" type="text" placeholder="Add new chat">
+        <input class="newChatButton" type="image" src="./images/add.png" alt="Add" />
       </div>
+
+        <a class="Person" href="">
+          <div class="personImage"></div>
+          <div class="personData">
+            <p class="personName">Person name</p>
+            <p class="lastMessage">Last message in the room</p>
+          </div>
+        </a>
 
     </div>
 
     <div class="chatContainer">
+
+      <div class="chatHeader">
+        <a class="linkHeader" href="">
+          <div class="personImage"></div>
+
+          <div class="personData">
+            <p class="personName">Person name</p>
+            <p class="personBio">Click here to see contact's bio</p>
+          </div>
+        </a>
+
+        <input class="removeChat" type="image" src="./images/delete.png" alt="delete">
+      </div>
+
+      <div class="chatBody">
+        <div class="receiveContainer">
+          <div class="receiveImage"></div>
+          <div class="receiveMessage"><p>the message send by someone</p></div>
+        </div>
+        <div class="sendContainer">
+          <div class="sendMessage"> the message send by me</div>
+          <div class="sendImage"></div>
+        </div>
+      </div>
+
+      <div class="chatFooter">
+        
+      </div>
 
     </div>
 
