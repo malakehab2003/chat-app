@@ -2,3 +2,7 @@ jsconfig.json
 **/node_modules/
 Back-end/.env.test
 **/package-lock.json
+package.json
+Test Socket.png
+testing-sockets.js
+testing-sockets2.js

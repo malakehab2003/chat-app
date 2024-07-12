@@ -1,12 +1,3 @@
-body {
-  background-color: #48377d;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  height: 100vh;
-}
-
 .container {
   background-color: #e8e6fe;
   display: flex;
@@ -25,75 +16,88 @@ h1 {
   color: #48377d;
 }
 
-.oldPasswordContainer {
+.createAcc {
+  margin-top: -20px;
+  color: #48377d;
   align-items: flex-start;
 }
 
-.oldPasswordText {
+.nameContainer {
+  align-items: flex-start;
+}
+
+.nameText {
   color: #48377d;
   font-size: 20px;
   margin-bottom: 5px;
 }
 
-.oldPasswordInput {
+.Name {
   width: 300px;
   height: 20px;
   font-size: large;
 }
 
-.newPasswordContainer {
+.emailContainer {
   align-items: flex-start;
 }
 
-.newPasswordText {
+.emailText {
   color: #48377d;
   font-size: 20px;
   margin-bottom: 5px;
 }
 
-.newPasswordInput {
+.Email {
   width: 300px;
   height: 20px;
   font-size: large;
 }
 
-.newPasswordValidate {
+.validateEmail {
   color: #48377d;
   font-size: 15px;
   margin-top: 5px;
 }
 
-.confirmPasswordContainer {
+.passwordContainer {
   align-items: flex-start;
 }
 
-.confirmPasswordText {
+.passwordText {
   color: #48377d;
   font-size: 20px;
   margin-bottom: 5px;
 }
 
-.confirmPasswordInput {
+.Password {
   width: 300px;
   height: 20px;
   font-size: large;
 }
 
-.Submit {
-  margin-top: 15px;
+.validatePassword {
+  color: #48377d;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
+.create {
   border-radius: 15px;
   color: #ffffff;
   background-color: #382f5e;
   border-color: #382f5e;
   padding: 10px 50px;
   font-size: 16px;
+  margin-top: 40px;
   margin-bottom: 10px;
 }
 
-.Cancel {
-  border-radius: 15px;
-  color: #382f5e;
-  padding: 10px 50px;
-  font-size: 20px;
-  margin-bottom: 10px;
+.root {
+  background-color: #48377d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  height: 100vh;
 }

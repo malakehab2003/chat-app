@@ -1,11 +1,11 @@
-* {
+.root {
+  width: 100%;
+}
+
+.nav-style {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-body {
-  background-color: #f0f0f0;
 }
 
 .navbar {
@@ -15,6 +15,7 @@ body {
   padding: 10px 20px;
   background-color: #48377d;
   color: white;
+  width: 100%;
 }
 
 .navbar-brand {

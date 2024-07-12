@@ -1,15 +1,20 @@
 /* style nav bar */
-* {
+.root {
+  background-color: #f0f0f0;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  align-items: self-start;
+}
+
+.home-style {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-body {
-  background-color: #f0f0f0;
-}
-
-.navbar {
+/* .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -39,7 +44,7 @@ body {
   color: white;
   font-size: 1em;
   transition: color 0.3s;
-}
+} */
 
 /* end style nav bar */
 
@@ -47,13 +52,14 @@ body {
 .container {
   display: flex;
   justify-content: space-between;
-  height: 100vh;
+  height: 100%;
+  flex: 1;
 }
 
 .container .peopleContainer {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
   background-color: #251d46;
   width: 280px;
   border-top-right-radius: 20px;
@@ -77,7 +83,7 @@ body {
   display: flex;
 }
 
-.container .peopleContainer .Person .personImage  {
+.container .peopleContainer .Person .personImage {
   width: 40px;
   height: 40px;
   border-radius: 100%;
