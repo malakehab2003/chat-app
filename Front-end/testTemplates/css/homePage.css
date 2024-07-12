@@ -1,0 +1,109 @@
+/* style nav bar */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #f0f0f0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #48377d;
+  color: white;
+}
+
+.navbar-brand {
+  color: white;
+  font-size: 1.5em;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.navbar-nav {
+  list-style: none;
+  display: flex;
+}
+
+.nav-item {
+  margin-left: 20px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: white;
+  font-size: 1em;
+  transition: color 0.3s;
+}
+
+/* end style nav bar */
+
+/* people style */
+.container {
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+}
+
+.container .peopleContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #251d46;
+  width: 280px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  padding: 10px;
+}
+
+.container .peopleContainer h1 {
+  color: white;
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.container .peopleContainer .Person {
+  border: gray;
+  border-style: solid;
+  border-radius: 50px;
+  height: 50px;
+  padding: 5px;
+  border: 1px solid rgba(174, 174, 174, 0.1);
+  display: flex;
+}
+
+.container .peopleContainer .Person .personImage  {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: white;
+  margin-right: 5px;
+}
+
+.container .peopleContainer .Person .personData {
+  text-align: left;
+}
+
+.container .peopleContainer .Person .personData .personName {
+  color: white;
+  font-size: large;
+}
+
+.container .peopleContainer .Person .personData .lastMessage {
+  color: grey;
+  font-size: small;
+  opacity: 50%;
+  width: 190px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
+/* end people style */
