@@ -51,10 +51,10 @@ export default function Home() {
 					<div className={classes["chatBody"]}>
 						<div className={classes["receiveContainer"]}>
 							<div className={classes["receiveImage"]}></div>
-							<div className={classes["receiveMessage"]}><p>the message send by someone</p></div>
+							<div className={classes["receiveMessage"]}>the message send by someone sssssssss sssssssssssssss ssssssssssssssssssss ssssssssssssssssssssss sssssssssssssssssssssss ssssssssssssssssssssssss ssssssssssssssssssssssssss ssssssssssssssssssssssssss sssssssssssssssssssssssssss sssssssssssssssssssssssssss ssssssssssssssssssssssss sssssssssssssssssssssssssss sssssssssssssssssssssssssssssss ssssssssssssssssss</div>
 						</div>
 						<div className={classes["sendContainer"]}>
-							<div className={classes["sendMessage"]}> the message send by me</div>
+							<div className={classes["sendMessage"]}> the message send by me sssssssss sssssssssssssss ssssssssssssssssssss ssssssssssssssssssssss sssssssssssssssssssssss ssssssssssssssssssssssss ssssssssssssssssssssssssss ssssssssssssssssssssssssss sssssssssssssssssssssssssss sssssssssssssssssssssssssss ssssssssssssssssssssssss sssssssssssssssssssssssssss sssssssssssssssssssssssssssssss ssssssssssssssssss sssssssssssssssssssssssssssssss sssssssssssssssssssssssssssssss sssssssssssssssssssssssssssssss</div>
 							<div className={classes["sendImage"]}></div>
 						</div>
 					</div>

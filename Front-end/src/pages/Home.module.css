@@ -88,7 +88,7 @@
   height: 40px;
   border-radius: 100%;
   background-color: white;
-  margin-right: 5px;
+  margin-right: 10px;
 }
 
 .container .peopleContainer .Person .personData {
@@ -205,9 +205,7 @@
   display: flex;
   width: 100%;
   max-height: fit-content;
-  align-items: center;
   margin-bottom: 15px;
-  gap: 10px;
 }
 
 .container .chatContainer .chatBody .receiveImage {
@@ -216,7 +214,6 @@
   border-radius: 100%;
   background-color: black;
   margin-right: 5px;
-
 }
 
 .container .chatContainer .chatBody .receiveMessage {
@@ -225,19 +222,15 @@
   word-wrap: break-word;
   max-width: 80%;
   border-radius: 10px;
-  border-bottom-left-radius: 0px;
+  border-top-left-radius: 0px;
   padding: 5px;
-  justify-content: flex-end;
-  display: flex;
-  flex-direction: column;
-  position: relative;
+  margin-top: 20px;
 }
 
 .container .chatContainer .chatBody .sendContainer {
   display: flex;
   margin-left: auto;
   max-height: fit-content;
-  align-items: center;
   justify-content: right;
   margin-bottom: 15px;
 }
@@ -256,6 +249,7 @@
   word-wrap: break-word;
   max-width: 80%;
   border-radius: 10px;
-  border-bottom-right-radius: 0px;
+  border-top-right-radius: 0px;
   padding: 5px;
+  margin-top: 20px;
 }
