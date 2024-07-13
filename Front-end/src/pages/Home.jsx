@@ -2,6 +2,7 @@ import tempClasses from "./Home.module.css"
 import NavBar from './components/NavBar'
 import Add from "../assets/images/add.png"
 import Delete from "../assets/images/delete.png"
+import send from "../assets/images/send.png"
 
 const classes = Object.keys(tempClasses).reduce((acc, key) => {
 	acc[key] = key === 'root' ? tempClasses[key] : `${tempClasses[key]} ${tempClasses['home-style']}`;
@@ -60,6 +61,8 @@ export default function Home() {
 					</div>
 
 					<div className={classes["chatFooter"]}>
+						<textarea className={classes["messageInput"]} placeholder="Enter your message"></textarea>
+						<input className={classes["sendMessage"]} type="image" src={send} alt="send message" />
 					</div>
 				</div>
 
