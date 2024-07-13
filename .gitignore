@@ -5,4 +5,4 @@ Back-end/.env.test
 Test Socket.png
 testing-sockets.js
 testing-sockets2.js
-./package.json
+package.json
