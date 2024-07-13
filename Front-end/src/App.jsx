@@ -2,19 +2,18 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
-import ChangePass from './pages/ChangePass'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import SignUp from './pages/SignUp'
+import { router } from "./router";
+import { RouterProvider } from 'react-router-dom';
 
 function App() {
   // const [count, setCount] = useState(0)
 
   return (
     <>
+      <RouterProvider router={router} />
       {/* <Login /> */}
       {/* <SignUp /> */}
-      <Home />
+      {/* <Home /> */}
       {/* <ChangePass /> */}
     </>
   )

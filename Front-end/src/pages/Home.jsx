@@ -8,6 +8,8 @@ const classes = Object.keys(tempClasses).reduce((acc, key) => {
 	return acc;
 }, {});
 
+export const HomeRoute = '/';
+
 export default function Home() {
 	return (
 		<span className={classes.root}>

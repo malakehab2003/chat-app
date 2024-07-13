@@ -1,5 +1,7 @@
 import classes from "./SignUp.module.css";
 
+export const SignUpRoute = '/signup';
+
 export default function SignUp() {
 	return (
 		<span className={classes.root}>

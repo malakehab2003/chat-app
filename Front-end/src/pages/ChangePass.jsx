@@ -1,4 +1,7 @@
 import classes from './ChangePass.module.css'
+
+export const ChangePassRoute = '/changepass';
+
 export default function ChangePass() {
 	return (
 		<span className={classes.root}>

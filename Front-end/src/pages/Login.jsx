@@ -1,5 +1,7 @@
 import classes from './Login.module.css'
 
+export const LoginRoute = '/login';
+
 export default function Login() {
 	return (
 		<span className={classes.root}>
