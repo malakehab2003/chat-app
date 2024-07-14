@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { BackEndBase } from '../constants';
-import { redirect } from 'react-router-dom';
-import { HomeRoute } from '../pages/Home';
 
 const instance = axios.create({
 	baseURL: `${BackEndBase}user`,
