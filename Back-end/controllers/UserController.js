@@ -5,7 +5,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import { INTERNAL_SERVER_ERROR, StatusCodes } from 'http-status-codes';
 import User from "../models/user.js"
 import redisClient from '../utils/redisClient.js';
-import { HeaderNotFoundError, InvalidTokenError, UserNotFoundError } from '../utils/errors.js';
+import { HeaderNotFoundError, IncorrectPasswordError, InvalidTokenError, UserNotFoundError } from '../utils/errors.js';
 import { createToken } from '../utils/auth.js';
 
 // TODO: Check Token Duration
@@ -329,5 +329,35 @@ export const signOut = async (req, res) => {
   } catch (err) {
     debug(`Cannot sign out err: ${err}`);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`Cannot sign out`);
+  }
+}
+
+export const changePass = async (req, res) => {
+  const { oldPass, newPass } = req.body;
+  const { user } = req;
+
+  if (!oldPass || !newPass || user) {
+    debug('Cannot change password');
+    return res.status(StatusCodes.BAD_REQUEST).send('cannot change password');
+  }
+
+  if (oldPass !== user.password) {
+    debug('Incorrect Password');
+    return res.status(StatusCodes.BAD_REQUEST).send(IncorrectPasswordError());
+  }
+
+  try {
+    await User.update({
+      password: newPass,
+    }, {
+      where: {
+        id: user.id,
+      },
+    });
+
+    return res.status(StatusCodes.OK).send('Password changed');
+  } catch (err) {
+    debug('cannot update password');
+    return res.status(StatusCodes.BAD_REQUEST).send('cannot update password');
   }
 }
