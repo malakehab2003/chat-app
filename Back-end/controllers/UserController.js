@@ -336,19 +336,23 @@ export const changePass = async (req, res) => {
   const { oldPass, newPass } = req.body;
   const { user } = req;
 
-  if (!oldPass || !newPass || user) {
+  if (!oldPass || !newPass || !user) {
     debug('Cannot change password');
     return res.status(StatusCodes.BAD_REQUEST).send('cannot change password');
   }
 
-  if (oldPass !== user.password) {
+  const hash_old = sha1(oldPass);
+
+  if (hash_old !== user.password) {
     debug('Incorrect Password');
     return res.status(StatusCodes.BAD_REQUEST).send(IncorrectPasswordError());
   }
 
+  const hash_password = sha1(newPass);
+
   try {
     await User.update({
-      password: newPass,
+      password: hash_password,
     }, {
       where: {
         id: user.id,

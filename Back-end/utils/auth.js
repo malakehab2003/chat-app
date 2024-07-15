@@ -28,7 +28,7 @@ export const createToken = async (email, id) => {
 	const data = {
 		email
 	}
-	const duration = 10 * SECONDS;
+	const duration = DAYS;
 	// create token
 	const token = jsonwebtoken.sign(data, jwtSecretKey, {
 		expiresIn: duration
