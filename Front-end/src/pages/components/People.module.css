@@ -1,0 +1,95 @@
+.root {
+  background-color: #f0f0f0;
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  align-items: self-start;
+}
+
+.home-style {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.peopleContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #251d46;
+  flex: 1;
+  padding: 10px;
+}
+
+.peopleContainer h1 {
+  color: white;
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.peopleContainer .Person {
+  border: gray;
+  border-style: solid;
+  border-radius: 50px;
+  height: 50px;
+  padding: 5px;
+  border: 1px solid rgba(174, 174, 174, 0.1);
+  display: flex;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.peopleContainer .Person .personImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: white;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.peopleContainer .Person .personData {
+  text-align: left;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* display: flex; */
+}
+
+.peopleContainer .Person .personData .personName {
+  color: white;
+  font-size: 20px;
+  margin-top: 5px;
+}
+
+.peopleContainer .Person .personData .lastMessage {
+  color: grey;
+  font-size: small;
+  opacity: 50%;
+  width: 190px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -13px;
+}
+
+.peopleContainer .newChat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.peopleContainer .newChat .newChatInput {
+  width: 210px;
+  height: 30px;
+  background-color: #251d46;
+  border-width: 0px;
+  border-bottom-width: 1px;
+  color: white;
+}
+
+.peopleContainer .newChat .newChatButton {
+  width: 50px;
+  height: 50px;
+}
