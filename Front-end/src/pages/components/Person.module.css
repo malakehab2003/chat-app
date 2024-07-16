@@ -1,0 +1,47 @@
+.Person {
+  border: gray;
+  border-style: solid;
+  border-radius: 50px;
+  padding: 10px 0px;
+  border: 1px solid rgba(174, 174, 174, 0.1);
+  display: flex;
+  padding-left: 20px;
+  align-items: center;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.Person .personImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: white;
+  margin-right: 10px;
+}
+
+.Person .personData {
+  display: flex;
+  text-align: left;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.Person .personData * {
+  margin: 0;
+}
+
+.Person .personData .personName {
+  color: white;
+  font-size: 20px;
+}
+
+.Person .personData .lastMessage {
+  color: grey;
+  font-size: small;
+  opacity: 50%;
+  width: 190px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

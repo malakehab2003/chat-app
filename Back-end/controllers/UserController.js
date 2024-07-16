@@ -129,7 +129,7 @@ export const createUser = async (req, res) => {
 
     const token = await createToken(user.email, user.id);
 
-    return res.status(StatusCodes.CREATED).send({ token });
+    return res.status(StatusCodes.CREATED).send({ token, id: user.id });
   } catch (err) {
     debug(`can't create user err: ${err}`);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`can't create user`);
@@ -306,7 +306,7 @@ export const signIn = async (req, res) => {
   // create token to the session and save it in cache
   const token = await createToken(user.email, user.id.toString());
 
-  return res.status(StatusCodes.OK).json({ token });
+  return res.status(StatusCodes.OK).json({ token, id: user.id });
 }
 
 export const signOut = async (req, res) => {

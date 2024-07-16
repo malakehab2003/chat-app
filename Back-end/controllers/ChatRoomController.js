@@ -3,6 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import ChatRoom from '../models/chatRoom.js';
 import User from '../models/user.js';
 import { Op } from 'sequelize';
+import Message from '../models/message.js';
 
 const debug = Debug('controllers:chatroom');
 
@@ -57,6 +58,11 @@ export const getRoomsByUserId = async (req, res) => {
 				where: {
 					id: { [Op.ne]: user.id } // Exclude the current user
 				}
+			}, {
+				model: Message,
+				attributes: [['content', 'latestMessage']],
+				order: [['createdAt', 'DESC']], // Order messages by creation date in descending order
+				limit: 1
 			}],
 			joinTableAttributes: []
 		});

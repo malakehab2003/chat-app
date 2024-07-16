@@ -38,6 +38,12 @@ Message.belongsTo(User, {
 		allowNull: false,
 	},
 });
+
+ChatRoom.hasMany(Message, {
+	foreignKey: {
+		allowNull: false,
+	}
+});
 Message.belongsTo(ChatRoom, {
 	onDelete: 'cascade',
 	foreignKey: {
