@@ -17,6 +17,7 @@
   border-radius: 100%;
   background-color: white;
   margin-right: 10px;
+  flex-shrink: 0;
 }
 
 .Person .personData {
