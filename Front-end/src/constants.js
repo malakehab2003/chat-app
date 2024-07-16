@@ -38,3 +38,10 @@ export const setId = (param) => {
 	localStorage.setItem('userId', param);
 	userId = param;
 };
+
+export const testEmail = (value) => {
+	const regex =
+		/^([a-zA-Z0-9._%+-]+@(gmail|yahoo)\.com)(,\s[a-zA-Z0-9._%+-]+@(gmail|yahoo)\.com)*$/;
+
+	return regex.test(value)
+};

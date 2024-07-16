@@ -64,7 +64,8 @@ export const getRoomsByUserId = async (req, res) => {
 				order: [['createdAt', 'DESC']], // Order messages by creation date in descending order
 				limit: 1
 			}],
-			joinTableAttributes: []
+			joinTableAttributes: [],
+			order: [['createdAt', 'DESC']],
 		});
 		return res.json(rooms);
 	} catch (error) {
