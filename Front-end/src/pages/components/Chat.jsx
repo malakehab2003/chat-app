@@ -1,22 +1,84 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { ClipLoader } from 'react-spinners'; // Import the spinner
 
 import classes from './Chat.module.css';
 import Delete from '../../assets/images/delete.png';
 import send from '../../assets/images/send.png';
-import { GetAllMessages } from '../../backend/chat';
+import {
+	GetAllMessages,
+	SendNewMessage,
+} from '../../backend/chat';
+import {
+	socket,
+	startTyping,
+	stopTyping,
+} from '../../constants';
 
 export default function Chat({ chat }) {
+	const [messages, setMessages] = useState([]);
+	const [isTyping, setIsTyping] = useState(false);
+	const [newMessage, setNewMessage] = useState('');
+
 	useEffect(() => {
 		console.log(chat);
 		if (chat && chat.id) {
 			GetAllMessages(chat.id).then((res) =>
 				setMessages(res)
 			);
+			socket.on('typing', (id) => {
+				console.log(id);
+				console.log(`chat: ${chat}`);
+				console.log('Receiving Typing');
+				if (id === chat.id && !isTyping) {
+					setIsTyping(true);
+				}
+			});
+			socket.on('stop', (id) => {
+				if (id === chat.id && isTyping) {
+					setIsTyping(false);
+				}
+			});
+			socket.on('send', ({ id, message }) => {
+				if (id === chat.id) {
+					setMessages([
+						...messages,
+						{
+							isSent: false,
+							content: message,
+						},
+					]);
+				}
+			});
 		}
-	}, [chat]);
+	}, [chat, isTyping]);
 
-	const [messages, setMessages] = useState([]);
+	const onTyping = (event) => {
+		const text = event.target.value;
+		setNewMessage(text);
+		if (text === '') {
+			stopTyping(chat.id);
+		} else {
+			startTyping(chat.id);
+		}
+	};
+
+	const onSend = () => {
+		if (newMessage === '') {
+			return;
+		}
+		SendNewMessage(chat.id, newMessage).then(() => {
+			setMessages([
+				...messages,
+				{
+					content: newMessage,
+					isSent: true,
+				},
+			]);
+			setNewMessage('');
+			stopTyping(chat.id);
+		});
+	};
 
 	return (
 		<div
@@ -83,18 +145,27 @@ export default function Chat({ chat }) {
 								</div>
 							)
 						)}
+						{isTyping && (
+							<ClipLoader
+								color='#3498db'
+								loading={isTyping}
+								size={50}
+							/>
+						)}
 					</div>
-
 					<div className={classes['chatFooter']}>
 						<textarea
 							className={classes['messageInput']}
 							placeholder='Enter your message'
+							onChange={onTyping}
+							value={newMessage}
 						></textarea>
 						<input
 							className={classes['sendMessage']}
 							type='image'
 							src={send}
 							alt='send message'
+							onClick={onSend}
 						/>
 					</div>
 				</>

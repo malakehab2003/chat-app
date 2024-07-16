@@ -1,7 +1,29 @@
+import { io } from 'socket.io-client';
+
+const SocketURL = 'http://localhost:3000/';
+export const socket = io(SocketURL);
+
 export const BackEndBase = 'http://localhost:3000/api/';
 
 let tokenConst;
 let userId;
+
+export const startConnection = (id) => {
+	socket.emit('start', id);
+};
+
+export const startTyping = (chatId) => {
+	console.log('Typing from source');
+	socket.emit('typing-message', chatId);
+};
+
+export const stopTyping = (chatId) => {
+	socket.emit('stop-typing-message', chatId);
+};
+
+export const sendMessage = (chatId, message) => {
+	socket.emit('send-message', { id: chatId, message });
+};
 
 export const getToken = () => {
 	if (!tokenConst) {
@@ -43,5 +65,5 @@ export const testEmail = (value) => {
 	const regex =
 		/^([a-zA-Z0-9._%+-]+@(gmail|yahoo)\.com)(,\s[a-zA-Z0-9._%+-]+@(gmail|yahoo)\.com)*$/;
 
-	return regex.test(value)
+	return regex.test(value);
 };
