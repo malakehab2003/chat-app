@@ -1,6 +1,7 @@
 import Debug from 'debug';
 import Message from "../models/message.js";
 import { StatusCodes } from 'http-status-codes';
+import ChatRoom from '../models/chatRoom.js';
 
 const debug = Debug('controllers:message');
 
@@ -204,5 +205,39 @@ export const deleteMessageByUserId = async (req, res) => {
   } catch (err) {
     debug(`can't delete messages err: ${err}`);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`can't delete messages`);
+  }
+}
+
+export const getLastMessage = async (req, res) => {
+  const { roomId } = req.body;
+  const { user } = req;
+
+  if (!roomId) {
+    debug('No room id');
+    return res.status(StatusCodes.BAD_REQUEST).send('No room id');
+  }
+
+  try {
+    const room = await ChatRoom.findOne({
+      where: {
+        id: roomId,
+      },
+    });
+
+    if (!room) {
+      debug(`No room with id: ${roomId}`);
+    }
+
+    const lastMessage = await Message.findOne({
+      where: {
+        ChatRoomId: roomId,
+      },
+      order: [['createdAt', 'DESC']],
+    });
+
+    return res.status(StatusCodes.OK).send({ message: lastMessage });
+  } catch (err) {
+    debug(`Cannot get message err: ${err}`);
+    return res.status(StatusCodes.BAD_REQUEST).send(`Cannot get message err: ${err}`);
   }
 }

@@ -15,10 +15,12 @@
 .peopleContainer {
   display: flex;
   flex-direction: column;
+  gap: 10px;
   height: 100%;
   background-color: #251d46;
   flex: 1;
   padding: 10px;
+  overflow-y: auto;
 }
 
 .peopleContainer h1 {
@@ -31,15 +33,17 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  align-items: center;
 }
 
 .peopleContainer .newChat .newChatInput {
-  width: 210px;
+  flex-grow: 1;
   height: 30px;
   background-color: #251d46;
   border-width: 0px;
   border-bottom-width: 1px;
   color: white;
+  margin-right: 10px;
 }
 
 .peopleContainer .newChat .newChatButton {

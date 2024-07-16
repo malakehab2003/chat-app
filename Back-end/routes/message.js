@@ -7,6 +7,7 @@ var router = Router();
 
 // crud operations for table message
 router.post('/', MessageController.createMessage);
+router.post('/lastMessage', AuthRequest, MessageController.getLastMessage);
 
 router.get('/all', MessageController.getAllMessages);
 router.get('/:id', MessageController.getMessage);
