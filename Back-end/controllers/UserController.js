@@ -115,6 +115,23 @@ export const getUserFromToken = async (Authorization) => {
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
+export const getUserByEmailFromBody = async (req, res) => {
+  const { email } = req.params;
+  console.log('siiiiiiiiiiiiiiiii', email);
+
+  try {
+    const user = await getUserByEmail(email);
+
+    if (!user) {
+      return res.status(StatusCodes.NOT_FOUND).send('User not found');
+    }
+    return res.status(StatusCodes.OK).send({ user });
+  } catch (err) {
+    debug(err);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(err);
+  }
+}
+
 export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
 

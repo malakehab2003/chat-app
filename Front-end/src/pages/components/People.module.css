@@ -16,10 +16,12 @@
 .peopleContainer {
   display: flex;
   flex-direction: column;
+  gap: 10px;
   height: 100%;
   background-color: #251d46;
   flex: 1;
   padding: 10px;
+  overflow-y: auto;
 }
 
 .peopleContainer h1 {
@@ -36,7 +38,7 @@
   padding: 5px;
   border: 1px solid rgba(174, 174, 174, 0.1);
   display: flex;
-  justify-content: center;
+  align-items: center;
   text-decoration: none;
 }
 
@@ -46,21 +48,18 @@
   border-radius: 100%;
   background-color: white;
   margin-right: 10px;
-  margin-top: 5px;
 }
 
 .peopleContainer .Person .personData {
-  text-align: left;
+  display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  /* display: flex; */
 }
 
 .peopleContainer .Person .personData .personName {
   color: white;
   font-size: 20px;
-  margin-top: 5px;
+  margin: 0;
 }
 
 .peopleContainer .Person .personData .lastMessage {
@@ -71,22 +70,24 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin-top: -13px;
+  margin-top: 2px;
 }
 
 .peopleContainer .newChat {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
+  align-items: center;
 }
 
 .peopleContainer .newChat .newChatInput {
-  width: 210px;
+  flex-grow: 1;
   height: 30px;
   background-color: #251d46;
   border-width: 0px;
   border-bottom-width: 1px;
   color: white;
+  margin-right: 10px;
 }
 
 .peopleContainer .newChat .newChatButton {

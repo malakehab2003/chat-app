@@ -40,7 +40,7 @@ export const createChatRoomForTwo = async (req, res) => {
 		return res.status(StatusCodes.CREATED).json({ message: 'Chat Room Created and Linked', id: chatRoom.id })
 	} catch (err) {
 		debug(err);
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t create chat room');
+		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`can\'t create chat room err: ${err}`);
 	}
 }
 
@@ -100,6 +100,6 @@ export const createChatRoom = async (req, res) => {
 		return res.status(StatusCodes.CREATED).json({ message: 'Chat Room Created and Linked', id: chatRoom.id })
 	} catch (err) {
 		debug(err);
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t create chat room');
+		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`can\'t create chat room err: ${err}` );
 	}
 }

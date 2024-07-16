@@ -9,7 +9,8 @@ var router = Router();
 router.post('/', UserController.createUser);
 
 router.get('/all', UserController.getAllUser);
-router.get('/:id', UserController.getUser);
+router.get('/:email', UserController.getUserByEmailFromBody);
+// router.get('/:id', UserController.getUser);
 router.get('/', AuthRequest, UserController.getUserByToken);
 
 router.put('/:id', AuthRequest, UserController.updateUser);
