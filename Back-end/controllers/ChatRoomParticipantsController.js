@@ -8,6 +8,7 @@ const debug = Debug('controllers:chatroomParticipants');
 export const createChatRoomForTwo = async (req, res) => {
 	const { user: sender } = req;
 	const { receiverId } = req.body;
+	const userNames = [];
 
 	if (!receiverId) {
 		return res.status(StatusCodes.BAD_REQUEST).send('ReceiverId Not Found');
@@ -36,11 +37,12 @@ export const createChatRoomForTwo = async (req, res) => {
 
 		await sender.addChatRoom(chatRoom);
 		await receiver.addChatRoom(chatRoom);
+		userNames.push({ name: receiver.name })
 
-		return res.status(StatusCodes.CREATED).json({ message: 'Chat Room Created and Linked', id: chatRoom.id })
+		return res.status(StatusCodes.CREATED).json({ message: 'Chat Room Created and Linked', id: chatRoom.id, Users: userNames, Messages: [] })
 	} catch (err) {
 		debug(err);
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t create chat room');
+		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`can\'t create chat room err: ${err}`);
 	}
 }
 
@@ -53,6 +55,7 @@ export const createChatRoom = async (req, res) => {
 	}
 	const allUsers = [sender.id, ...(receiverIds.map((id) => Number.parseInt(id)))];
 	const allCount = allUsers.length;
+	const userNames = [];
 
 	if (allCount === 2) {
 		req.body.receiverId = receiverIds[0];
@@ -87,6 +90,7 @@ export const createChatRoom = async (req, res) => {
 				throw new Error("Not Found");
 			}
 			await receiver.addChatRoom(chatRoom);
+			userNames.push({ name: receiver.name });
 		});
 		try {
 			await Promise.all(promises);
@@ -97,9 +101,9 @@ export const createChatRoom = async (req, res) => {
 			throw error;
 		}
 
-		return res.status(StatusCodes.CREATED).json({ message: 'Chat Room Created and Linked', id: chatRoom.id })
+		return res.status(StatusCodes.CREATED).json({ message: 'Chat Room Created and Linked', id: chatRoom.id, Users: userNames, Messages: [] })
 	} catch (err) {
 		debug(err);
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t create chat room');
+		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`can\'t create chat room err: ${err}`);
 	}
 }

@@ -1,0 +1,103 @@
+.container {
+  background-color: #e8e6fe;
+  display: flex;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  width: 50%;
+  max-width: 600px;
+  border-radius: 8px;
+}
+
+h1 {
+  color: #48377d;
+}
+
+.createAcc {
+  margin-top: -20px;
+  color: #48377d;
+  align-items: flex-start;
+}
+
+.nameContainer {
+  align-items: flex-start;
+}
+
+.nameText {
+  color: #48377d;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.Name {
+  width: 300px;
+  height: 20px;
+  font-size: large;
+}
+
+.emailContainer {
+  align-items: flex-start;
+}
+
+.emailText {
+  color: #48377d;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.Email {
+  width: 300px;
+  height: 20px;
+  font-size: large;
+}
+
+.validateEmail {
+  color: #48377d;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
+.passwordContainer {
+  align-items: flex-start;
+}
+
+.passwordText {
+  color: #48377d;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.Password {
+  width: 300px;
+  height: 20px;
+  font-size: large;
+}
+
+.validatePassword {
+  color: #48377d;
+  font-size: 15px;
+  margin-top: 5px;
+}
+
+.create {
+  border-radius: 15px;
+  color: #ffffff;
+  background-color: #382f5e;
+  border-color: #382f5e;
+  padding: 10px 50px;
+  font-size: 16px;
+  margin-top: 40px;
+  margin-bottom: 10px;
+}
+
+.root {
+  background-color: #48377d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  height: 100vh;
+}

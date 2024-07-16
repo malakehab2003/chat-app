@@ -1,6 +1,7 @@
 import express, { json, urlencoded } from 'express';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import ChatRoom from "./models/chatRoom.js";
@@ -37,6 +38,12 @@ Message.belongsTo(User, {
 		allowNull: false,
 	},
 });
+
+ChatRoom.hasMany(Message, {
+	foreignKey: {
+		allowNull: false,
+	}
+});
 Message.belongsTo(ChatRoom, {
 	onDelete: 'cascade',
 	foreignKey: {
@@ -46,6 +53,7 @@ Message.belongsTo(ChatRoom, {
 
 var app = express();
 app.use(logger('dev'));
+app.use(cors())
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());

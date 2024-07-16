@@ -9,7 +9,8 @@ var router = Router();
 router.post('/', UserController.createUser);
 
 router.get('/all', UserController.getAllUser);
-router.get('/:id', UserController.getUser);
+router.get('/:email', UserController.getUserByEmailFromBody);
+// router.get('/:id', UserController.getUser);
 router.get('/', AuthRequest, UserController.getUserByToken);
 
 router.put('/:id', AuthRequest, UserController.updateUser);
@@ -21,5 +22,6 @@ router.delete('/', AuthRequest, UserController.deleteUserByToken);
 router.post('/signUp', UserController.signUp);
 router.post('/signIn', UserController.signIn);
 router.post('/signOut', UserController.signOut);
+router.post('/changePass', AuthRequest, UserController.changePass);
 
 export default router;

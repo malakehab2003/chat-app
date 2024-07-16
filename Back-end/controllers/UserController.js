@@ -5,7 +5,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import { INTERNAL_SERVER_ERROR, StatusCodes } from 'http-status-codes';
 import User from "../models/user.js"
 import redisClient from '../utils/redisClient.js';
-import { HeaderNotFoundError, InvalidTokenError, UserNotFoundError } from '../utils/errors.js';
+import { HeaderNotFoundError, IncorrectPasswordError, InvalidTokenError, UserNotFoundError } from '../utils/errors.js';
 import { createToken } from '../utils/auth.js';
 
 // TODO: Check Token Duration
@@ -115,6 +115,23 @@ export const getUserFromToken = async (Authorization) => {
 
 ////////////////////////////////////////////////////////////////////////////////////////
 
+export const getUserByEmailFromBody = async (req, res) => {
+  const { email } = req.params;
+  console.log('siiiiiiiiiiiiiiiii', email);
+
+  try {
+    const user = await getUserByEmail(email);
+
+    if (!user) {
+      return res.status(StatusCodes.NOT_FOUND).send('User not found');
+    }
+    return res.status(StatusCodes.OK).send({ user });
+  } catch (err) {
+    debug(err);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(err);
+  }
+}
+
 export const createUser = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -129,7 +146,7 @@ export const createUser = async (req, res) => {
 
     const token = await createToken(user.email, user.id);
 
-    return res.status(StatusCodes.CREATED).send({ token });
+    return res.status(StatusCodes.CREATED).send({ token, id: user.id });
   } catch (err) {
     debug(`can't create user err: ${err}`);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`can't create user`);
@@ -306,7 +323,7 @@ export const signIn = async (req, res) => {
   // create token to the session and save it in cache
   const token = await createToken(user.email, user.id.toString());
 
-  return res.status(StatusCodes.OK).json({ token });
+  return res.status(StatusCodes.OK).json({ token, id: user.id });
 }
 
 export const signOut = async (req, res) => {
@@ -329,5 +346,39 @@ export const signOut = async (req, res) => {
   } catch (err) {
     debug(`Cannot sign out err: ${err}`);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send(`Cannot sign out`);
+  }
+}
+
+export const changePass = async (req, res) => {
+  const { oldPass, newPass } = req.body;
+  const { user } = req;
+
+  if (!oldPass || !newPass || !user) {
+    debug('Cannot change password');
+    return res.status(StatusCodes.BAD_REQUEST).send('cannot change password');
+  }
+
+  const hash_old = sha1(oldPass);
+
+  if (hash_old !== user.password) {
+    debug('Incorrect Password');
+    return res.status(StatusCodes.BAD_REQUEST).send(IncorrectPasswordError());
+  }
+
+  const hash_password = sha1(newPass);
+
+  try {
+    await User.update({
+      password: hash_password,
+    }, {
+      where: {
+        id: user.id,
+      },
+    });
+
+    return res.status(StatusCodes.OK).send('Password changed');
+  } catch (err) {
+    debug('cannot update password');
+    return res.status(StatusCodes.BAD_REQUEST).send('cannot update password');
   }
 }
