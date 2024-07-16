@@ -1,9 +1,14 @@
+import { useNavigate } from 'react-router-dom';
+
+import { clearData } from '../../constants';
 import { HomeRoute } from '../Home';
 import { LoginRoute } from '../Login';
 import classes from './NavBar.module.css';
 import { NavLink } from 'react-router-dom';
 
 export default function NavBar() {
+	const navigate = useNavigate();
+
 	return (
 		<span className={classes.root}>
 			<nav
@@ -89,7 +94,10 @@ export default function NavBar() {
 						].join(' ')}
 					>
 						<NavLink
-							to={LoginRoute}
+							onClick={() => {
+								clearData();
+								navigate(LoginRoute);
+							}}
 							className={[
 								classes['nav-link'],
 								classes['nav-style'],

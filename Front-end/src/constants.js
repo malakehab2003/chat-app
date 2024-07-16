@@ -3,7 +3,7 @@ export const BackEndBase = 'http://localhost:3000/api/';
 let tokenConst;
 let userId;
 
-const getToken = () => {
+export const getToken = () => {
 	if (!tokenConst) {
 		tokenConst = localStorage.getItem('token');
 	}
@@ -18,7 +18,13 @@ export const setToken = (param) => {
 	tokenConst = param;
 };
 
-const getId = () => {
+export const clearData = () => {
+	localStorage.clear();
+	tokenConst = null;
+	userId = null;
+};
+
+export const getId = () => {
 	if (!userId) {
 		userId = localStorage.getItem('userId');
 	}
@@ -32,6 +38,3 @@ export const setId = (param) => {
 	localStorage.setItem('userId', param);
 	userId = param;
 };
-
-export const token = getToken();
-export const id = getId();

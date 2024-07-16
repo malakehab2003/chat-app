@@ -1,15 +1,16 @@
-import {
-	createBrowserRouter
-} from "react-router-dom";
+import { createBrowserRouter } from 'react-router-dom';
 import Home, { HomeRoute } from './pages/Home';
-import ChangePass, { ChangePassRoute } from './pages/ChangePass';
+import ChangePass, {
+	ChangePassRoute,
+} from './pages/ChangePass';
 import Login, { LoginRoute } from './pages/Login';
 import SignUp, { SignUpRoute } from './pages/SignUp';
+import ProtectedRoute from './pages/components/ProtectedRoute';
 
 export const router = createBrowserRouter([
 	{
 		path: HomeRoute,
-		element: <Home />,
+		element: <ProtectedRoute element={<Home />} />,
 	},
 	{
 		path: SignUpRoute,
@@ -21,6 +22,6 @@ export const router = createBrowserRouter([
 	},
 	{
 		path: ChangePassRoute,
-		element: <ChangePass />,
+		element: <ProtectedRoute element={<ChangePass />} />,
 	},
 ]);

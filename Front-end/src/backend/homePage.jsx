@@ -1,8 +1,16 @@
 import { createAuthorizedAxiosInstance } from './helpers';
 
-const instance = createAuthorizedAxiosInstance('chatroom');
+let instance;
+
+const getInstance = () => {
+	if (!instance) {
+		instance = createAuthorizedAxiosInstance('chatroom');
+	}
+	return instance;
+};
 
 export const GetAllChatsRequest = async () => {
+	getInstance();
 	try {
 		const res = await instance.get('/');
 		const result = res.data.map((chatroom) => ({

@@ -1,14 +1,22 @@
-import { id } from '../constants';
+import { getId } from '../constants';
 import { createAuthorizedAxiosInstance } from './helpers';
 
-const instance =
-	createAuthorizedAxiosInstance('user/chatroom');
+let instance;
+
+const getInstance = () => {
+	if (!instance) {
+		instance =
+			createAuthorizedAxiosInstance('user/chatroom');
+	}
+	return instance;
+};
 
 export const GetAllMessages = async (chatId) => {
+	getInstance();
 	const res = await instance.get(`${chatId}`);
 	const messages = res.data.map((message) => ({
 		content: message.content,
-		isSent: message.SenderId === id,
+		isSent: message.SenderId === getId(),
 	}));
 	return messages;
 };
