@@ -24,20 +24,20 @@
 
 .chatContainer .chatHeader {
   background-color: white;
-  height: 7vh;
+  height: 10%;
   display: flex;
   align-items: center;
   text-decoration: none;
   justify-content: space-between;
-  padding-right: 20px;
 }
 
 .chatContainer .chatHeader .linkHeader {
   background-color: white;
-  height: 7vh;
+  height: 100%;
   display: flex;
   align-items: center;
   text-decoration: none;
+  color: inherit;
 }
 
 .chatContainer .chatHeader .linkHeader:hover {
@@ -50,6 +50,7 @@
   border-radius: 100%;
   background-color: black;
   margin-left: 15px;
+  flex-shrink: 0;
 }
 
 .chatContainer .chatHeader .personData {
@@ -167,4 +168,70 @@
   overflow: hidden;
   box-sizing: border-box;
   overflow-y: auto;
+}
+
+/* tablet devices */
+
+@media (max-width: 768px) {
+  .chatContainer .chatHeader .personData .personName {
+    font-size: large;
+  }
+
+  .chatContainer .chatBody .receiveMessage,
+  .chatContainer .chatBody .sendMessage {
+    max-width: 70%;
+  }
+
+  .chatContainer .chatFooter .messageInput {
+    width: 85%;
+  }
+}
+
+/* mobile devices */
+
+@media (max-width: 480px) {
+  .chatContainer .chatHeader {
+    height: auto;
+  }
+
+  .chatContainer .chatHeader .linkHeader {
+    width: 65%;
+    height: 100%;
+  }
+
+  .chatContainer .chatHeader .personImage {
+    margin-right: 3%;
+    margin-left: 3%;
+  }
+
+  .chatContainer .chatHeader .personImage,
+  .chatContainer .chatHeader .removeChat,
+  .chatContainer .chatBody .receiveImage,
+  .chatContainer .chatBody .sendImage,
+  .chatContainer .chatFooter .sendMessage {
+    width: 30px;
+    height: 30px;
+  }
+
+  .chatContainer .chatHeader .personData {
+    width: 100%;
+    margin: 0;
+  }
+
+  .chatContainer .chatHeader .personData .personName {
+    font-size: medium;
+  }
+
+  .chatContainer .chatHeader .personData .personBio {
+    font-size: small;
+  }
+
+  .chatContainer .chatBody .receiveMessage,
+  .chatContainer .chatBody .sendMessage {
+    max-width: 90%;
+  }
+
+  .chatContainer .chatFooter .messageInput {
+    width: 80%;
+  }
 }
