@@ -101,9 +101,6 @@ export default function Chat({ chat }) {
 								<p className={classes['personName']}>
 									{chat.name}
 								</p>
-								<p className={classes['personBio']}>
-									Click here to see contact&apos;s bio
-								</p>
 							</div>
 						</a>
 
@@ -137,11 +134,32 @@ export default function Chat({ chat }) {
 									<div
 										className={classes['receiveImage']}
 									></div>
-									<div
-										className={classes['receiveMessage']}
-									>
-										{c.content}
-									</div>
+									{chat.type === 'group' ? (
+										<div
+											style={{
+												display: 'flex',
+												flexFlow: 'column',
+											}}
+										>
+											{c.User.name}
+											<div
+												style={{
+													marginTop: '0px',
+												}}
+												className={
+													classes['receiveMessage']
+												}
+											>
+												{c.content}
+											</div>
+										</div>
+									) : (
+										<div
+											className={classes['receiveMessage']}
+										>
+											{c.content}
+										</div>
+									)}
 								</div>
 							)
 						)}

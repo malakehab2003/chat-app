@@ -2,6 +2,7 @@ import Debug from 'debug';
 import Message from '../models/message.js';
 import { StatusCodes } from 'http-status-codes';
 import ChatRoom from '../models/chatRoom.js';
+import User from '../models/user.js';
 
 const debug = Debug('controllers:message');
 
@@ -124,7 +125,6 @@ export const getMessagesByUserId = async (req, res) => {
 	}
 };
 export const getRoomMessages = async (req, res) => {
-	const { user } = req;
 	const { id: ChatRoomId } = req.params;
 
 	if (!ChatRoomId) {
@@ -142,7 +142,14 @@ export const getRoomMessages = async (req, res) => {
 	}
 
 	try {
-		const messages = await room.getMessages();
+		const messages = await room.getMessages({
+			include: [
+				{
+					model: User,
+					attributes: ['name'],
+				},
+			],
+		});
 
 		return res.status(StatusCodes.OK).json(messages);
 	} catch (err) {

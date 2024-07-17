@@ -41,6 +41,7 @@ export const GetAllChatsRequest = async () => {
 					? 'No Messages'
 					: chatroom.Messages[0].latestMessage,
 			id: chatroom.id,
+			type: chatroom.roomType,
 		}));
 		return result;
 	} catch (err) {
@@ -93,6 +94,7 @@ export const AddNewChat = async (email) => {
 				? 'No Messages'
 				: chat.Messages[0].latestMessage,
 		id: chat.id,
+		type: chat.roomType,
 	};
 
 	// chat room id

@@ -17,6 +17,7 @@ export const GetAllMessages = async (chatId) => {
 	const messages = res.data.map((message) => ({
 		content: message.content,
 		isSent: message.SenderId === getId(),
+		User: message.User,
 	}));
 	return messages;
 };
