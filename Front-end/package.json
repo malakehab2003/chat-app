@@ -16,7 +16,8 @@
     "react-axios": "^2.0.6",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.24.1",
-    "react-spinners": "^0.14.1"
+    "react-spinners": "^0.14.1",
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
