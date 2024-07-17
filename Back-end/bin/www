@@ -8,6 +8,7 @@ import { createServer } from 'http';
 import Debug from 'debug';
 import { checkDB, db } from '../db.js';
 import app from '../app.js';
+import { initializeSocket } from '../utils/socket.js'
 
 var debug = Debug('chat-app:server');
 /**
@@ -22,6 +23,7 @@ app.set('port', port);
  */
 
 var server = createServer(app);
+initializeSocket(server);
 
 /**
  * Listen on provided port, on all network interfaces.

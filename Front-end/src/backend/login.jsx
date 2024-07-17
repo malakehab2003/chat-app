@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { BackEndBase, setId, setToken } from '../constants';
+import {
+	BackEndBase,
+	setId,
+	setToken,
+	startConnection,
+} from '../constants';
 
 const instance = axios.create({
 	baseURL: `${BackEndBase}user`,

@@ -1,4 +1,4 @@
-import { getId } from '../constants';
+import { getId, sendMessage } from '../constants';
 import { createAuthorizedAxiosInstance } from './helpers';
 
 let instance;
@@ -19,4 +19,13 @@ export const GetAllMessages = async (chatId) => {
 		isSent: message.SenderId === getId(),
 	}));
 	return messages;
+};
+
+export const SendNewMessage = async (chatId, message) => {
+	getInstance();
+	await instance.post(`${chatId}`, {
+		content: message,
+	});
+	//TODO: Send Signal to user
+	sendMessage(chatId, message);
 };
