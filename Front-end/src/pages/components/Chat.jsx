@@ -57,7 +57,7 @@ export default function Chat({ chat, onDeleteChat }) {
 				}
 			});
 		}
-	}, [chat, isTyping]);
+	}, [chat]);
 
 	const onTyping = (event) => {
 		const text = event.target.value;

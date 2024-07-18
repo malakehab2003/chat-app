@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners'; // Import the spinner
 import PropTypes from 'prop-types';
 
@@ -22,7 +22,26 @@ export default function People({
 }) {
 	const [email, setEmail] = useState('');
 	const [addError, setAddError] = useState(null);
+	const [chats, setChats] = useState([]);
+	const [error, setError] = useState(null);
 
+	const removeDeletedChat = (id) => {
+		setChats((chats) => {
+			const oldChats = [...chats];
+			console.log(chats);
+			console.log(oldChats);
+			const deletedChatIndex = oldChats.findIndex(
+				(c) => c.id === id
+			);
+			if (deletedChatIndex === -1) {
+				return oldChats;
+			}
+			console.log('before delete', chats);
+			oldChats.splice(deletedChatIndex, 1);
+			console.log('after delete', oldChats);
+			return oldChats;
+		});
+	};
 	useEffect(() => {
 		GetAllChatsRequest()
 			.then((value) => setChats(value))
@@ -39,7 +58,16 @@ export default function People({
 				id: chatData.id,
 				type: chatData.roomType,
 			};
-			setChats([newChat, ...chats]);
+			setChats((prevChats) => {
+				if (
+					prevChats.findIndex(
+						(c) => c.id === newChat.id
+					) !== -1
+				) {
+					return prevChats;
+				}
+				return [newChat, ...prevChats];
+			});
 		});
 		socket.on('deleteChat', (id) => {
 			console.log(id);
@@ -72,16 +100,13 @@ export default function People({
 		if (!addError && email) {
 			AddNewChat(email)
 				.then(({ formattedChat, chat }) => {
-					setChats([formattedChat, ...chats]);
+					setChats((chats) => [formattedChat, ...chats]);
 					console.log(formattedChat);
 					addChatRoom(chat);
 				})
 				.catch((err) => setAddError(err.message));
 		}
 	};
-
-	const [chats, setChats] = useState([]);
-	const [error, setError] = useState(null);
 
 	return (
 		<div className={classes.peopleContainer}>
@@ -124,15 +149,6 @@ export default function People({
 				))}
 		</div>
 	);
-
-	function removeDeletedChat(id) {
-		const oldChats = chats;
-		const deletedChatIndex = oldChats.findIndex(
-			(c) => c.id === id
-		);
-		oldChats.splice(deletedChatIndex, 1);
-		setChats(oldChats);
-	}
 }
 
 People.propTypes = {

@@ -49,7 +49,7 @@ export const initializeSocket = (server) => {
 				.emit('send', { id, message });
 		});
 		socket.on('add-chat', async (data) => {
-			debug(data);
+			debug(idsToSockets);
 			socket.join(`chat-no-${data.id}`);
 			const { Users } = data;
 			const userId = Object.entries(idsToSockets).find(
