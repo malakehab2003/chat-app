@@ -8,7 +8,7 @@ import send from '../../assets/images/send.png';
 import {
 	GetAllMessages,
 	SendNewMessage,
-	DeleteChat
+	DeleteChat,
 } from '../../backend/chat';
 import {
 	socket,
@@ -27,6 +27,11 @@ export default function Chat({ chat, onDeleteChat }) {
 			GetAllMessages(chat.id).then((res) =>
 				setMessages(res)
 			);
+			socket.on('deleteChat', (id) => {
+				if (chat.id === id) {
+					onDeleteChat(chat.id);
+				}
+			});
 			socket.on('typing', (id) => {
 				console.log(id);
 				console.log(`chat: ${chat}`);
@@ -90,7 +95,7 @@ export default function Chat({ chat, onDeleteChat }) {
 				console.error('Failed to delete chat:', err);
 			}
 		}
-	}
+	};
 
 	return (
 		<div
@@ -108,7 +113,11 @@ export default function Chat({ chat, onDeleteChat }) {
 					<div className={classes['chatHeader']}>
 						<a className={classes['linkHeader']} href=''>
 							<div>
-								<img className={classes['personImage']} src={userImage} alt="user" />
+								<img
+									className={classes['personImage']}
+									src={userImage}
+									alt='user'
+								/>
 							</div>
 
 							<div className={classes['personData']}>
@@ -138,7 +147,11 @@ export default function Chat({ chat, onDeleteChat }) {
 										{c.content}
 									</div>
 									<div>
-										<img className={classes['sendImage']} src={userImage} alt="user" />
+										<img
+											className={classes['sendImage']}
+											src={userImage}
+											alt='user'
+										/>
 									</div>
 								</div>
 							) : (
@@ -147,7 +160,11 @@ export default function Chat({ chat, onDeleteChat }) {
 									key={index}
 								>
 									<div>
-										<img className={classes['receiveImage']} src={userImage} alt="user" />
+										<img
+											className={classes['receiveImage']}
+											src={userImage}
+											alt='user'
+										/>
 									</div>
 									{chat.type === 'group' ? (
 										<div
