@@ -21,20 +21,26 @@ export const HomeRoute = '/';
 
 export default function Home() {
 	const [chat, setChat] = useState(null);
+	const [deletedChatId, setDeletedChatId] = useState(null);
 
 	useEffect(() => {
 		startConnection(getId());
 	}, []);
 
 	const handleDeleteChat = (chatId) => {
-    setChat(null);
-  };
+		setChat(null);
+		setDeletedChatId(chatId);
+	};
 
 	return (
 		<span className={classes.root}>
 			<NavBar />
 			<div className={classes.container}>
-				<People setChat={setChat} />
+				<People
+					setChat={setChat}
+					deletedChatID={deletedChatId}
+					clearDeletedChatID={() => setDeletedChatId(null)}
+				/>
 				<Chat chat={chat} onDeleteChat={handleDeleteChat} />
 			</div>
 		</span>

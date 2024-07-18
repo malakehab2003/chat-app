@@ -11,7 +11,11 @@ import {
 } from '../../backend/homePage';
 import { testEmail } from '../../constants';
 
-export default function People({ setChat }) {
+export default function People({
+	setChat,
+	deletedChatID,
+	clearDeletedChatID,
+}) {
 	const [email, setEmail] = useState('');
 	const [addError, setAddError] = useState(null);
 
@@ -21,10 +25,22 @@ export default function People({ setChat }) {
 			.catch((err) => setError(err));
 	}, []);
 
+	useEffect(() => {
+		if (deletedChatID) {
+			const oldChats = chats;
+			const deletedChatIndex = oldChats.findIndex(
+				(c) => c.id === deletedChatID
+			);
+			oldChats.splice(deletedChatIndex, 1);
+			setChats(oldChats);
+			clearDeletedChatID();
+		}
+	}, [deletedChatID]);
+
 	const handleError = (event) => {
 		const value = event.target.value;
 		setEmail(value);
-		if (!testEmail(value)) {
+		if (value !== '' && !testEmail(value)) {
 			setAddError(
 				'Email should be a valid gmail or yahoo email'
 			);
@@ -91,4 +107,6 @@ export default function People({ setChat }) {
 
 People.propTypes = {
 	setChat: PropTypes.func.isRequired,
+	clearDeletedChatID: PropTypes.func.isRequired,
+	deletedChatID: PropTypes.number,
 };

@@ -33,11 +33,11 @@ export const SendNewMessage = async (chatId, message) => {
 
 export const DeleteChat = async (id) => {
 	try {
-		instance =
-				createAuthorizedAxiosInstance('chatroom');
-		await instance.delete(`${id}`);
+		const deleteInstance =
+			createAuthorizedAxiosInstance('chatroom');
+		await deleteInstance.delete(`${id}`);
 	} catch (err) {
 		console.error('Error deleting chat:', err);
 		throw err;
 	}
-}
+};
