@@ -87,8 +87,10 @@ export const AddNewChat = async (email) => {
 		chat = respond.data;
 	}
 
-	chat = {
-		name: chat.Users.map((user) => user.name).join(', '),
+	const formattedChat = {
+		name: chat.Users.map((user) => user.name)
+			.sort()
+			.join(', '),
 		lastMessage:
 			chat.Messages.length === 0
 				? 'No Messages'
@@ -98,5 +100,5 @@ export const AddNewChat = async (email) => {
 	};
 
 	// chat room id
-	return chat;
+	return { chat, formattedChat };
 };

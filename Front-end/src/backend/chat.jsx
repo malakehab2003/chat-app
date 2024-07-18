@@ -1,4 +1,8 @@
-import { getId, sendMessage } from '../constants';
+import {
+	deleteChatRoom,
+	getId,
+	sendMessage,
+} from '../constants';
 import { createAuthorizedAxiosInstance } from './helpers';
 
 let instance;
@@ -36,6 +40,7 @@ export const DeleteChat = async (id) => {
 		const deleteInstance =
 			createAuthorizedAxiosInstance('chatroom');
 		await deleteInstance.delete(`${id}`);
+		deleteChatRoom(id);
 	} catch (err) {
 		console.error('Error deleting chat:', err);
 		throw err;

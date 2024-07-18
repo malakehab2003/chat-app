@@ -51,48 +51,61 @@ export const getRoomsByUserId = async (req, res) => {
 
 	try {
 		const rooms = await user.getChatRooms({
-			include: [{
-				model: User,
-				attributes: ['id', 'name'], // Include only necessary attributes
-				through: { attributes: [] }, // Exclude join table attributes
-				where: {
-					id: { [Op.ne]: user.id } // Exclude the current user
-				}
-			}, {
-				model: Message,
-				attributes: [['content', 'latestMessage']],
-				order: [['createdAt', 'DESC']], // Order messages by creation date in descending order
-				limit: 1
-			}],
+			include: [
+				{
+					model: User,
+					attributes: ['id', 'name'], // Include only necessary attributes
+					through: { attributes: [] }, // Exclude join table attributes
+					where: {
+						id: { [Op.ne]: user.id }, // Exclude the current user
+					},
+				},
+				{
+					model: Message,
+					attributes: [['content', 'latestMessage']],
+					order: [['createdAt', 'DESC']], // Order messages by creation date in descending order
+					limit: 1,
+				},
+			],
 			joinTableAttributes: [],
 			order: [['createdAt', 'DESC']],
 		});
 		return res.json(rooms);
 	} catch (error) {
 		debug(error);
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t get chat rooms');
+		return res
+			.status(StatusCodes.INTERNAL_SERVER_ERROR)
+			.send("can't get chat rooms");
 	}
-}
+};
 
 export const deleteRoom = async (req, res) => {
 	const { id } = req.params;
 
 	if (!id) {
-		return res.status(StatusCodes.BAD_REQUEST).send('Id is Required')
+		return res
+			.status(StatusCodes.BAD_REQUEST)
+			.send('Id is Required');
 	}
 
 	try {
 		const room = await ChatRoom.findByPk(id);
 		if (!room) {
-			return res.status(StatusCodes.NOT_FOUND).send('can\'t get chat room');
+			return res
+				.status(StatusCodes.NOT_FOUND)
+				.send("can't get chat room");
 		}
 		await room.destroy();
-		return res.status(StatusCodes.NO_CONTENT).send('room deleted');
+		return res
+			.status(StatusCodes.NO_CONTENT)
+			.send('room deleted');
 	} catch (error) {
 		debug(err);
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t delete chat room');
+		return res
+			.status(StatusCodes.INTERNAL_SERVER_ERROR)
+			.send("can't delete chat room");
 	}
-}
+};
 
 export const deleteRoomsByUserId = async (req, res) => {
 	const { user } = req;
@@ -104,6 +117,8 @@ export const deleteRoomsByUserId = async (req, res) => {
 		return res.send('rooms deleted');
 	} catch (err) {
 		debug(err);
-		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t delete chat rooms');
+		return res
+			.status(StatusCodes.INTERNAL_SERVER_ERROR)
+			.send("can't delete chat rooms");
 	}
-}
+};

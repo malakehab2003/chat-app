@@ -9,7 +9,11 @@ import {
 	AddNewChat,
 	GetAllChatsRequest,
 } from '../../backend/homePage';
-import { testEmail } from '../../constants';
+import {
+	addChatRoom,
+	socket,
+	testEmail,
+} from '../../constants';
 
 export default function People({
 	setChat,
@@ -23,16 +27,29 @@ export default function People({
 		GetAllChatsRequest()
 			.then((value) => setChats(value))
 			.catch((err) => setError(err));
+		socket.on('addChat', (chatData) => {
+			const newChat = {
+				name: chatData.Users.map((user) => user.name)
+					.sort()
+					.join(', '),
+				lastMessage:
+					chatData.Messages.length === 0
+						? 'No Messages'
+						: chatData.Messages[0].latestMessage,
+				id: chatData.id,
+				type: chatData.roomType,
+			};
+			setChats([newChat, ...chats]);
+		});
+		socket.on('deleteChat', (id) => {
+			console.log(id);
+			removeDeletedChat(id);
+		});
 	}, []);
 
 	useEffect(() => {
 		if (deletedChatID) {
-			const oldChats = chats;
-			const deletedChatIndex = oldChats.findIndex(
-				(c) => c.id === deletedChatID
-			);
-			oldChats.splice(deletedChatIndex, 1);
-			setChats(oldChats);
+			removeDeletedChat(deletedChatID);
 			clearDeletedChatID();
 		}
 	}, [deletedChatID]);
@@ -54,12 +71,16 @@ export default function People({
 		console.log(email);
 		if (!addError && email) {
 			AddNewChat(email)
-				.then((res) => setChats([res, ...chats]))
+				.then(({ formattedChat, chat }) => {
+					setChats([formattedChat, ...chats]);
+					console.log(formattedChat);
+					addChatRoom(chat);
+				})
 				.catch((err) => setAddError(err.message));
 		}
 	};
 
-	const [chats, setChats] = useState(null);
+	const [chats, setChats] = useState([]);
 	const [error, setError] = useState(null);
 
 	return (
@@ -103,6 +124,15 @@ export default function People({
 				))}
 		</div>
 	);
+
+	function removeDeletedChat(id) {
+		const oldChats = chats;
+		const deletedChatIndex = oldChats.findIndex(
+			(c) => c.id === id
+		);
+		oldChats.splice(deletedChatIndex, 1);
+		setChats(oldChats);
+	}
 }
 
 People.propTypes = {

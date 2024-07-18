@@ -5,9 +5,6 @@ export const socket = io(SocketURL);
 
 export const BackEndBase = 'http://localhost:3000/api/';
 
-let tokenConst;
-let userId;
-
 export const startConnection = (id) => {
 	socket.emit('start', id);
 };
@@ -24,6 +21,17 @@ export const stopTyping = (chatId) => {
 export const sendMessage = (chatId, message) => {
 	socket.emit('send-message', { id: chatId, message });
 };
+
+export const addChatRoom = (chat) => {
+	socket.emit('add-chat', chat);
+};
+
+export const deleteChatRoom = (chatId) => {
+	socket.emit('delete-chat', chatId);
+};
+
+let tokenConst;
+let userId;
 
 export const getToken = () => {
 	if (!tokenConst) {
