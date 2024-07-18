@@ -110,6 +110,7 @@
   border-top-left-radius: 0px;
   padding: 5px;
   margin-top: 20px;
+  color: white;
 }
 
 .chatContainer .chatBody .sendContainer {
@@ -137,6 +138,7 @@
   border-top-right-radius: 0px;
   padding: 5px;
   margin-top: 20px;
+  color: white;
 }
 
 .chatContainer .chatFooter {

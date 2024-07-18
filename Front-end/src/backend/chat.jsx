@@ -30,3 +30,14 @@ export const SendNewMessage = async (chatId, message) => {
 	//TODO: Send Signal to user
 	sendMessage(chatId, message);
 };
+
+export const DeleteChat = async (id) => {
+	try {
+		instance =
+				createAuthorizedAxiosInstance('chatroom');
+		await instance.delete(`${id}`);
+	} catch (err) {
+		console.error('Error deleting chat:', err);
+		throw err;
+	}
+}

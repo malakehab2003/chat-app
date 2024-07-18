@@ -74,25 +74,25 @@ export const getRoomsByUserId = async (req, res) => {
 	}
 }
 
-// export const deleteRoom = async (req, res) => {
-// 	const { id } = req.params;
+export const deleteRoom = async (req, res) => {
+	const { id } = req.params;
 
-// 	if (!id) {
-// 		return res.status(StatusCodes.BAD_REQUEST).send('Id is Required')
-// 	}
+	if (!id) {
+		return res.status(StatusCodes.BAD_REQUEST).send('Id is Required')
+	}
 
-// 	try {
-// 		const room = await ChatRoom.findByPk(id);
-// 		if (!room) {
-// 			return res.status(StatusCodes.NOT_FOUND).send('can\'t get chat room');
-// 		}
-// 		await room.destroy();
-// 		return res.status(StatusCodes.NO_CONTENT).send('room deleted');
-// 	} catch (error) {
-// 		debug(err);
-// 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t delete chat room');
-// 	}
-// }
+	try {
+		const room = await ChatRoom.findByPk(id);
+		if (!room) {
+			return res.status(StatusCodes.NOT_FOUND).send('can\'t get chat room');
+		}
+		await room.destroy();
+		return res.status(StatusCodes.NO_CONTENT).send('room deleted');
+	} catch (error) {
+		debug(err);
+		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send('can\'t delete chat room');
+	}
+}
 
 export const deleteRoomsByUserId = async (req, res) => {
 	const { user } = req;

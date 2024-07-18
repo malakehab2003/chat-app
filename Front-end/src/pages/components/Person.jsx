@@ -1,5 +1,6 @@
 import classes from './Person.module.css';
 import PropTypes from 'prop-types';
+import userImage from '../../assets/images/profile-user.png';
 
 export default function Person({
 	person: { name, lastMessage, id },
@@ -11,7 +12,9 @@ export default function Person({
 			onClick={onClick}
 			className={classes.Person}
 		>
-			<div className={classes.personImage}></div>
+			<div>
+			<img className={classes.personImage} src={userImage} alt="user" />
+			</div>
 			<div className={classes.personData}>
 				<p className={classes.personName}>{name}</p>
 				<p className={classes.lastMessage}>{lastMessage}</p>

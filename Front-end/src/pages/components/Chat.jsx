@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { ClipLoader } from 'react-spinners'; // Import the spinner
-
+import userImage from '../../assets/images/profile-user-white.png';
 import classes from './Chat.module.css';
 import Delete from '../../assets/images/delete.png';
 import send from '../../assets/images/send.png';
 import {
 	GetAllMessages,
 	SendNewMessage,
+	DeleteChat
 } from '../../backend/chat';
 import {
 	socket,
@@ -15,7 +16,7 @@ import {
 	stopTyping,
 } from '../../constants';
 
-export default function Chat({ chat }) {
+export default function Chat({ chat, onDeleteChat }) {
 	const [messages, setMessages] = useState([]);
 	const [isTyping, setIsTyping] = useState(false);
 	const [newMessage, setNewMessage] = useState('');
@@ -80,6 +81,17 @@ export default function Chat({ chat }) {
 		});
 	};
 
+	const handleDeleteChat = async () => {
+		if (chat && chat.id) {
+			try {
+				await DeleteChat(chat.id);
+				onDeleteChat(chat.id);
+			} catch (err) {
+				console.error('Failed to delete chat:', err);
+			}
+		}
+	}
+
 	return (
 		<div
 			style={
@@ -95,7 +107,9 @@ export default function Chat({ chat }) {
 				<>
 					<div className={classes['chatHeader']}>
 						<a className={classes['linkHeader']} href=''>
-							<div className={classes['personImage']}></div>
+							<div>
+								<img className={classes['personImage']} src={userImage} alt="user" />
+							</div>
 
 							<div className={classes['personData']}>
 								<p className={classes['personName']}>
@@ -109,6 +123,7 @@ export default function Chat({ chat }) {
 							type='image'
 							src={Delete}
 							alt='delete'
+							onClick={handleDeleteChat}
 						/>
 					</div>
 
@@ -122,18 +137,18 @@ export default function Chat({ chat }) {
 									<div className={classes['sendMessage']}>
 										{c.content}
 									</div>
-									<div
-										className={classes['sendImage']}
-									></div>
+									<div>
+										<img className={classes['sendImage']} src={userImage} alt="user" />
+									</div>
 								</div>
 							) : (
 								<div
 									className={classes['receiveContainer']}
 									key={index}
 								>
-									<div
-										className={classes['receiveImage']}
-									></div>
+									<div>
+										<img className={classes['receiveImage']} src={userImage} alt="user" />
+									</div>
 									{chat.type === 'group' ? (
 										<div
 											style={{
@@ -194,4 +209,5 @@ export default function Chat({ chat }) {
 
 Chat.propTypes = {
 	chat: PropTypes.object,
+	onDeleteChat: PropTypes.func.isRequired,
 };

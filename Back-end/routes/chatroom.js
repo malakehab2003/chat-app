@@ -12,7 +12,7 @@ var router = Router();
 // router.get('/:id', ChatRoom.getChatRoomById);
 router.get('/', AuthRequest, ChatRoom.getRoomsByUserId);
 
-// router.delete('/:id', ChatRoom.deleteRoom);
+router.delete('/:id', AuthRequest, ChatRoom.deleteRoom);
 router.delete('/', AuthRequest, ChatRoom.deleteRoomsByUserId);
 
 export default router;

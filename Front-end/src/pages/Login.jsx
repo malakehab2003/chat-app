@@ -3,6 +3,8 @@ import classes from './Login.module.css';
 import { SignInRequest } from '../backend/login';
 import { useNavigate } from 'react-router-dom';
 import { HomeRoute } from './Home';
+import { SignUpRoute } from './SignUp'
+import { NavLink } from 'react-router-dom';
 
 export const LoginRoute = '/login';
 
@@ -21,11 +23,10 @@ export default function Login() {
 					<p className={classes['new']}>
 						Create new account For Free!
 					</p>
-					<input
+					<NavLink
 						className={classes['SignUp']}
-						type='button'
-						value='SignUp'
-					></input>
+						to={SignUpRoute}
+					>SignUp</NavLink>
 				</div>
 
 				<form

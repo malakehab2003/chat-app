@@ -26,12 +26,16 @@ export default function Home() {
 		startConnection(getId());
 	}, []);
 
+	const handleDeleteChat = (chatId) => {
+    setChat(null);
+  };
+
 	return (
 		<span className={classes.root}>
 			<NavBar />
 			<div className={classes.container}>
 				<People setChat={setChat} />
-				<Chat chat={chat} />
+				<Chat chat={chat} onDeleteChat={handleDeleteChat} />
 			</div>
 		</span>
 	);

@@ -5,6 +5,7 @@ import { HomeRoute } from '../Home';
 import { LoginRoute } from '../Login';
 import classes from './NavBar.module.css';
 import { NavLink } from 'react-router-dom';
+import { ChangePassRoute } from '../ChangePass';
 
 export default function NavBar() {
 	const navigate = useNavigate();
@@ -62,29 +63,13 @@ export default function NavBar() {
 						].join(' ')}
 					>
 						<NavLink
-							href=''
+							to={ChangePassRoute}
 							className={[
 								classes['nav-link'],
 								classes['nav-style'],
 							].join(' ')}
 						>
-							Profile
-						</NavLink>
-					</li>
-					<li
-						className={[
-							classes['nav-item'],
-							classes['nav-style'],
-						].join(' ')}
-					>
-						<NavLink
-							href=''
-							className={[
-								classes['nav-link'],
-								classes['nav-style'],
-							].join(' ')}
-						>
-							Settings
+							ChangePassword
 						</NavLink>
 					</li>
 					<li
