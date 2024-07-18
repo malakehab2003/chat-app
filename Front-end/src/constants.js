@@ -8,6 +8,9 @@ export const BackEndBase = 'http://localhost:3000/api/';
 export const startConnection = (id) => {
 	socket.emit('start', id);
 };
+export const endConnection = () => {
+	socket.disconnect();
+};
 
 export const startTyping = (chatId) => {
 	console.log('Typing from source');

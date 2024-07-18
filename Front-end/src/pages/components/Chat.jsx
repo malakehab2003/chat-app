@@ -56,6 +56,12 @@ export default function Chat({ chat, onDeleteChat }) {
 					]);
 				}
 			});
+			return () => {
+				socket.removeAllListeners('typing');
+				socket.removeAllListeners('send');
+				socket.removeAllListeners('stop');
+				socket.removeAllListeners('deleteChat');
+			};
 		}
 	}, [chat]);
 

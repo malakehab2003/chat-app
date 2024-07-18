@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import { clearData, socket } from '../../constants';
+import { clearData, endConnection } from '../../constants';
 import { HomeRoute } from '../Home';
 import { LoginRoute } from '../Login';
 import classes from './NavBar.module.css';
@@ -81,7 +81,7 @@ export default function NavBar() {
 						<NavLink
 							onClick={() => {
 								clearData();
-								socket.disconnect();
+								endConnection();
 								navigate(LoginRoute);
 							}}
 							className={[

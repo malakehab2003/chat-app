@@ -28,17 +28,10 @@ export default function People({
 	const removeDeletedChat = (id) => {
 		setChats((chats) => {
 			const oldChats = [...chats];
-			console.log(chats);
-			console.log(oldChats);
 			const deletedChatIndex = oldChats.findIndex(
 				(c) => c.id === id
 			);
-			if (deletedChatIndex === -1) {
-				return oldChats;
-			}
-			console.log('before delete', chats);
 			oldChats.splice(deletedChatIndex, 1);
-			console.log('after delete', oldChats);
 			return oldChats;
 		});
 	};
@@ -58,21 +51,16 @@ export default function People({
 				id: chatData.id,
 				type: chatData.roomType,
 			};
-			setChats((prevChats) => {
-				if (
-					prevChats.findIndex(
-						(c) => c.id === newChat.id
-					) !== -1
-				) {
-					return prevChats;
-				}
-				return [newChat, ...prevChats];
-			});
+			setChats((prevChats) => [newChat, ...prevChats]);
 		});
 		socket.on('deleteChat', (id) => {
-			console.log(id);
+			console.log('Deleted on ID: ', id);
 			removeDeletedChat(id);
 		});
+		return () => {
+			socket.removeAllListeners('addChat');
+			socket.removeAllListeners('deleteChat');
+		};
 	}, []);
 
 	useEffect(() => {
