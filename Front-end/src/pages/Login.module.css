@@ -39,6 +39,12 @@ h1 {
   padding: 10px;
 }
 
+.signInForm {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .SignUp {
   border-radius: 15px;
   color: #ffffff;

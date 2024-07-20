@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { HomeRoute } from './Home';
 import { useState } from 'react';
 import { signUpRequest } from '../backend/signUp';
+import { GoogleLogin } from 'react-google-login';
 
 export const SignUpRoute = '/signup';
+const CLIENT_ID = '361250210633-14h3t6ov1q1llng3mkom9glqis93h9lt.apps.googleusercontent.com';
 
 export default function SignUp() {
 	const [formData, setFormData] = useState({ name: '', email: '', pass: '' });
@@ -57,6 +59,20 @@ export default function SignUp() {
 		signUpRequest(formData.name, formData.email, formData.pass)
 			.then(() => nav(HomeRoute));
 	}
+
+	const onSuccess = (res) => {
+		const profile = res.getBasicProfile();
+		const email = profile.getEmail();
+		const pass = profile.getId();
+		const name = profile.getName();
+
+		signUpRequest(name, email, pass)
+			.then(() => navigate(HomeRoute));
+	}
+
+	const onFailure = (response) => {
+    console.log('Failed:', response);
+  };
 
 	return (
 		<span className={classes.root}>
@@ -121,6 +137,16 @@ export default function SignUp() {
 						value='Create account'
 					/>
 				</form>
+				<div id="gSignInBtn">
+					<GoogleLogin
+						clientId={CLIENT_ID}
+						buttonText='Login'
+						onSuccess={onSuccess}
+						onFailure={onFailure}
+						cookiePolicy={'single_host_origin'}
+						isSignedIn={true}
+					/>
+				</div>
 			</div>
 		</span>
 	);
