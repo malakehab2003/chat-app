@@ -6,59 +6,82 @@ import { signUpRequest } from '../backend/signUp';
 import { GoogleLogin } from 'react-google-login';
 
 export const SignUpRoute = '/signup';
-const CLIENT_ID = '361250210633-14h3t6ov1q1llng3mkom9glqis93h9lt.apps.googleusercontent.com';
+const CLIENT_ID =
+	'361250210633-14h3t6ov1q1llng3mkom9glqis93h9lt.apps.googleusercontent.com';
 
 export default function SignUp() {
-	const [formData, setFormData] = useState({ name: '', email: '', pass: '' });
+	const [formData, setFormData] = useState({
+		name: '',
+		email: '',
+		pass: '',
+	});
 	const [emailError, setEmailError] = useState(null);
-  const [passError, setPassError] = useState(null);
-  const nav = useNavigate();
+	const [passError, setPassError] = useState(null);
+	const nav = useNavigate();
 
 	const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };
+		const { name, value } = event.target;
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			[name]: value,
+		}));
+	};
 
 	const handleEmailError = (event) => {
 		const value = event.target.value;
-		setFormData((prevFormData) => ({ ...prevFormData, email: value }));
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			email: value,
+		}));
 
 		const regex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo)\.com$/;
-		
+
 		if (!regex.test(value)) {
-			setEmailError('Email should contain @[gmail | yahoo].com');
+			setEmailError(
+				'Email should contain @[gmail | yahoo].com'
+			);
 		} else {
 			setEmailError(null);
 		}
-	}
+	};
 
 	const handlePassError = (event) => {
 		const value = event.target.value;
-		setFormData((prevFormData) => ({ ...prevFormData, pass: value }));
+		setFormData((prevFormData) => ({
+			...prevFormData,
+			pass: value,
+		}));
 
 		if (value.length < 8) {
-      setPassError('Input must be at least 8 characters');
-      return;
-    }
+			setPassError('Input must be at least 8 characters');
+			return;
+		}
 
-    if (!/[0-9]/.test(value)) {
-      setPassError('Input must contain at least one number');
-      return;
-    }
+		if (!/[0-9]/.test(value)) {
+			setPassError(
+				'Input must contain at least one number'
+			);
+			return;
+		}
 
-    if (!/[@_#$]/.test(value)) {
-      setPassError('Input must contain at least one special character');
-      return;
-    }
+		if (!/[@_#$]/.test(value)) {
+			setPassError(
+				'Input must contain at least one special character'
+			);
+			return;
+		}
 
 		setPassError(null);
-	}
+	};
 
 	const handleSubmit = (event) => {
 		event.preventDefault();
-		signUpRequest(formData.name, formData.email, formData.pass)
-			.then(() => nav(HomeRoute));
-	}
+		signUpRequest(
+			formData.name,
+			formData.email,
+			formData.pass
+		).then(() => nav(HomeRoute));
+	};
 
 	const onSuccess = (res) => {
 		const profile = res.getBasicProfile();
@@ -66,13 +89,14 @@ export default function SignUp() {
 		const pass = profile.getId();
 		const name = profile.getName();
 
-		signUpRequest(name, email, pass)
-			.then(() => navigate(HomeRoute));
-	}
+		signUpRequest(name, email, pass).then(() =>
+			nav(HomeRoute)
+		);
+	};
 
 	const onFailure = (response) => {
-    console.log('Failed:', response);
-  };
+		console.log('Failed:', response);
+	};
 
 	return (
 		<span className={classes.root}>
@@ -107,7 +131,9 @@ export default function SignUp() {
 							value={formData.email}
 							onChange={handleEmailError}
 						/>
-						{emailError && <p style={{ color: 'red' }}>{emailError}</p>}
+						{emailError && (
+							<p style={{ color: 'red' }}>{emailError}</p>
+						)}
 						<p className={classes['validateEmail']}>
 							Email should contain @[gmail | yahoo].com
 						</p>
@@ -124,7 +150,9 @@ export default function SignUp() {
 							value={formData.pass}
 							onChange={handlePassError}
 						/>
-						{passError && <p style={{ color: 'red' }}>{passError}</p>}
+						{passError && (
+							<p style={{ color: 'red' }}>{passError}</p>
+						)}
 						<p className={classes['validatePassword']}>
 							Password must contain 8 characters <br /> at
 							least one number <br /> and special character
@@ -137,14 +165,14 @@ export default function SignUp() {
 						value='Create account'
 					/>
 				</form>
-				<div id="gSignInBtn">
+				<div id='gSignInBtn'>
 					<GoogleLogin
 						clientId={CLIENT_ID}
-						buttonText='Login'
+						buttonText='Sign Up With Google'
 						onSuccess={onSuccess}
 						onFailure={onFailure}
 						cookiePolicy={'single_host_origin'}
-						isSignedIn={true}
+						// isSignedIn={true}
 					/>
 				</div>
 			</div>

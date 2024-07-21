@@ -37,6 +37,7 @@ let tokenConst;
 let userId;
 
 export const getToken = () => {
+	console.log(`tokenConst: ${tokenConst}`);
 	if (!tokenConst) {
 		tokenConst = localStorage.getItem('token');
 	}
@@ -49,6 +50,7 @@ export const getToken = () => {
 export const setToken = (param) => {
 	localStorage.setItem('token', param);
 	tokenConst = param;
+	console.log(`setting tokenConst: ${tokenConst}`);
 };
 
 export const clearData = () => {

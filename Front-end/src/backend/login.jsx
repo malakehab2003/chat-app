@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { BackEndBase, setId, setToken } from '../constants';
+import { newLogin } from './helpers';
 
 const instance = axios.create({
 	baseURL: `${BackEndBase}user`,
@@ -21,6 +22,7 @@ export const SignInRequest = async (email, pass) => {
 	if (token) {
 		setToken(token);
 		setId(id);
+		newLogin();
 	} else {
 		throw new Error('Sign in Failed');
 	}

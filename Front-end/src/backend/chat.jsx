@@ -3,14 +3,19 @@ import {
 	getId,
 	sendMessage,
 } from '../constants';
-import { createAuthorizedAxiosInstance } from './helpers';
+import {
+	clearLoginFlag,
+	createAuthorizedAxiosInstance,
+	isUserChanged,
+} from './helpers';
 
 let instance;
 
 const getInstance = () => {
-	if (!instance) {
+	if (!instance || isUserChanged()) {
 		instance =
 			createAuthorizedAxiosInstance('user/chatroom');
+		clearLoginFlag();
 	}
 	return instance;
 };

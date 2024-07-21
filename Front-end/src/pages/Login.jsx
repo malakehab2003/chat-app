@@ -3,13 +3,13 @@ import classes from './Login.module.css';
 import { SignInRequest } from '../backend/login';
 import { useNavigate } from 'react-router-dom';
 import { HomeRoute } from './Home';
-import { SignUpRoute } from './SignUp'
+import { SignUpRoute } from './SignUp';
 import { NavLink } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
 
-
 export const LoginRoute = '/login';
-const CLIENT_ID = '361250210633-14h3t6ov1q1llng3mkom9glqis93h9lt.apps.googleusercontent.com';
+const CLIENT_ID =
+	'361250210633-14h3t6ov1q1llng3mkom9glqis93h9lt.apps.googleusercontent.com';
 
 export default function Login() {
 	const [email, setEmail] = useState('');
@@ -25,11 +25,11 @@ export default function Login() {
 		SignInRequest(email, pass)
 			.then(() => navigate(HomeRoute))
 			.catch((err) => setError(err.response.data));
-	}
+	};
 
 	const onFailure = (response) => {
-    console.log('Failed:', response);
-  };
+		console.log('Failed:', response);
+	};
 
 	return (
 		<span className={classes.root}>
@@ -43,12 +43,12 @@ export default function Login() {
 					<NavLink
 						className={classes['SignUp']}
 						to={SignUpRoute}
-					>SignUp</NavLink>
+					>
+						SignUp
+					</NavLink>
 				</div>
 
-				<div
-				className={classes['signInContainer']}
-				>
+				<div className={classes['signInContainer']}>
 					<form
 						className={classes['signInForm']}
 						onSubmit={handleLogin}
@@ -85,16 +85,16 @@ export default function Login() {
 							Login
 						</button>
 					</form>
-						<div id="gSignInBtn">
-							<GoogleLogin
-								clientId={CLIENT_ID}
-								buttonText='Login'
-								onSuccess={onSuccess}
-								onFailure={onFailure}
-								cookiePolicy={'single_host_origin'}
-								isSignedIn={true}
-							/>
-						</div>
+					<div id='gSignInBtn'>
+						<GoogleLogin
+							clientId={CLIENT_ID}
+							buttonText='Login'
+							onSuccess={onSuccess}
+							onFailure={onFailure}
+							cookiePolicy={'single_host_origin'}
+							// isSignedIn={true}
+						/>
+					</div>
 				</div>
 			</div>
 		</span>

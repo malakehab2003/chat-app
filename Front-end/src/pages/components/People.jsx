@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners'; // Import the spinner
 import PropTypes from 'prop-types';
 

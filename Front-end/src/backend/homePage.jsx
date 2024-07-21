@@ -1,10 +1,16 @@
-import { createAuthorizedAxiosInstance } from './helpers';
+import {
+	clearLoginFlag,
+	createAuthorizedAxiosInstance,
+	isUserChanged,
+} from './helpers';
 
 let instance;
 
 const getInstance = () => {
-	if (!instance) {
+	if (!instance || isUserChanged()) {
+		console.log('Created New Instance');
 		instance = createAuthorizedAxiosInstance('chatroom');
+		clearLoginFlag();
 	}
 	return instance;
 };
@@ -12,9 +18,11 @@ const getInstance = () => {
 let createInstance;
 
 const getCreateInstance = () => {
-	if (!createInstance) {
+	if (!createInstance || isUserChanged()) {
+		console.log('Created New Instance');
 		createInstance =
 			createAuthorizedAxiosInstance('user/chatroom');
+		clearLoginFlag();
 	}
 	return createInstance;
 };
@@ -22,8 +30,10 @@ const getCreateInstance = () => {
 let userInstance;
 
 const getUserInstance = () => {
-	if (!userInstance) {
+	if (!userInstance || isUserChanged()) {
+		console.log('Created New Instance');
 		userInstance = createAuthorizedAxiosInstance('user');
+		clearLoginFlag();
 	}
 	return userInstance;
 };

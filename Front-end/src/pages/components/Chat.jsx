@@ -35,19 +35,20 @@ export default function Chat({ chat, onDeleteChat }) {
 			socket.on('typing', (id) => {
 				console.log(id);
 				console.log(`chat: ${chat}`);
-				console.log('Receiving Typing');
-				if (id === chat.id && !isTyping) {
+				console.log('Receiving Typing', isTyping);
+				if (id === chat.id) {
 					setIsTyping(true);
 				}
 			});
 			socket.on('stop', (id) => {
-				if (id === chat.id && isTyping) {
+				console.log(id, chat.id, isTyping);
+				if (id === chat.id) {
 					setIsTyping(false);
 				}
 			});
 			socket.on('send', ({ id, message }) => {
 				if (id === chat.id) {
-					setMessages([
+					setMessages((messages) => [
 						...messages,
 						{
 							isSent: false,
@@ -80,7 +81,7 @@ export default function Chat({ chat, onDeleteChat }) {
 			return;
 		}
 		SendNewMessage(chat.id, newMessage).then(() => {
-			setMessages([
+			setMessages((messages) => [
 				...messages,
 				{
 					content: newMessage,
