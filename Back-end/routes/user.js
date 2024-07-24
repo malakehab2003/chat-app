@@ -23,5 +23,6 @@ router.post('/signUp', UserController.signUp);
 router.post('/signIn', UserController.signIn);
 router.post('/signOut', UserController.signOut);
 router.post('/changePass', AuthRequest, UserController.changePass);
+router.post('/changeName', AuthRequest, UserController.changeName);
 
 export default router;

@@ -282,9 +282,36 @@ export const deleteUser = async (req, res) => {
 
 export const deleteUserByToken = async (req, res) => {
 	const { user } = req;
+	const auth = req.header('Authorization');
+
+	if (!auth) {
+		debug('No token found!');
+		return res
+			.status(StatusCodes.BAD_REQUEST)
+			.send('No token found!');
+	}
+
+	// check Authorization contain Bearer
+	if (auth.slice(0, 7) !== 'Bearer ') {
+		debug('Header should contain Bearer');
+		throw new InvalidTokenError();
+	}
+
+	// remove Bearer
+	const token = auth.replace('Bearer ', '');
 
 	try {
 		await user.destroy();
+
+		const id = await redisClient.get(token);
+		if (!id) {
+			debug('Incorrect token!');
+			return res
+				.status(StatusCodes.BAD_REQUEST)
+				.send('Incorrect token!');
+		}
+
+		await redisClient.del(token);
 
 		return res
 			.status(StatusCodes.OK)
@@ -461,3 +488,37 @@ export const changePass = async (req, res) => {
 			.send('cannot update password');
 	}
 };
+
+export const changeName = async (req, res) => {
+	const { name } = req.body;
+	const { user } = req;
+
+	if (!name || !user) {
+		debug('Cannot change name');
+		return res
+			.status(StatusCodes.BAD_REQUEST)
+			.send('cannot change name');
+	}
+
+	try {
+		await User.update(
+			{
+				name,
+			},
+			{
+				where: {
+					id: user.id,
+				},
+			}
+		);
+
+		return res
+			.status(StatusCodes.OK)
+			.send('Name changed');
+	} catch (err) {
+		debug('cannot update name');
+		return res
+			.status(StatusCodes.BAD_REQUEST)
+			.send('cannot update name');
+	}	
+}

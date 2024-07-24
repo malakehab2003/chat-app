@@ -5,6 +5,7 @@ import ChangePass, {
 } from './pages/ChangePass';
 import Login, { LoginRoute } from './pages/Login';
 import SignUp, { SignUpRoute } from './pages/SignUp';
+import Settings, { SettingsRoute } from './pages/Settings';
 import ProtectedRoute from './pages/components/ProtectedRoute';
 
 export const router = createBrowserRouter([
@@ -23,5 +24,9 @@ export const router = createBrowserRouter([
 	{
 		path: ChangePassRoute,
 		element: <ProtectedRoute element={<ChangePass />} />,
+	},
+	{
+		path: SettingsRoute,
+		element: <Settings />
 	},
 ]);
