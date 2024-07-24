@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { updateName, deleteAcc } from '../backend/Settings';
 import { useNavigate } from 'react-router-dom';
 import { LoginRoute } from './Login';
+import NavBar from './components/NavBar'
 
 export const SettingsRoute = '/settings';
 
@@ -37,6 +38,9 @@ export default function Settings() {
 
   return (
     <span className={classes.root}>
+      <div className={classes['navBar']}>
+        <NavBar />
+      </div>
       <div className={classes['container']}>
         <h1>Edit your profile</h1>
 
