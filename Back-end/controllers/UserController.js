@@ -41,14 +41,14 @@ const validatePassword = (password) => {
 		);
 	}
 
-	// if (!/[@_#$]/.test(password)) {
-	// 	debug(
-	// 		'Password must contain at least one special character (@, _, #, $)'
-	// 	);
-	// 	throw new Error(
-	// 		'Password must contain at least one special character (@, _, #, $)'
-	// 	);
-	// }
+	if (!/[@_#$]/.test(password)) {
+		debug(
+			'Password must contain at least one special character (@, _, #, $)'
+		);
+		throw new Error(
+			'Password must contain at least one special character (@, _, #, $)'
+		);
+	}
 
 	return true;
 };
@@ -462,7 +462,7 @@ export const changePass = async (req, res) => {
 		debug('Incorrect Password');
 		return res
 			.status(StatusCodes.BAD_REQUEST)
-			.send(IncorrectPasswordError());
+			.send(new IncorrectPasswordError());
 	}
 
 	const hash_password = sha1(newPass);
@@ -513,9 +513,7 @@ export const changeName = async (req, res) => {
 			}
 		);
 
-		return res
-			.status(StatusCodes.OK)
-			.send('Name changed');
+		return res.status(StatusCodes.OK).send('Name changed');
 	} catch (err) {
 		debug('cannot update name');
 		return res
