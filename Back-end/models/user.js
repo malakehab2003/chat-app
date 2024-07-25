@@ -23,6 +23,16 @@ User.init({
     unique: true,
   },
 
+  bio: {
+    type: DataTypes.TEXT,
+    defaultValue: 'Hello world',
+  },
+
+  image: {
+    type: DataTypes.STRING,
+    defaultValue: 'user',
+  },
+
   password: {
     type: DataTypes.STRING,
     allowNull: false,

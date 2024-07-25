@@ -2,6 +2,7 @@
 import { Router } from 'express';
 import * as UserController from '../controllers/UserController.js';
 import { AuthRequest } from '../utils/auth.js';
+import upload from '../utils/upload.js';
 
 var router = Router();
 
@@ -24,5 +25,7 @@ router.post('/signIn', UserController.signIn);
 router.post('/signOut', UserController.signOut);
 router.post('/changePass', AuthRequest, UserController.changePass);
 router.post('/changeName', AuthRequest, UserController.changeName);
+router.post('/changeBio', AuthRequest, UserController.changeBio);
+router.post('/changeImg', AuthRequest, upload.single('profilePic'), UserController.changeImg);
 
 export default router;

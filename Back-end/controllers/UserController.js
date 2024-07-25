@@ -12,6 +12,7 @@ import {
 	UserNotFoundError,
 } from '../utils/errors.js';
 import { createToken } from '../utils/auth.js';
+import path from 'path';
 
 // TODO: Check Token Duration
 
@@ -521,4 +522,56 @@ export const changeName = async (req, res) => {
 			.status(StatusCodes.BAD_REQUEST)
 			.send('cannot update name');
 	}	
+}
+
+export const changeBio = async (req, res) => {
+	const { bio } = req.body;
+	const { user } = req;
+
+	if (!bio || !user) {
+		debug('Cannot change bio');
+		return res
+			.status(StatusCodes.BAD_REQUEST)
+			.send('cannot change bio');
+	}
+
+	try {
+		await User.update(
+			{
+				bio,
+			},
+			{
+				where: {
+					id: user.id,
+				},
+			}
+		);
+
+		return res
+			.status(StatusCodes.OK)
+			.send('Bio changed');
+	} catch (err) {
+		debug('cannot update bio');
+		return res
+			.status(StatusCodes.BAD_REQUEST)
+			.send('cannot update bio');
+	}	
+}
+
+export const changeImg = async (req, res) => {
+	try {
+		const { user } = req;
+		const profilePicPath = req.file.path;
+
+		const imageName = path.basename(profilePicPath);
+    
+    const relativeImagePath = `image/${imageName}`;
+
+		await User.update({ image: relativeImagePath }, { where: { id: user.id } });
+		res.status(200).json({ message: 'Profile picture updated successfully' });
+	} catch (err) {
+		return res
+			.status(StatusCodes.BAD_REQUEST)
+			.send('cannot update image');
+	}
 }
