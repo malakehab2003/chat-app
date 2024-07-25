@@ -5,3 +5,4 @@ Back-end/.env.test
 testing-sockets*.js
 package.json
 Test Socket.png
+.vscode/**
