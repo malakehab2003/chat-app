@@ -586,7 +586,7 @@ export const getUserById = async (req, res) => {
 			},
 		});
 
-		return res.status(StatusCodes.OK).json(user);
+		return res.status(StatusCodes.OK).json(targetUser);
 	} catch (err) {
 		debug(`can't find user err: ${err}`);
 		return res

@@ -5,6 +5,8 @@ import userImage from '../../assets/images/profile-user-white.png';
 import classes from './Chat.module.css';
 import Delete from '../../assets/images/delete.png';
 import send from '../../assets/images/send.png';
+import { NavLink } from 'react-router-dom';
+import { ProfileRoute } from '../Profile'
 import {
 	GetAllMessages,
 	SendNewMessage,
@@ -118,7 +120,7 @@ export default function Chat({ chat, onDeleteChat }) {
 			{chat && (
 				<>
 					<div className={classes['chatHeader']}>
-						<a className={classes['linkHeader']} href=''>
+						<NavLink className={classes['linkHeader']} to={`profile/${chat.userId}`}>
 							<div>
 								<img
 									className={classes['personImage']}
@@ -132,7 +134,7 @@ export default function Chat({ chat, onDeleteChat }) {
 									{chat.name}
 								</p>
 							</div>
-						</a>
+						</NavLink>
 
 						<input
 							className={classes['removeChat']}

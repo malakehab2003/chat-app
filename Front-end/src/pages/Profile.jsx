@@ -17,8 +17,8 @@ export default function Profile() {
     getUser(id)
       .then((value) => {
         setUser(value);
-        if (value || value.image || value.image !== 'user') {
-          setUserImage(`../../public/${value.image}`);
+        if (value && value.image && value.image !== 'user') {
+          setUserImage(`../../${value.image}`);
         }
       });
   }, [])
@@ -30,7 +30,7 @@ export default function Profile() {
       </div>
 
       {user && <div className={classes['container']}>
-        {userImage && <img src={userImage} alt='user image' className={classes['profileImage']} />}
+        <img src={userImage} alt='user image' className={classes['profileImage']} />
         <div className={classes['profileName']}>{user.name}</div>
         <div className={classes['profileBio']}>{user.bio}</div>
       </div>}

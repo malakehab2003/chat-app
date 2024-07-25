@@ -6,7 +6,6 @@ import { LoginRoute } from '../Login';
 import classes from './NavBar.module.css';
 import { NavLink } from 'react-router-dom';
 import { SettingsRoute } from '../Settings';
-import { ProfileRoute } from '../Profile';
 import { getId } from '../../constants';
 
 export default function NavBar() {
@@ -82,7 +81,7 @@ export default function NavBar() {
 						].join(' ')}
 					>
 						<NavLink
-							to={`${ProfileRoute}/${id}`}
+							to={`profile/${id}`}
 							className={[
 								classes['nav-link'],
 								classes['nav-style'],
