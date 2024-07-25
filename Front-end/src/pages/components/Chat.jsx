@@ -5,7 +5,7 @@ import userImage from '../../assets/images/profile-user-white.png';
 import classes from './Chat.module.css';
 import Delete from '../../assets/images/delete.png';
 import send from '../../assets/images/send.png';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ProfileRoute } from '../Profile'
 import {
 	GetAllMessages,
@@ -22,6 +22,9 @@ export default function Chat({ chat, onDeleteChat }) {
 	const [messages, setMessages] = useState([]);
 	const [isTyping, setIsTyping] = useState(false);
 	const [newMessage, setNewMessage] = useState('');
+	const [selectedMember, setSelectedMember] = useState(null);
+  const [isDropdownVisible, setDropdownVisible] = useState(false);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		console.log(chat);
@@ -106,6 +109,17 @@ export default function Chat({ chat, onDeleteChat }) {
 		}
 	};
 
+	const handleMemberSelect = (event) => {
+    const userId = event.target.value;
+    setSelectedMember(userId);
+    navigate(`/profile/${userId}`);
+    setDropdownVisible(false); // Hide dropdown after selection
+  };
+
+	const toggleDropdown = () => {
+    setDropdownVisible(!isDropdownVisible);
+  };
+
 	return (
 		<div
 			style={
@@ -120,7 +134,7 @@ export default function Chat({ chat, onDeleteChat }) {
 			{chat && (
 				<>
 					<div className={classes['chatHeader']}>
-						<NavLink className={classes['linkHeader']} to={`profile/${chat.userId}`}>
+						{chat.type === 'direct' ? (<NavLink className={classes['linkHeader']} to={`profile/${chat.userId[0]}`}>
 							<div>
 								<img
 									className={classes['personImage']}
@@ -134,7 +148,34 @@ export default function Chat({ chat, onDeleteChat }) {
 									{chat.name}
 								</p>
 							</div>
-						</NavLink>
+						</NavLink>): (
+							<div className={classes['linkHeader']}>
+								<div>
+								<img
+									className={classes['personImage']}
+									src={userImage}
+									alt='user'
+								/>
+							</div>
+							<span className={classes['groupName']} onClick={toggleDropdown}>
+								<div className={classes['personData']}>
+									<p className={classes['personName']}>
+										{chat.name}
+									</p>
+								</div>
+							</span>
+							{isDropdownVisible && (
+								<div className={classes['dropdownMenu']}>
+									<select onChange={handleMemberSelect} value={selectedMember || ''}>
+										<option value="" disabled>Select a member</option>
+										{chat.userId.map((userId, index) => (
+											<option key={index} value={userId}>{chat.userNames[index]}</option>
+										))}
+									</select>
+								</div>
+							)}
+						</div>
+						)}
 
 						<input
 							className={classes['removeChat']}

@@ -52,7 +52,8 @@ export const GetAllChatsRequest = async () => {
 					: chatroom.Messages[0].latestMessage,
 			id: chatroom.id,
 			type: chatroom.roomType,
-			userId: chatroom.Users.map((user) => user.id)[0],
+			userId: chatroom.Users.map((user) => user.id),
+			userNames: chatroom.Users.map((user) => user.name),
 		}));
 		return result;
 	} catch (err) {
