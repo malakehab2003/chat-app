@@ -8,6 +8,7 @@ var router = Router();
 
 // crud operations for table user
 router.post('/', UserController.createUser);
+router.post('/id', AuthRequest, UserController.getUserById);
 
 router.get('/all', UserController.getAllUser);
 router.get('/:email', UserController.getUserByEmailFromBody);

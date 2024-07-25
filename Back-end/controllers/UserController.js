@@ -573,3 +573,25 @@ export const changeImg = async (req, res) => {
 			.send('cannot update image');
 	}
 }
+
+export const getUserById = async (req, res) => {
+	const { id } = req.body;
+	const { user } = req;
+
+	try {
+		const targetUser = await User.findOne({
+			attributes: { exclude: ['password'] },
+			where: {
+				id,
+			},
+		});
+
+		return res.status(StatusCodes.OK).json(user);
+	} catch (err) {
+		debug(`can't find user err: ${err}`);
+		return res
+			.status(StatusCodes.INTERNAL_SERVER_ERROR)
+			.send(`can't find user`);
+	}
+
+}
