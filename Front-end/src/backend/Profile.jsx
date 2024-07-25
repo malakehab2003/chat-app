@@ -1,14 +1,16 @@
 import axios from 'axios';
 import { BackEndBase } from '../constants';
-import { getToken } from '../constants';
+import { getToken, getId } from '../constants';
 
 const instance = axios.create({
 	baseURL: `${BackEndBase}user`,
 });
 
-export const getUser = async () => {
+export const getUser = async (id) => {
   try {
-    const res = await instance.get('', {
+    const res = await instance.post('id', {
+      id,
+    }, {
       headers: {
         Authorization: getToken(),
       },

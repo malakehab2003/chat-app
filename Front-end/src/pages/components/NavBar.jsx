@@ -7,9 +7,11 @@ import classes from './NavBar.module.css';
 import { NavLink } from 'react-router-dom';
 import { SettingsRoute } from '../Settings';
 import { ProfileRoute } from '../Profile';
+import { getId } from '../../constants';
 
 export default function NavBar() {
 	const navigate = useNavigate();
+	const id = getId();
 
 	return (
 		<span className={classes.root}>
@@ -80,7 +82,7 @@ export default function NavBar() {
 						].join(' ')}
 					>
 						<NavLink
-							to={ProfileRoute}
+							to={`${ProfileRoute}/${id}`}
 							className={[
 								classes['nav-link'],
 								classes['nav-style'],
