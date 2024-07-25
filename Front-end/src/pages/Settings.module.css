@@ -61,6 +61,28 @@
   border-color: #382f5e;
 }
 
+.container .bio p {
+  margin-bottom: -1px;
+  font-size: 20px;
+  color: #382f5e;
+}
+
+.container .bio .bioInput {
+  width: 300px;
+  height: 30px;
+  font-size: large;
+}
+
+.container .bio .bioBtn {
+  width: 100px;
+  height: 30px;
+  font-size: small;
+  background-color: #382f5e;
+  margin-left: 5px;
+  color: white;
+  border-color: #382f5e;
+}
+
 .container .deleteAcc {
   border-radius: 15px;
   color: #ffffff;

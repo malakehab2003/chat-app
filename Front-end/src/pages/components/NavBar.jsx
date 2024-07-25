@@ -6,6 +6,7 @@ import { LoginRoute } from '../Login';
 import classes from './NavBar.module.css';
 import { NavLink } from 'react-router-dom';
 import { SettingsRoute } from '../Settings';
+import { ProfileRoute } from '../Profile';
 
 export default function NavBar() {
 	const navigate = useNavigate();
@@ -70,6 +71,22 @@ export default function NavBar() {
 							].join(' ')}
 						>
 							Settings
+						</NavLink>
+					</li>
+					<li
+						className={[
+							classes['nav-item'],
+							classes['nav-style'],
+						].join(' ')}
+					>
+						<NavLink
+							to={ProfileRoute}
+							className={[
+								classes['nav-link'],
+								classes['nav-style'],
+							].join(' ')}
+						>
+							Profile
 						</NavLink>
 					</li>
 					<li

@@ -15,6 +15,16 @@ export const updateName = async (name) => {
   });
 }
 
+export const updateBio = async (bio) => {
+  const res = await instance.post('changeBio', {
+    bio,
+  }, {
+    headers: {
+      Authorization: getToken(),
+    },
+  });
+}
+
 export const deleteAcc = async () => {
   const res = await instance.delete('', {
     headers: {
@@ -23,4 +33,17 @@ export const deleteAcc = async () => {
   })
 
   clearData();
+}
+
+export const updateProfilePic = async (formData) => {
+  try {
+    const res = await instance.post('/changeImg', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: getToken(),
+      }
+    });
+  } catch (error) {
+    console.error('Error updating profile picture:', error);
+  }
 }
