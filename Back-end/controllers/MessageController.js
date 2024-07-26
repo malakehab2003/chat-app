@@ -146,7 +146,7 @@ export const getRoomMessages = async (req, res) => {
 			include: [
 				{
 					model: User,
-					attributes: ['name'],
+					attributes: ['name', 'image'],
 				},
 			],
 		});

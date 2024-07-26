@@ -1,11 +1,19 @@
 import { io } from 'socket.io-client';
 
 const SocketURL = 'http://localhost:3000/';
-export const socket = io(SocketURL);
+export const socket = io(SocketURL, {
+	reconnectionAttempts: 5, // Number of reconnection attempts before giving up
+	reconnectionDelay: 1000, // Delay between reconnection attempts
+	autoConnect: false,
+});
 
 export const BackEndBase = 'http://localhost:3000/api/';
 
 export const startConnection = (id) => {
+	if (!socket.connected) {
+		socket.connect();
+	}
+	console.log('Starting Connection');
 	socket.emit('start', id);
 };
 export const endConnection = () => {
@@ -34,13 +42,13 @@ export const deleteChatRoom = (chatId) => {
 };
 
 let tokenConst;
-let userId;
+let user;
 
 export const getToken = () => {
 	console.log(`tokenConst: ${tokenConst}`);
-	if (!tokenConst) {
-		tokenConst = localStorage.getItem('token');
-	}
+
+	tokenConst = sessionStorage.getItem('token');
+
 	if (!tokenConst) {
 		throw new Error('Sign in Required');
 	}
@@ -48,30 +56,30 @@ export const getToken = () => {
 };
 
 export const setToken = (param) => {
-	localStorage.setItem('token', param);
+	sessionStorage.setItem('token', param);
 	tokenConst = param;
 	console.log(`setting tokenConst: ${tokenConst}`);
 };
 
 export const clearData = () => {
-	localStorage.clear();
+	sessionStorage.clear();
 	tokenConst = null;
-	userId = null;
+	user = null;
 };
 
-export const getId = () => {
-	if (!userId) {
-		userId = localStorage.getItem('userId');
-	}
-	if (!userId) {
+export const getUser = () => {
+	user = JSON.parse(sessionStorage.getItem('user'));
+	console.log(`getting user:`, user);
+	if (!user) {
 		throw new Error('Sign in Required');
 	}
-	return parseInt(userId);
+	return user;
 };
 
-export const setId = (param) => {
-	localStorage.setItem('userId', param);
-	userId = param;
+export const setUser = (param) => {
+	sessionStorage.setItem('user', JSON.stringify(param));
+	console.log(`settin user:`, param);
+	user = param;
 };
 
 export const testEmail = (value) => {

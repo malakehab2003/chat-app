@@ -6,11 +6,11 @@ import { LoginRoute } from '../Login';
 import classes from './NavBar.module.css';
 import { NavLink } from 'react-router-dom';
 import { SettingsRoute } from '../Settings';
-import { getId } from '../../constants';
+import { getUser } from '../../constants';
 
 export default function NavBar() {
 	const navigate = useNavigate();
-	const id = getId();
+	const id = getUser().id;
 
 	return (
 		<span className={classes.root}>
@@ -81,7 +81,7 @@ export default function NavBar() {
 						].join(' ')}
 					>
 						<NavLink
-							to={`profile/${id}`}
+							to={`/profile/${id}`}
 							className={[
 								classes['nav-link'],
 								classes['nav-style'],

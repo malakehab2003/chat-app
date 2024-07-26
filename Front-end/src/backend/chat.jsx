@@ -1,6 +1,6 @@
 import {
 	deleteChatRoom,
-	getId,
+	getUser,
 	sendMessage,
 } from '../constants';
 import {
@@ -12,11 +12,7 @@ import {
 let instance;
 
 const getInstance = () => {
-	if (!instance || isUserChanged()) {
-		instance =
-			createAuthorizedAxiosInstance('user/chatroom');
-		clearLoginFlag();
-	}
+	instance = createAuthorizedAxiosInstance('user/chatroom');
 	return instance;
 };
 
@@ -25,7 +21,7 @@ export const GetAllMessages = async (chatId) => {
 	const res = await instance.get(`${chatId}`);
 	const messages = res.data.map((message) => ({
 		content: message.content,
-		isSent: message.SenderId === getId(),
+		isSent: message.SenderId === getUser().id,
 		User: message.User,
 	}));
 	return messages;
@@ -34,7 +30,7 @@ export const GetAllMessages = async (chatId) => {
 export const SendNewMessage = async (chatId, message) => {
 	getInstance();
 	await instance.post(`${chatId}`, {
-		content: message,
+		content: message.content,
 	});
 	//TODO: Send Signal to user
 	sendMessage(chatId, message);

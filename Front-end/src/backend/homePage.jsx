@@ -7,34 +7,25 @@ import {
 let instance;
 
 const getInstance = () => {
-	if (!instance || isUserChanged()) {
-		console.log('Created New Instance');
-		instance = createAuthorizedAxiosInstance('chatroom');
-		clearLoginFlag();
-	}
+	instance = createAuthorizedAxiosInstance('chatroom');
+
 	return instance;
 };
 
 let createInstance;
 
 const getCreateInstance = () => {
-	if (!createInstance || isUserChanged()) {
-		console.log('Created New Instance');
-		createInstance =
-			createAuthorizedAxiosInstance('user/chatroom');
-		clearLoginFlag();
-	}
+	createInstance =
+		createAuthorizedAxiosInstance('user/chatroom');
+
 	return createInstance;
 };
 
 let userInstance;
 
 const getUserInstance = () => {
-	if (!userInstance || isUserChanged()) {
-		console.log('Created New Instance');
-		userInstance = createAuthorizedAxiosInstance('user');
-		clearLoginFlag();
-	}
+	userInstance = createAuthorizedAxiosInstance('user');
+
 	return userInstance;
 };
 
@@ -54,6 +45,10 @@ export const GetAllChatsRequest = async () => {
 			type: chatroom.roomType,
 			userId: chatroom.Users.map((user) => user.id),
 			userNames: chatroom.Users.map((user) => user.name),
+			image:
+				chatroom.roomType === 'direct'
+					? chatroom.Users[0].image
+					: null,
 		}));
 		return result;
 	} catch (err) {
@@ -109,6 +104,12 @@ export const AddNewChat = async (email) => {
 				: chat.Messages[0].latestMessage,
 		id: chat.id,
 		type: chat.roomType,
+		userId: chat.Users.map((user) => user.id),
+		userNames: chat.Users.map((user) => user.name),
+		image:
+			chat.roomType === 'direct'
+				? chat.Users[0].image
+				: null,
 	};
 
 	// chat room id

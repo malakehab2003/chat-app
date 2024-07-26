@@ -17,7 +17,7 @@ export const initializeSocket = (server) => {
 		},
 	});
 	io.on('connection', (socket) => {
-		socket.once('start', async (id) => {
+		socket.on('start', async (id) => {
 			idsToSockets[id] = socket;
 			const user = await User.findByPk(id);
 			debug('From Start:', user);

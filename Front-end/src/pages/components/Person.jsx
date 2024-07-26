@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import userImage from '../../assets/images/profile-user.png';
 
 export default function Person({
-	person: { name, lastMessage, id },
+	person: { name, lastMessage, id, image },
 	onClick,
 }) {
 	return (
@@ -13,7 +13,11 @@ export default function Person({
 			className={classes.Person}
 		>
 			<div>
-			<img className={classes.personImage} src={userImage} alt="user" />
+				<img
+					className={classes.personImage}
+					src={image || userImage}
+					alt='user'
+				/>
 			</div>
 			<div className={classes.personData}>
 				<p className={classes.personName}>{name}</p>
@@ -28,6 +32,7 @@ Person.propTypes = {
 		name: PropTypes.string.isRequired,
 		lastMessage: PropTypes.string.isRequired,
 		id: PropTypes.number.isRequired,
+		image: PropTypes.string,
 	}).isRequired,
 	onClick: PropTypes.func.isRequired,
 };

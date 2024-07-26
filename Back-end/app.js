@@ -4,9 +4,9 @@ import { fileURLToPath } from 'url';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
-import ChatRoom from "./models/chatRoom.js";
-import Message from "./models/message.js";
-import User from "./models/user.js";
+import ChatRoom from './models/chatRoom.js';
+import Message from './models/message.js';
+import User from './models/user.js';
 
 import indexRouter from './routes/index.js';
 
@@ -24,10 +24,10 @@ User.hasMany(Message, {
 
 // TODO: Associate Many Users to Many ChatRooms
 User.belongsToMany(ChatRoom, {
-	through: "ChatRoomParticipants"
+	through: 'ChatRoomParticipants',
 });
 ChatRoom.belongsToMany(User, {
-	through: "ChatRoomParticipants"
+	through: 'ChatRoomParticipants',
 });
 
 Message.belongsTo(User, {
@@ -42,18 +42,18 @@ Message.belongsTo(User, {
 ChatRoom.hasMany(Message, {
 	foreignKey: {
 		allowNull: false,
-	}
+	},
 });
 Message.belongsTo(ChatRoom, {
 	onDelete: 'cascade',
 	foreignKey: {
 		allowNull: false,
-	}
+	},
 });
 
 var app = express();
 app.use(logger('dev'));
-app.use(cors())
+app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());

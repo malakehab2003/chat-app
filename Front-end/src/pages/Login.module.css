@@ -68,7 +68,6 @@ h1 {
 }
 
 .inputEmail {
-  width: 300px;
   height: 30px;
   font-size: large;
 }
@@ -80,7 +79,6 @@ h1 {
 }
 
 .inputPassword {
-  width: 300px;
   height: 30px;
   font-size: large;
 }

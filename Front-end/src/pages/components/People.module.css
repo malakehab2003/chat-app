@@ -21,6 +21,7 @@
   flex: 1;
   padding: 10px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .peopleContainer h1 {
@@ -84,5 +85,3 @@
     flex-basis: 40%;
   }
 }
-
-

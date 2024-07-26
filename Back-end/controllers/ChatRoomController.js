@@ -54,7 +54,7 @@ export const getRoomsByUserId = async (req, res) => {
 			include: [
 				{
 					model: User,
-					attributes: ['id', 'name'], // Include only necessary attributes
+					attributes: ['id', 'name', 'image'], // Include only necessary attributes
 					through: { attributes: [] }, // Exclude join table attributes
 					where: {
 						id: { [Op.ne]: user.id }, // Exclude the current user

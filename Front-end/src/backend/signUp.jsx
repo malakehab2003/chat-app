@@ -1,6 +1,10 @@
 import axios from 'axios';
-import { BackEndBase } from '../constants';
-import { setId, setToken } from '../constants';
+import {
+	BackEndBase,
+	clearData,
+	setUser,
+	setToken,
+} from '../constants';
 import { newLogin } from './helpers';
 
 const instance = axios.create({
@@ -17,13 +21,15 @@ export const signUpRequest = async (name, email, pass) => {
 
 	console.log(res);
 
-	let { token, id } = res.data;
+	let { token, user } = res.data;
 	token = `Bearer ${token}`;
 	console.log(token);
+	console.log(user);
 
 	if (token) {
+		clearData();
 		setToken(token);
-		setId(id);
+		setUser(user);
 		newLogin();
 	} else {
 		throw new Error('Sign Up Failed');

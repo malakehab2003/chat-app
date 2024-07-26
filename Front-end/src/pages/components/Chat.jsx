@@ -6,24 +6,30 @@ import classes from './Chat.module.css';
 import Delete from '../../assets/images/delete.png';
 import send from '../../assets/images/send.png';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { ProfileRoute } from '../Profile'
 import {
 	GetAllMessages,
 	SendNewMessage,
 	DeleteChat,
 } from '../../backend/chat';
 import {
+	getUser,
 	socket,
 	startTyping,
 	stopTyping,
 } from '../../constants';
 
-export default function Chat({ chat, onDeleteChat }) {
+export default function Chat({
+	chat,
+	onDeleteChat,
+	person,
+}) {
 	const [messages, setMessages] = useState([]);
 	const [isTyping, setIsTyping] = useState(false);
 	const [newMessage, setNewMessage] = useState('');
-	const [selectedMember, setSelectedMember] = useState(null);
-  const [isDropdownVisible, setDropdownVisible] = useState(false);
+	const [selectedMember, setSelectedMember] =
+		useState(null);
+	const [isDropdownVisible, setDropdownVisible] =
+		useState(false);
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -53,11 +59,12 @@ export default function Chat({ chat, onDeleteChat }) {
 			});
 			socket.on('send', ({ id, message }) => {
 				if (id === chat.id) {
+					console.log(message);
 					setMessages((messages) => [
 						...messages,
 						{
 							isSent: false,
-							content: message,
+							...message,
 						},
 					]);
 				}
@@ -85,10 +92,16 @@ export default function Chat({ chat, onDeleteChat }) {
 		if (newMessage === '') {
 			return;
 		}
-		SendNewMessage(chat.id, newMessage).then(() => {
+		const fullMessage = {
+			content: newMessage,
+			User: getUser(),
+		};
+		console.log(fullMessage);
+		SendNewMessage(chat.id, fullMessage).then(() => {
 			setMessages((messages) => [
 				...messages,
 				{
+					User: getUser(),
 					content: newMessage,
 					isSent: true,
 				},
@@ -110,15 +123,15 @@ export default function Chat({ chat, onDeleteChat }) {
 	};
 
 	const handleMemberSelect = (event) => {
-    const userId = event.target.value;
-    setSelectedMember(userId);
-    navigate(`/profile/${userId}`);
-    setDropdownVisible(false); // Hide dropdown after selection
-  };
+		const userId = event.target.value;
+		setSelectedMember(userId);
+		navigate(`/profile/${userId}`);
+		setDropdownVisible(false); // Hide dropdown after selection
+	};
 
 	const toggleDropdown = () => {
-    setDropdownVisible(!isDropdownVisible);
-  };
+		setDropdownVisible(!isDropdownVisible);
+	};
 
 	return (
 		<div
@@ -134,47 +147,62 @@ export default function Chat({ chat, onDeleteChat }) {
 			{chat && (
 				<>
 					<div className={classes['chatHeader']}>
-						{chat.type === 'direct' ? (<NavLink className={classes['linkHeader']} to={`profile/${chat.userId[0]}`}>
-							<div>
-								<img
-									className={classes['personImage']}
-									src={userImage}
-									alt='user'
-								/>
-							</div>
-
-							<div className={classes['personData']}>
-								<p className={classes['personName']}>
-									{chat.name}
-								</p>
-							</div>
-						</NavLink>): (
-							<div className={classes['linkHeader']}>
+						{chat.type === 'direct' ? (
+							<NavLink
+								className={classes['linkHeader']}
+								to={`profile/${chat.userId[0]}`}
+							>
 								<div>
-								<img
-									className={classes['personImage']}
-									src={userImage}
-									alt='user'
-								/>
-							</div>
-							<span className={classes['groupName']} onClick={toggleDropdown}>
+									<img
+										className={classes['personImage']}
+										src={chat.image || userImage}
+										alt='user'
+									/>
+								</div>
+
 								<div className={classes['personData']}>
 									<p className={classes['personName']}>
 										{chat.name}
 									</p>
 								</div>
-							</span>
-							{isDropdownVisible && (
-								<div className={classes['dropdownMenu']}>
-									<select onChange={handleMemberSelect} value={selectedMember || ''}>
-										<option value="" disabled>Select a member</option>
-										{chat.userId.map((userId, index) => (
-											<option key={index} value={userId}>{chat.userNames[index]}</option>
-										))}
-									</select>
+							</NavLink>
+						) : (
+							<div className={classes['linkHeader']}>
+								<div>
+									<img
+										className={classes['personImage']}
+										src={userImage}
+										alt='user'
+									/>
 								</div>
-							)}
-						</div>
+								<span
+									className={classes['groupName']}
+									onClick={toggleDropdown}
+								>
+									<div className={classes['personData']}>
+										<p className={classes['personName']}>
+											{chat.name}
+										</p>
+									</div>
+								</span>
+								{isDropdownVisible && (
+									<div className={classes['dropdownMenu']}>
+										<select
+											onChange={handleMemberSelect}
+											value={selectedMember || ''}
+										>
+											<option value='' disabled>
+												Select a member
+											</option>
+											{chat.userId.map((userId, index) => (
+												<option key={index} value={userId}>
+													{chat.userNames[index]}
+												</option>
+											))}
+										</select>
+									</div>
+								)}
+							</div>
 						)}
 
 						<input
@@ -199,7 +227,7 @@ export default function Chat({ chat, onDeleteChat }) {
 									<div>
 										<img
 											className={classes['sendImage']}
-											src={userImage}
+											src={c.User.image || userImage}
 											alt='user'
 										/>
 									</div>
@@ -212,7 +240,7 @@ export default function Chat({ chat, onDeleteChat }) {
 									<div>
 										<img
 											className={classes['receiveImage']}
-											src={userImage}
+											src={c.User.image || userImage}
 											alt='user'
 										/>
 									</div>
@@ -277,4 +305,8 @@ export default function Chat({ chat, onDeleteChat }) {
 Chat.propTypes = {
 	chat: PropTypes.object,
 	onDeleteChat: PropTypes.func.isRequired,
+	person: PropTypes.shape({
+		name: PropTypes.string.isRequired,
+		image: PropTypes.string,
+	}),
 };

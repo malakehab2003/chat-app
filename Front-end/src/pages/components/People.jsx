@@ -50,6 +50,12 @@ export default function People({
 						: chatData.Messages[0].latestMessage,
 				id: chatData.id,
 				type: chatData.roomType,
+				userId: chatData.Users.map((user) => user.id),
+				userNames: chatData.Users.map((user) => user.name),
+				image:
+					chatData.roomType === 'direct'
+						? chatData.Users[0].image
+						: null,
 			};
 			setChats((prevChats) => [newChat, ...prevChats]);
 		});
@@ -89,7 +95,7 @@ export default function People({
 			AddNewChat(email)
 				.then(({ formattedChat, chat }) => {
 					setChats((chats) => [formattedChat, ...chats]);
-					console.log(formattedChat);
+					console.log(chat);
 					addChatRoom(chat);
 				})
 				.catch((err) => setAddError(err.message));

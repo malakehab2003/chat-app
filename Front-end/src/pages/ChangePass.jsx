@@ -80,7 +80,7 @@ export default function ChangePass() {
 		changePassRequest(formData.oldPass, formData.newPass)
 			.then(() => nav(HomeRoute))
 			.catch((err) => {
-				if (err.response.code === 400) {
+				if (err.response.status === 400) {
 					setOldPassError('Incorrect Old Password');
 				} else {
 					console.log(err.response.data);

@@ -167,9 +167,15 @@ export const createUser = async (req, res) => {
 
 		const token = await createToken(user.email, user.id);
 
-		return res
-			.status(StatusCodes.CREATED)
-			.send({ token, id: user.id });
+		return res.status(StatusCodes.CREATED).send({
+			token,
+			user: {
+				id: user.id,
+				name,
+				email,
+				image: null,
+			},
+		});
 	} catch (err) {
 		debug(`can't create user err: ${err}`);
 		return res
@@ -409,9 +415,15 @@ export const signIn = async (req, res) => {
 		user.id.toString()
 	);
 
-	return res
-		.status(StatusCodes.OK)
-		.json({ token, id: user.id });
+	return res.status(StatusCodes.OK).json({
+		token,
+		user: {
+			id: user.id,
+			email: user.email,
+			name: user.name,
+			image: user.image,
+		},
+	});
 };
 
 export const signOut = async (req, res) => {
@@ -519,8 +531,8 @@ export const changeName = async (req, res) => {
 		return res
 			.status(StatusCodes.BAD_REQUEST)
 			.send('cannot update name');
-	}	
-}
+	}
+};
 
 export const changeBio = async (req, res) => {
 	const { bio } = req.body;
@@ -545,16 +557,14 @@ export const changeBio = async (req, res) => {
 			}
 		);
 
-		return res
-			.status(StatusCodes.OK)
-			.send('Bio changed');
+		return res.status(StatusCodes.OK).send('Bio changed');
 	} catch (err) {
 		debug('cannot update bio');
 		return res
 			.status(StatusCodes.BAD_REQUEST)
 			.send('cannot update bio');
-	}	
-}
+	}
+};
 
 export const changeImg = async (req, res) => {
 	try {
@@ -562,17 +572,23 @@ export const changeImg = async (req, res) => {
 		const profilePicPath = req.file.path;
 
 		const imageName = path.basename(profilePicPath);
-    
-    const relativeImagePath = `image/${imageName}`;
 
-		await User.update({ image: relativeImagePath }, { where: { id: user.id } });
-		res.status(200).json({ message: 'Profile picture updated successfully' });
+		const relativeImagePath = `image/${imageName}`;
+
+		await User.update(
+			{ image: relativeImagePath },
+			{ where: { id: user.id } }
+		);
+		res.status(200).json({
+			message: 'Profile picture updated successfully',
+			path: relativeImagePath,
+		});
 	} catch (err) {
 		return res
 			.status(StatusCodes.BAD_REQUEST)
 			.send('cannot update image');
 	}
-}
+};
 
 export const getUserById = async (req, res) => {
 	const { id } = req.body;
@@ -593,5 +609,4 @@ export const getUserById = async (req, res) => {
 			.status(StatusCodes.INTERNAL_SERVER_ERROR)
 			.send(`can't find user`);
 	}
-
-}
+};

@@ -101,7 +101,14 @@ export default function SignUp() {
 	return (
 		<span className={classes.root}>
 			<div className={classes['container']}>
-				<form onSubmit={handleSubmit}>
+				<form
+					style={{
+						display: 'flex',
+						flexFlow: 'column',
+						alignItems: 'center',
+					}}
+					onSubmit={handleSubmit}
+				>
 					<h1>Create new Account</h1>
 					<p className={classes['createAcc']}>
 						Create your account For Free!

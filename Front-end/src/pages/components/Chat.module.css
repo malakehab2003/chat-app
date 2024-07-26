@@ -84,6 +84,8 @@
   background-color: #e8e6fe;
   padding: 10px;
   padding-right: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 205px);
 }
 
 .chatContainer .chatBody .receiveContainer {
