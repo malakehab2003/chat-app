@@ -1,12 +1,11 @@
 .container {
+  position: relative;
   background-color: #e8e6fe;
   display: flex;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 10px;
+  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+  padding: 2% 5%;
+  justify-content: space-between;
   width: 50%;
   max-width: 600px;
   border-radius: 8px;
@@ -35,9 +34,17 @@
   flex-flow: column;
 }
 
+.data {}
+
 .profileImage {
-  width: 100px;
-  height: 100px;
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 175px;
+  height: 175px;
+  border: 5px solid grey;
+  border-radius: 100%;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.8)
 }
 
 .profileName {
@@ -46,6 +53,7 @@
 }
 
 .profileBio {
+  display: flex;
   font-size: xx-large;
   color: #382f5e;
 }

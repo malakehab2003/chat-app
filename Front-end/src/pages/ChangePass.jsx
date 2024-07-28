@@ -13,7 +13,7 @@ export default function ChangePass() {
 		newPass: '',
 		confirmPass: '',
 	});
-	const [newPassError, setNewPassError] = useState(null);
+	const [newPassError, setNewPassError] = useState([]);
 	const [confirmPassError, setConfirmPassError] =
 		useState(null);
 	const [oldPassError, setOldPassError] = useState(null);
@@ -34,28 +34,30 @@ export default function ChangePass() {
 			newPass: value,
 		}));
 
-		if (value.length < 8) {
-			setNewPassError(
-				'Input must be at least 8 characters'
-			);
+		setNewPassError([]);
+
+		if (value === '') {
+			setNewPassError(['This Field is required']);
 			return;
+		}
+
+		const errors = [];
+
+		if (value.length < 8) {
+			errors.push('Input must be at least 8 characters');
 		}
 
 		if (!/[0-9]/.test(value)) {
-			setNewPassError(
-				'Input must contain at least one number'
-			);
-			return;
+			errors.push('Input must contain at least one number');
 		}
 
 		if (!/[@_#$]/.test(value)) {
-			setNewPassError(
+			errors.push(
 				'Input must contain at least one special character'
 			);
-			return;
 		}
 
-		setNewPassError(null);
+		setNewPassError(errors);
 	};
 
 	const handleConfirmPass = (event) => {
@@ -124,14 +126,13 @@ export default function ChangePass() {
 							value={formData.newPass}
 							onChange={handleNewPassChange}
 						/>
-						{newPassError && (
-							<p style={{ color: 'red' }}>{newPassError}</p>
+						{newPassError.length > 0 && (
+							<p style={{ color: 'red' }}>
+								{newPassError.map((error, index) => (
+									<div key={index}>{error}</div>
+								))}
+							</p>
 						)}
-						<p className={classes.newPasswordValidate}>
-							New password must contain 8 characters <br />{' '}
-							at least one number <br /> and special
-							character [@_#$]
-						</p>
 					</div>
 
 					<div className={classes.confirmPasswordContainer}>
@@ -153,18 +154,25 @@ export default function ChangePass() {
 						)}
 					</div>
 
-					<input
-						className={classes.Submit}
-						type='submit'
-						value='Submit'
-					/>
-
-					<NavLink
-						className={classes.Cancel}
-						to={HomeRoute}
+					<div
+						style={{
+							display: 'flex',
+							gap: '10px',
+							paddingTop: '10px',
+						}}
 					>
-						Cancel
-					</NavLink>
+						<input
+							className={classes.Submit}
+							type='submit'
+							value='Submit'
+						/>
+						<NavLink
+							className={classes.Cancel}
+							to={HomeRoute}
+						>
+							Cancel
+						</NavLink>
+					</div>
 				</form>
 			</div>
 		</span>

@@ -260,7 +260,6 @@ export default function Chat({
 											style={{
 												display: 'flex',
 												flexFlow: 'column',
-												width: '25%',
 											}}
 										>
 											{c.User.name}
