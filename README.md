@@ -56,10 +56,10 @@ MYSQL_ROOT_PASSWORD=
 ```
 
   6. run the backend server
-    ```
-    cd Back-end
-    npm start
-    ```
+```
+cd Back-end
+npm start
+```
 
   7. run the frontend
      ```
