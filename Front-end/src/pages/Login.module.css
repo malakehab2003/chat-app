@@ -6,16 +6,16 @@ h1 {
 .container {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
   width: 50%;
   max-width: 600px;
-  border-radius: 8px;
+  border-radius: 50px;
+  box-shadow: 10px 10px 30px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
 }
 
 .new {
   text-align: center;
-  margin-top: 10%;
-  margin-left: 10px;
+  margin: 10% 10px;
   font-size: 25px;
   color: #382f5e;
 }
@@ -24,8 +24,8 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   background-color: #e8e6fe;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
   padding: 10px;
 }
 
@@ -34,7 +34,6 @@ h1 {
   flex-direction: column;
   align-items: center;
   background-color: #ffffff;
-  box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
   width: 70%;
   padding: 10px;
 }
@@ -62,6 +61,7 @@ h1 {
 }
 
 .email p {
+  margin-top: 0;
   font-size: 20px;
   margin-bottom: 5px;
   color: #382f5e;
@@ -90,8 +90,8 @@ h1 {
   border-color: #382f5e;
   padding: 10px 50px;
   font-size: 16px;
-  margin-top: 40px;
-  margin-bottom: 10px;
+  width: fit-content;
+  cursor: pointer;
 }
 
 .root {
@@ -102,4 +102,24 @@ h1 {
   align-items: center;
   margin: 0;
   height: 100%;
+}
+
+.buttons {
+  display: flex;
+  padding: 5% 0;
+  gap: 10px;
+  flex-flow: column;
+  align-items: center;
+}
+
+.googleLogin {
+  border-radius: 15px !important;
+  overflow: hidden;
+  color: black !important;
+}
+
+
+.googleLogin:hover {
+  color: rgba(0, 0, 0, 0.685) !important;
+
 }

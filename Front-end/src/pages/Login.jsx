@@ -6,16 +6,27 @@ import { HomeRoute } from './Home';
 import { SignUpRoute } from './SignUp';
 import { NavLink } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';
+import { CLIENT_ID } from '../constants';
+import { signUpRequest } from '../backend/signUp';
 
 export const LoginRoute = '/login';
-const CLIENT_ID =
-	'361250210633-14h3t6ov1q1llng3mkom9glqis93h9lt.apps.googleusercontent.com';
 
 export default function Login() {
 	const [email, setEmail] = useState('');
 	const [pass, setPass] = useState('');
 	const navigate = useNavigate();
 	const [error, setError] = useState(null);
+
+	const onSignUpSuccess = (res) => {
+		const profile = res.getBasicProfile();
+		const email = profile.getEmail();
+		const pass = profile.getId();
+		const name = profile.getName();
+
+		signUpRequest(name, email, pass).then(() =>
+			navigate(HomeRoute)
+		);
+	};
 
 	const onSuccess = (res) => {
 		const profile = res.getBasicProfile();
@@ -33,19 +44,28 @@ export default function Login() {
 
 	return (
 		<span className={classes.root}>
-			<h1>Welcome to chat-app</h1>
-
 			<div className={classes['container']}>
 				<div className={classes['signUpContainer']}>
 					<p className={classes['new']}>
 						Create new account For Free!
 					</p>
-					<NavLink
-						className={classes['SignUp']}
-						to={SignUpRoute}
-					>
-						SignUp
-					</NavLink>
+					<div className={classes['buttons']}>
+						<NavLink
+							className={classes['SignUp']}
+							to={SignUpRoute}
+						>
+							Sign Up
+						</NavLink>
+						<GoogleLogin
+							className={classes['googleLogin']}
+							clientId={CLIENT_ID}
+							buttonText='Sign Up With Google'
+							onSuccess={onSignUpSuccess}
+							onFailure={onFailure}
+							cookiePolicy={'single_host_origin'}
+							// isSignedIn={true}
+						/>
+					</div>
 				</div>
 
 				<div className={classes['signInContainer']}>
@@ -54,7 +74,7 @@ export default function Login() {
 						onSubmit={handleLogin}
 					>
 						<p className={classes['haveAccount']}>
-							If you have already account
+							Already Have an account?
 						</p>
 
 						<div className={classes['email']}>
@@ -78,23 +98,24 @@ export default function Login() {
 						</div>
 						{error && <div>{error}</div>}
 
-						<button
-							className={classes['Login']}
-							type='submit'
-						>
-							Login
-						</button>
+						<div className={classes['buttons']}>
+							<button
+								className={classes['Login']}
+								type='submit'
+							>
+								Login
+							</button>
+							<GoogleLogin
+								className={classes['googleLogin']}
+								clientId={CLIENT_ID}
+								buttonText='Login with Google instead'
+								onSuccess={onSuccess}
+								onFailure={onFailure}
+								cookiePolicy={'single_host_origin'}
+								// isSignedIn={true}
+							/>
+						</div>
 					</form>
-					<div id='gSignInBtn'>
-						<GoogleLogin
-							clientId={CLIENT_ID}
-							buttonText='Login'
-							onSuccess={onSuccess}
-							onFailure={onFailure}
-							cookiePolicy={'single_host_origin'}
-							// isSignedIn={true}
-						/>
-					</div>
 				</div>
 			</div>
 		</span>

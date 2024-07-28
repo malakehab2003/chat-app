@@ -3,11 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { HomeRoute } from './Home';
 import { useState } from 'react';
 import { signUpRequest } from '../backend/signUp';
-import { GoogleLogin } from 'react-google-login';
 
 export const SignUpRoute = '/signup';
-const CLIENT_ID =
-	'361250210633-14h3t6ov1q1llng3mkom9glqis93h9lt.apps.googleusercontent.com';
 
 export default function SignUp() {
 	const [formData, setFormData] = useState({
@@ -16,7 +13,8 @@ export default function SignUp() {
 		pass: '',
 	});
 	const [emailError, setEmailError] = useState(null);
-	const [passError, setPassError] = useState(null);
+	const [nameError, setNameError] = useState(null);
+	const [passError, setPassError] = useState([]);
 	const nav = useNavigate();
 
 	const handleChange = (event) => {
@@ -25,6 +23,12 @@ export default function SignUp() {
 			...prevFormData,
 			[name]: value,
 		}));
+
+		setNameError(null);
+
+		if (value === '') {
+			setNameError('This Field is required');
+		}
 	};
 
 	const handleEmailError = (event) => {
@@ -33,6 +37,11 @@ export default function SignUp() {
 			...prevFormData,
 			email: value,
 		}));
+
+		if (value === '') {
+			setEmailError('This Field is required');
+			return;
+		}
 
 		const regex = /^[a-zA-Z0-9._%+-]+@(gmail|yahoo)\.com$/;
 
@@ -52,26 +61,30 @@ export default function SignUp() {
 			pass: value,
 		}));
 
-		if (value.length < 8) {
-			setPassError('Input must be at least 8 characters');
+		setPassError([]);
+
+		if (value === '') {
+			setPassError(['This Field is required']);
 			return;
+		}
+
+		const errors = [];
+
+		if (value.length < 8) {
+			errors.push('Input must be at least 8 characters');
 		}
 
 		if (!/[0-9]/.test(value)) {
-			setPassError(
-				'Input must contain at least one number'
-			);
-			return;
+			errors.push('Input must contain at least one number');
 		}
 
 		if (!/[@_#$]/.test(value)) {
-			setPassError(
+			errors.push(
 				'Input must contain at least one special character'
 			);
-			return;
 		}
 
-		setPassError(null);
+		setPassError(errors);
 	};
 
 	const handleSubmit = (event) => {
@@ -81,21 +94,6 @@ export default function SignUp() {
 			formData.email,
 			formData.pass
 		).then(() => nav(HomeRoute));
-	};
-
-	const onSuccess = (res) => {
-		const profile = res.getBasicProfile();
-		const email = profile.getEmail();
-		const pass = profile.getId();
-		const name = profile.getName();
-
-		signUpRequest(name, email, pass).then(() =>
-			nav(HomeRoute)
-		);
-	};
-
-	const onFailure = (response) => {
-		console.log('Failed:', response);
 	};
 
 	return (
@@ -110,9 +108,6 @@ export default function SignUp() {
 					onSubmit={handleSubmit}
 				>
 					<h1>Create new Account</h1>
-					<p className={classes['createAcc']}>
-						Create your account For Free!
-					</p>
 					<div className={classes['nameContainer']}>
 						<p className={classes['nameText']}>
 							Enter your name
@@ -125,6 +120,9 @@ export default function SignUp() {
 							value={formData.name}
 							onChange={handleChange}
 						/>
+						{nameError && (
+							<p style={{ color: 'red' }}>{nameError}</p>
+						)}
 					</div>
 					<div className={classes['emailContainer']}>
 						<p className={classes['emailText']}>
@@ -141,9 +139,6 @@ export default function SignUp() {
 						{emailError && (
 							<p style={{ color: 'red' }}>{emailError}</p>
 						)}
-						<p className={classes['validateEmail']}>
-							Email should contain @[gmail | yahoo].com
-						</p>
 					</div>
 					<div className={classes['passwordContainer']}>
 						<p className={classes['passwordText']}>
@@ -157,14 +152,13 @@ export default function SignUp() {
 							value={formData.pass}
 							onChange={handlePassError}
 						/>
-						{passError && (
-							<p style={{ color: 'red' }}>{passError}</p>
+						{passError.length > 0 && (
+							<p style={{ color: 'red' }}>
+								{passError.map((error, index) => (
+									<div key={index}>{error}</div>
+								))}
+							</p>
 						)}
-						<p className={classes['validatePassword']}>
-							Password must contain 8 characters <br /> at
-							least one number <br /> and special character
-							[@_#$]
-						</p>
 					</div>
 					<input
 						className={classes['create']}
@@ -172,16 +166,6 @@ export default function SignUp() {
 						value='Create account'
 					/>
 				</form>
-				<div id='gSignInBtn'>
-					<GoogleLogin
-						clientId={CLIENT_ID}
-						buttonText='Sign Up With Google'
-						onSuccess={onSuccess}
-						onFailure={onFailure}
-						cookiePolicy={'single_host_origin'}
-						// isSignedIn={true}
-					/>
-				</div>
 			</div>
 		</span>
 	);

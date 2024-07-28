@@ -41,6 +41,9 @@ export const deleteChatRoom = (chatId) => {
 	socket.emit('delete-chat', chatId);
 };
 
+export const CLIENT_ID =
+	'361250210633-14h3t6ov1q1llng3mkom9glqis93h9lt.apps.googleusercontent.com';
+
 let tokenConst;
 let user;
 
