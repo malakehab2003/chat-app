@@ -69,5 +69,5 @@ npm start
 
   ## contributors
 
-    David John - https://github.com/DJ-Man-2099
-    Malak Shnouda - https://github.com/malakehab2003
+    [David John](https://github.com/DJ-Man-2099)
+    [Malak Shnouda](https://github.com/malakehab2003)
