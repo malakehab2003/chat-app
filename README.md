@@ -42,6 +42,7 @@
   ```
 
   4. create .env file
+     ```
     JWT_SECRET_KEY=
     TOKEN_HEADER_KEY=
     DEBUG=*
@@ -52,14 +53,15 @@
     DB_DIALECT=
     MYSQL_ROOT_USER=
     MYSQL_ROOT_PASSWORD=
+    ```
 
-  5. run the backend server
+  6. run the backend server
     ```
     cd Back-end
     npm start
     ```
 
-  6. run the frontend
+  7. run the frontend
      ```
        cd Front-end
        npx vite --port=4000
