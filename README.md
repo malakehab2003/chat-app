@@ -42,18 +42,18 @@
   ```
 
   4. create .env file
-     ```
-    JWT_SECRET_KEY=
-    TOKEN_HEADER_KEY=
-    DEBUG=*
-    DB_NAME=
-    DB_USER=
-    DB_PASSWORD=
-    DB_HOST=
-    DB_DIALECT=
-    MYSQL_ROOT_USER=
-    MYSQL_ROOT_PASSWORD=
-    ```
+```
+JWT_SECRET_KEY=
+TOKEN_HEADER_KEY=
+DEBUG=*
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+DB_HOST=
+DB_DIALECT=
+MYSQL_ROOT_USER=
+MYSQL_ROOT_PASSWORD=
+```
 
   6. run the backend server
     ```
