@@ -4,13 +4,22 @@ import { clearData, endConnection } from '../../constants';
 import { HomeRoute } from '../Home';
 import { LoginRoute } from '../Login';
 import classes from './NavBar.module.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { SettingsRoute } from '../Settings';
 import { getUser } from '../../constants';
 
 export default function NavBar() {
 	const navigate = useNavigate();
 	const id = getUser().id;
+
+	const location = useLocation();
+
+	const isActive = (path) => {
+		return (
+			(path === '/' && location.pathname === '/') ||
+			(path !== '/' && location.pathname.includes(path))
+		);
+	};
 
 	return (
 		<span className={classes.root}>
@@ -53,6 +62,9 @@ export default function NavBar() {
 							className={[
 								classes['nav-link'],
 								classes['nav-style'],
+								isActive(HomeRoute)
+									? classes['active']
+									: '',
 							].join(' ')}
 						>
 							Home
@@ -69,6 +81,9 @@ export default function NavBar() {
 							className={[
 								classes['nav-link'],
 								classes['nav-style'],
+								isActive(SettingsRoute)
+									? classes['active']
+									: '',
 							].join(' ')}
 						>
 							Settings
@@ -85,6 +100,9 @@ export default function NavBar() {
 							className={[
 								classes['nav-link'],
 								classes['nav-style'],
+								isActive('profile')
+									? classes['active']
+									: '',
 							].join(' ')}
 						>
 							Profile

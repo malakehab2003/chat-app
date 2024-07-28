@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { ClipLoader } from 'react-spinners'; // Import the spinner
 import userImage from '../../assets/images/profile-user-white.png';
@@ -31,13 +31,24 @@ export default function Chat({
 	const [isDropdownVisible, setDropdownVisible] =
 		useState(false);
 	const navigate = useNavigate();
+	const chatContainerRef = useRef(null);
+
+	const scrollToBottom = () => {
+		if (chatContainerRef.current) {
+			chatContainerRef.current.scrollIntoView({
+				behavior: 'smooth',
+			});
+		}
+	};
+
+	useEffect(() => scrollToBottom(), [messages]);
 
 	useEffect(() => {
 		console.log(chat);
 		if (chat && chat.id) {
-			GetAllMessages(chat.id).then((res) =>
-				setMessages(res)
-			);
+			GetAllMessages(chat.id).then((res) => {
+				setMessages(res);
+			});
 			socket.on('deleteChat', (id) => {
 				if (chat.id === id) {
 					onDeleteChat(chat.id);
@@ -249,6 +260,7 @@ export default function Chat({
 											style={{
 												display: 'flex',
 												flexFlow: 'column',
+												width: '25%',
 											}}
 										>
 											{c.User.name}
@@ -280,6 +292,7 @@ export default function Chat({
 								size={50}
 							/>
 						)}
+						<div ref={chatContainerRef} />
 					</div>
 					<div className={classes['chatFooter']}>
 						<textarea
@@ -287,6 +300,12 @@ export default function Chat({
 							placeholder='Enter your message'
 							onChange={onTyping}
 							value={newMessage}
+							onKeyDown={(e) => {
+								if (e.key === 'Enter' && !e.shiftKey) {
+									e.preventDefault();
+									onSend();
+								}
+							}}
 						></textarea>
 						<input
 							className={classes['sendMessage']}

@@ -110,7 +110,7 @@ export default function People({
 				<input
 					className={classes.newChatInput}
 					type='text'
-					placeholder='Add new chat'
+					placeholder='Enter Email to start chatting'
 					name='email'
 					value={email}
 					onChange={handleError}
@@ -133,14 +133,16 @@ export default function People({
 					size={50}
 				/>
 			)}
-			{chats &&
-				chats.map((person, index) => (
-					<Person
-						person={person}
-						key={index}
-						onClick={() => setChat(person)}
-					/>
-				))}
+			<div className={classes['chatList']}>
+				{chats &&
+					chats.map((person, index) => (
+						<Person
+							person={person}
+							key={index}
+							onClick={() => setChat(person)}
+						/>
+					))}
+			</div>
 		</div>
 	);
 }

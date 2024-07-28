@@ -16,11 +16,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 100%;
+  height: calc(100vh - 62px);
   background-color: #251d46;
   flex: 1;
   padding: 10px;
-  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -50,6 +49,8 @@
 .peopleContainer .newChat .newChatButton {
   width: 50px;
   height: 50px;
+  border: 5px solid grey;
+  border-radius: 100%;
 }
 
 @media (max-width: 857px) {
@@ -84,4 +85,9 @@
   .peopleContainer {
     flex-basis: 40%;
   }
+}
+
+.chatList {
+  overflow-y: auto;
+  padding-right: 4%;
 }

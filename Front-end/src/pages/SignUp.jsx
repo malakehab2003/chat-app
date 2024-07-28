@@ -1,8 +1,9 @@
 import classes from './SignUp.module.css';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { HomeRoute } from './Home';
 import { useState } from 'react';
 import { signUpRequest } from '../backend/signUp';
+import { LoginRoute } from './Login';
 
 export const SignUpRoute = '/signup';
 
@@ -165,6 +166,7 @@ export default function SignUp() {
 						type='submit'
 						value='Create account'
 					/>
+					<NavLink to={LoginRoute}>Sign in instead</NavLink>
 				</form>
 			</div>
 		</span>

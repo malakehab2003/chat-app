@@ -1,15 +1,14 @@
 .Person {
-  border: gray;
-  border-style: solid;
   border-radius: 50px;
   padding: 10px 0px;
   border: 1px solid rgba(174, 174, 174, 0.1);
   display: flex;
   padding-left: 20px;
+  padding-right: 20%;
   align-items: center;
   text-decoration: none;
   margin-bottom: 20px;
-  overflow-x: hidden;
+
 }
 
 .Person .personImage {
@@ -27,6 +26,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  width: 100%;
 }
 
 .Person .personData * {
@@ -46,9 +46,10 @@
   color: grey;
   font-size: small;
   opacity: 50%;
-  white-space: nowrap;
-  overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* .Person {
