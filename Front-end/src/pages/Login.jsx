@@ -49,6 +49,9 @@ export default function Login() {
 					<p className={classes['new']}>
 						Create new account For Free!
 					</p>
+					<p className={classes['new-mobile']}>
+						First Time?
+					</p>
 					<div className={classes['buttons']}>
 						<NavLink
 							className={classes['SignUp']}
@@ -69,14 +72,19 @@ export default function Login() {
 				</div>
 
 				<div className={classes['signInContainer']}>
+					<h1 className={classes['mobile-header']}>
+						Chat App
+					</h1>
+					<p className={classes['haveAccount']}>
+						Already Have an account?
+					</p>
+					<p className={classes['haveAccount-mobile']}>
+						Welcome Back
+					</p>
 					<form
 						className={classes['signInForm']}
 						onSubmit={handleLogin}
 					>
-						<p className={classes['haveAccount']}>
-							Already Have an account?
-						</p>
-
 						<div className={classes['email']}>
 							<p>Enter your email</p>
 							<input

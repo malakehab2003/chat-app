@@ -7,10 +7,18 @@ import classes from './NavBar.module.css';
 import { NavLink, useLocation } from 'react-router-dom';
 import { SettingsRoute } from '../Settings';
 import { getUser } from '../../constants';
+import { useEffect, useState } from 'react';
+import settings from '../../assets/images/settings.png';
 
 export default function NavBar() {
 	const navigate = useNavigate();
 	const id = getUser().id;
+
+	const [collapseIsShown, setCollapseIsShown] =
+		useState(false);
+
+	const [collapseClasses, setCollapseClasses] =
+		useState('hide');
 
 	const location = useLocation();
 
@@ -20,6 +28,19 @@ export default function NavBar() {
 			(path !== '/' && location.pathname.includes(path))
 		);
 	};
+
+	const toggleDropDown = () => {
+		setCollapseClasses('');
+		setCollapseIsShown((old) => !old);
+	};
+
+	useEffect(() => {
+		if (!collapseIsShown) {
+			setTimeout(() => setCollapseClasses('hide'), 500);
+		} else {
+			setTimeout(() => setCollapseClasses('show'), 0);
+		}
+	}, [collapseIsShown]);
 
 	return (
 		<span className={classes.root}>
@@ -42,7 +63,7 @@ export default function NavBar() {
 						].join(' ')}
 						to={HomeRoute}
 					>
-						Chat-app
+						Chat App
 					</NavLink>
 				</div>
 				<ul
@@ -129,7 +150,51 @@ export default function NavBar() {
 						</NavLink>
 					</li>
 				</ul>
+				<div
+					className={classes['collapse']}
+					onClick={toggleDropDown}
+				>
+					<img
+						style={{
+							objectFit: 'contain',
+						}}
+						src={settings}
+						alt='dropdown menu button'
+					/>
+				</div>
 			</nav>
+			<div
+				className={`${classes['dropdown-modal']} ${classes[collapseClasses]}`}
+			>
+				<div
+					className={`${classes['dropdown']} ${classes[collapseClasses]}`}
+				>
+					<ul>
+						<li>
+							<NavLink to={HomeRoute}>Home</NavLink>
+						</li>
+						<li>
+							<NavLink to={SettingsRoute}>Settings</NavLink>
+						</li>
+						<li>
+							<NavLink to={`/profile/${id}`}>
+								Profile
+							</NavLink>
+						</li>
+						<li>
+							<NavLink
+								onClick={() => {
+									clearData();
+									endConnection();
+									navigate(LoginRoute);
+								}}
+							>
+								Logout
+							</NavLink>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</span>
 	);
 }

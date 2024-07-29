@@ -107,6 +107,7 @@
   font-size: 16px;
   margin-bottom: 10px;
   text-decoration: none;
+  text-align: center;
 }
 
 .container .profilePic .profilePicBtn {
@@ -126,4 +127,64 @@
 
 .bio {
   width: 405px;
+}
+
+@media only screen and (max-width: 1075px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    flex: 1
+  }
+
+  @media only screen and (max-width: 540px) {
+    .buttons {
+      flex-flow: column;
+      gap: 0;
+      width: 100%;
+    }
+
+    .name,
+    .bio {
+      width: 100%;
+    }
+
+    .name>form,
+    .bio>form,
+    .profilePic>form {
+      display: flex;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+
+    .container .name .nameInput {
+      flex: 1;
+      width: 100%;
+    }
+
+    .name>form>p,
+    .bio>form>p,
+    .profilePic>form>p {
+      width: 100%;
+    }
+
+    .bio>form>div {
+      width: 100%;
+    }
+
+    .profilePicInput {
+      flex: 1;
+      min-width: 10px;
+    }
+
+    .container .nav-style,
+    .container .deleteAcc {
+      width: 100%;
+    }
+
+    .container .deleteAcc {
+      text-wrap: balance;
+      margin-bottom: 0;
+    }
+  }
 }

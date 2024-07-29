@@ -14,10 +14,15 @@ h1 {
 }
 
 .new {
+  display: block;
   text-align: center;
   margin: 10% 10px;
   font-size: 25px;
   color: #382f5e;
+}
+
+.new-mobile {
+  display: none;
 }
 
 .signUpContainer {
@@ -58,6 +63,10 @@ h1 {
   font-size: 25px;
   text-align: center;
   color: #382f5e;
+}
+
+.haveAccount-mobile {
+  display: none;
 }
 
 .email p {
@@ -121,5 +130,73 @@ h1 {
 
 .googleLogin:hover {
   color: rgba(0, 0, 0, 0.685) !important;
+}
 
+.mobile-header {
+  display: none;
+}
+
+@media only screen and (max-width: 840px) {
+  .SignUp {
+    width: 100%;
+    text-align: center;
+  }
+
+  .haveAccount {
+    display: none;
+  }
+
+  .haveAccount-mobile {
+    display: block;
+    font-size: 25px;
+    text-align: center;
+    color: #382f5e;
+    margin-top: 0;
+
+  }
+
+  .new {
+    display: none;
+  }
+
+  .new-mobile {
+    display: block;
+    text-align: center;
+    margin: 0 10px;
+    font-size: 25px;
+    color: #382f5e;
+  }
+
+  .container {
+    flex-flow: column-reverse;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    overflow: auto;
+    box-shadow: none;
+    justify-content: start;
+  }
+
+  .root {
+    width: 100%;
+  }
+
+  .signUpContainer {
+    padding: 1% 0;
+    flex: 1;
+  }
+
+  .signInContainer {
+    width: 100%;
+    flex: 1;
+  }
+
+  .mobile-header {
+    display: block;
+  }
+
+  .Login {
+    width: 100%;
+  }
 }

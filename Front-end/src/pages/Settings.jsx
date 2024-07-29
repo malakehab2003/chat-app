@@ -169,7 +169,7 @@ export default function Settings() {
 						to={ChangePassRoute}
 						className={classes['nav-style']}
 					>
-						ChangePassword
+						Change Your Password
 					</NavLink>
 					<form onSubmit={handleDeleteAcc}>
 						<input

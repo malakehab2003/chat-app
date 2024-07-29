@@ -13,7 +13,7 @@ export const startConnection = (id) => {
 	if (!socket.connected) {
 		socket.connect();
 	}
-	console.log('Starting Connection');
+	// console.log('Starting Connection');
 	socket.emit('start', id);
 };
 export const endConnection = () => {
@@ -21,7 +21,7 @@ export const endConnection = () => {
 };
 
 export const startTyping = (chatId) => {
-	console.log('Typing from source');
+	// console.log('Typing from source');
 	socket.emit('typing-message', chatId);
 };
 
@@ -48,7 +48,7 @@ let tokenConst;
 let user;
 
 export const getToken = () => {
-	console.log(`tokenConst: ${tokenConst}`);
+	// console.log(`tokenConst: ${tokenConst}`);
 
 	tokenConst = sessionStorage.getItem('token');
 
@@ -61,7 +61,7 @@ export const getToken = () => {
 export const setToken = (param) => {
 	sessionStorage.setItem('token', param);
 	tokenConst = param;
-	console.log(`setting tokenConst: ${tokenConst}`);
+	// console.log(`setting tokenConst: ${tokenConst}`);
 };
 
 export const clearData = () => {
@@ -72,7 +72,7 @@ export const clearData = () => {
 
 export const getUser = () => {
 	user = JSON.parse(sessionStorage.getItem('user'));
-	console.log(`getting user:`, user);
+	// console.log(`getting user:`, user);
 	if (!user) {
 		throw new Error('Sign in Required');
 	}
@@ -81,7 +81,7 @@ export const getUser = () => {
 
 export const setUser = (param) => {
 	sessionStorage.setItem('user', JSON.stringify(param));
-	console.log(`settin user:`, param);
+	// console.log(`settin user:`, param);
 	user = param;
 };
 
