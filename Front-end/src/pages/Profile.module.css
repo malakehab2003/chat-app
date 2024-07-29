@@ -34,8 +34,6 @@
   flex-flow: column;
 }
 
-.data {}
-
 .profileImage {
   position: absolute;
   top: -50px;
@@ -56,4 +54,45 @@
   display: flex;
   font-size: xx-large;
   color: #382f5e;
+}
+
+.imagePlaceholder {
+  display: block;
+  width: 85px;
+  height: 100%;
+}
+
+@media only screen and (max-width: 710px) {
+  .profileImage {
+    position: relative;
+    left: 0;
+  }
+
+  .data {
+    position: relative;
+    top: -45px;
+  }
+
+  .imagePlaceholder {
+    display: none;
+  }
+
+  .container {
+    flex-flow: column-reverse;
+  }
+
+  @media only screen and (max-width: 640px) {
+    .container {
+      width: 80%;
+    }
+
+    .container>div {
+      width: 100%;
+    }
+
+    .profileName {
+      display: flex;
+      justify-content: center;
+    }
+  }
 }

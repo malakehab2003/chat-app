@@ -19,7 +19,7 @@ export default function Profile() {
 				setUserImage(`../../${value.image}`);
 			}
 		});
-	}, []);
+	}, [id]);
 
 	return (
 		<span className={classes.root}>
