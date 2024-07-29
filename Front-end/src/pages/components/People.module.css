@@ -14,9 +14,10 @@
 
 .peopleContainer {
   display: flex;
+  position: relative;
   flex-direction: column;
   gap: 10px;
-  height: calc(100vh - 62px);
+  height: 90vh;
   background-color: #251d46;
   flex: 1;
   padding: 10px;
@@ -63,31 +64,88 @@
   }
 }
 
-@media (max-width: 642px) {
+/* @media only screen and (max-width: 642px) {
   .peopleContainer {
     flex-basis: 10%;
   }
 }
 
-@media (max-width: 548px) {
+@media only screen and (max-width: 548px) {
   .peopleContainer {
     flex-basis: 20%;
   }
 }
 
-@media (max-width: 455px) {
+@media only screen and (max-width: 455px) {
   .peopleContainer {
     flex-basis: 30%;
   }
 }
 
-@media (max-width: 367px) {
+@media only screen and (max-width: 367px) {
   .peopleContainer {
     flex-basis: 40%;
   }
-}
+} */
 
 .chatList {
   overflow-y: auto;
   padding-right: 4%;
+}
+
+.return-chats {
+  display: none;
+}
+
+
+@media only screen and (max-width: 970px) {
+  .peopleContainer {
+    flex: 2;
+  }
+
+}
+
+
+@media only screen and (max-width: 540px) {
+  .peopleContainer {
+    position: absolute;
+    width: 100vw;
+    transform: translateX(-100vw);
+    transition: all 500ms;
+  }
+
+
+  .peopleContainer.show {
+    transform: translateX(0);
+  }
+
+  .peopleContainer.hide {
+    display: none;
+  }
+
+  .return-chats.hide {
+    display: none;
+  }
+
+  .return-chats.show {
+    transform: translateX(0);
+  }
+
+  .return-chats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 500;
+    top: 10vh;
+    height: 70px;
+    width: 70px;
+    transform: translateX(100vw);
+    transition: all 500ms;
+    background-color: #251d46;
+    padding: 10px;
+    border-radius: 100%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 }

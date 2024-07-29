@@ -186,16 +186,15 @@ export default function Chat({
 										alt='user'
 									/>
 								</div>
-								<span
-									className={classes['groupName']}
+
+								<div
+									className={classes['personData']}
 									onClick={toggleDropdown}
 								>
-									<div className={classes['personData']}>
-										<p className={classes['personName']}>
-											{chat.name}
-										</p>
-									</div>
-								</span>
+									<p className={classes['personName']}>
+										{chat.name}
+									</p>
+								</div>
 								{isDropdownVisible && (
 									<div className={classes['dropdownMenu']}>
 										<select

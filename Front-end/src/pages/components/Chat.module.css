@@ -16,10 +16,10 @@
 .chatContainer {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 62px);
+  height: calc(90vh);
   flex: 3;
   background-color: black;
-  align-items: stretch;
+  width: 100%;
 }
 
 .chatContainer .chatHeader {
@@ -86,6 +86,7 @@
   padding-right: 20px;
   overflow-y: auto;
   scroll-margin-bottom: 71.2px;
+  width: 100%;
 }
 
 .chatContainer .chatBody .receiveContainer {
@@ -106,7 +107,7 @@
 .chatContainer .chatBody .receiveMessage {
   max-height: fit-content;
   background-color: #48337e;
-  word-wrap: break-word;
+  word-break: break-all;
   border-radius: 10px;
   width: 100%;
   border-top-left-radius: 0px;
@@ -135,7 +136,7 @@
 .chatContainer .chatBody .sendMessage {
   max-height: 500%;
   background-color: #48337e;
-  word-wrap: break-word;
+  word-break: break-all;
   width: 100%;
   border-radius: 10px;
   border-top-right-radius: 0px;
@@ -192,7 +193,7 @@
 
 /* mobile devices */
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
   .chatContainer .chatHeader {
     height: auto;
   }
@@ -236,5 +237,16 @@
 
   .chatContainer .chatFooter .messageInput {
     width: 80%;
+  }
+} */
+
+@media only screen and (max-width: 540px) {
+  .chatContainer {
+    width: 100%;
+  }
+
+  .chatContainer .chatBody {
+    padding: 0;
+    padding-right: 20px;
   }
 }

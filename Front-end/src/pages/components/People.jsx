@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import classes from './People.module.css';
 import Add from '../../assets/images/add.png';
+import list from '../../assets/images/chatlist.png';
 import Person from './Person';
 import {
 	AddNewChat,
@@ -102,48 +103,123 @@ export default function People({
 		}
 	};
 
-	return (
-		<div className={classes.peopleContainer}>
-			<h1 className={classes['home-style']}>People</h1>
+	const [peopleShow, setPeopleShow] = useState('show');
+	const [returnChatsShow, setReturnChatsShow] =
+		useState('hide');
 
-			<div className={classes.newChat}>
-				<input
-					className={classes.newChatInput}
-					type='text'
-					placeholder='Enter Email to start chatting'
-					name='email'
-					value={email}
-					onChange={handleError}
-				/>
-				<input
-					className={classes.newChatButton}
-					type='image'
-					src={Add}
-					alt='Add'
-					onClick={handleAddClick}
+	const [isPeopleShown, setIsPeopleShown] = useState(true);
+	const [windowWidth, setWindowWidth] = useState(
+		window.innerWidth
+	);
+
+	useEffect(() => {
+		if (windowWidth > 540) {
+			return;
+		}
+		if (isPeopleShown) {
+			setTimeout(() => {
+				setPeopleShow('show');
+			}, 0);
+			setTimeout(() => {
+				setReturnChatsShow('hide');
+			}, 500);
+		} else {
+			setTimeout(() => {
+				setPeopleShow('hide');
+			}, 500);
+			setTimeout(() => {
+				setReturnChatsShow('show');
+			}, 0);
+		}
+	}, [isPeopleShown, windowWidth]);
+
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowWidth(window.innerWidth);
+		};
+
+		window.addEventListener('resize', handleResize);
+
+		// Cleanup event listener on component unmount
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, []);
+
+	return (
+		<>
+			<div
+				className={`${classes.peopleContainer} ${
+					classes[peopleShow] ?? ''
+				}`}
+			>
+				<h1 className={classes['home-style']}>People</h1>
+
+				<div className={classes.newChat}>
+					<input
+						className={classes.newChatInput}
+						type='text'
+						placeholder='Enter Email to start chatting'
+						name='email'
+						value={email}
+						onChange={handleError}
+					/>
+					<input
+						className={classes.newChatButton}
+						type='image'
+						src={Add}
+						alt='Add'
+						onClick={handleAddClick}
+					/>
+				</div>
+				{addError && (
+					<p style={{ color: 'red' }}>{addError}</p>
+				)}
+				{!chats && !error && (
+					<ClipLoader
+						color='#3498db'
+						loading={!chats && !error}
+						size={50}
+					/>
+				)}
+				<div className={classes['chatList']}>
+					{chats &&
+						chats.map((person, index) => (
+							<Person
+								person={person}
+								key={index}
+								onClick={() => {
+									if (windowWidth <= 540) {
+										setReturnChatsShow('');
+										setPeopleShow('');
+										setIsPeopleShown(false);
+									}
+									setChat(person);
+								}}
+							/>
+						))}
+				</div>
+			</div>
+			<div
+				className={`${classes['return-chats']} ${
+					classes[returnChatsShow] ?? ''
+				}`}
+				onClick={() => {
+					setReturnChatsShow('');
+					setPeopleShow('');
+					setIsPeopleShown(true);
+				}}
+			>
+				<img
+					src={list}
+					alt='list of chats'
+					style={{
+						objectFit: 'contain',
+						height: '100%',
+					}}
 				/>
 			</div>
-			{addError && (
-				<p style={{ color: 'red' }}>{addError}</p>
-			)}
-			{!chats && !error && (
-				<ClipLoader
-					color='#3498db'
-					loading={!chats && !error}
-					size={50}
-				/>
-			)}
-			<div className={classes['chatList']}>
-				{chats &&
-					chats.map((person, index) => (
-						<Person
-							person={person}
-							key={index}
-							onClick={() => setChat(person)}
-						/>
-					))}
-			</div>
-		</div>
+		</>
 	);
 }
 
